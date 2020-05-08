@@ -169,5 +169,6 @@
     <orderEntry type="library" name="Gradle: :geetest_testbutton_android_v3.5.3:@aar" level="project" />
     <orderEntry type="module" module-name="lib-zxing" />
     <orderEntry type="module" module-name="KLineChartLib" />
+    <orderEntry type="module" module-name="KLineChartLib" />
   </component>
 </module>
