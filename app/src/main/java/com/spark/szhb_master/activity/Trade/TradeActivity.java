@@ -263,7 +263,7 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
 
     private boolean rcvEnable = false;
 
-    private List<BaseFragment> mTabFragments;
+    private List<Fragment> mTabFragments;
 
     /**
      * 这个是从主界面来的，表示选择了某个币种

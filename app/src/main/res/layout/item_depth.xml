@@ -42,7 +42,7 @@
                     android:textSize="@dimen/sp_12" />
 
                 <TextView
-                    android:id="@+id/tvBuyPrice"
+                    android:id="@+id/tvPrice"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginRight="2dp"

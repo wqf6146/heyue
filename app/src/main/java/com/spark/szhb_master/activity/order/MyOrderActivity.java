@@ -2,6 +2,7 @@ package com.spark.szhb_master.activity.order;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class MyOrderActivity extends BaseActivity {
     LinearLayout llContainer;
     @BindArray(R.array.order_status)
     String[] status;
-    private List<BaseFragment> fragments = new ArrayList<>();
+    private List<Fragment> fragments = new ArrayList<>();
     private int type;
 
     @Override

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -191,7 +192,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     private int childType = -1;
     private boolean isVertical;
     private boolean isFirstLoad = true;
-    private List<BaseFragment> fragments = new ArrayList<>();
+    private List<Fragment> fragments = new ArrayList<>();
     private DepthFragment mDepthFragment;
     private VolumeFragment mVolumeFragment;
     private PagerAdapter adapter;

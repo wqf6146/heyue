@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.spark.szhb_master.activity.main.MainContract;
 import com.spark.szhb_master.data.DataSource;
+import com.spark.szhb_master.entity.C2cConfig;
 import com.spark.szhb_master.entity.CoinInfo;
+import com.spark.szhb_master.entity.Message;
 import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.factory.UrlFactory;
 
@@ -31,56 +33,18 @@ public class C2CPresenterImpl implements MainContract.C2CPresenter {
 
     @Override
     public void getC2cConfig() {
-        
-    }
-
-    @Override
-    public void all() {
-        view.displayLoadingPopup();
-        dataRepository.doStringPost(UrlFactory.getAllUrl(), new DataSource.DataCallback() {
+        dataRepository.doStringGet(UrlFactory.getC2cConfigUrl(),  new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
                 view.hideLoadingPopup();
                 String response = (String) obj;
                 try {
                     JSONObject object = new JSONObject(response);
-                    if (object.optInt("code") == 0) {
-                        List<CoinInfo> objs = new Gson().fromJson(object.getJSONArray("data").toString(), new TypeToken<List<CoinInfo>>() {
-                        }.getType());
-                        view.allSuccess(objs);
+                    if (object.optInt("code") == 1) {
+                        C2cConfig c2cConfig = new Gson().fromJson(object.getJSONObject("data").toString(), C2cConfig.class);
+                        view.getC2cConfigSuccess(c2cConfig);
                     } else {
-                        view.doPostFail(object.getInt("code"), object.optString("message"));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    view.doPostFail(JSON_ERROR, null);
-                }
-
-            }
-
-            @Override
-            public void onDataNotAvailable(Integer code, String toastMessage) {
-                view.hideLoadingPopup();
-                view.doPostFail(JSON_ERROR, null);
-            }
-        });
-    }
-
-    @Override
-    public void safeSetting() {
-        view.displayLoadingPopup();
-        dataRepository.doStringPost(UrlFactory.getSafeSettingUrl(), new DataSource.DataCallback() {
-            @Override
-            public void onDataLoaded(Object obj) {
-                view.hideLoadingPopup();
-                String response = (String) obj;
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (object.optInt("code") == 0) {
-                        SafeSetting safeSetting = new Gson().fromJson(object.getJSONObject("data").toString(), SafeSetting.class);
-                        view.safeSettingSuccess(safeSetting);
-                    } else {
-                        view.doPostFail(object.getInt("code"), object.optString("message"));
+                        view.doPostFail(object.getInt("code"), object.optString("msg"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -91,10 +55,11 @@ public class C2CPresenterImpl implements MainContract.C2CPresenter {
             @Override
             public void onDataNotAvailable(Integer code, String toastMessage) {
                 view.hideLoadingPopup();
-                view.doPostFail(JSON_ERROR, null);
+                view.doPostFail(code, toastMessage);
             }
         });
     }
+
 
 
 }

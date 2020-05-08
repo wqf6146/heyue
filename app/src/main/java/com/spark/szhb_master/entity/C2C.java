@@ -8,151 +8,108 @@ import java.util.List;
  */
 
 public class C2C {
-    private int currentPage;
-    private int totalPage;
-    private int pageNumber;
-    private int totalElement;
+    private int page;
+    private int total_count;
 
-    public int getTotalElement() {
-        return totalElement;
+    public void setList(List<C2CBean> list) {
+        this.list = list;
     }
 
-    public void setTotalElement(int totalElement) {
-        this.totalElement = totalElement;
+    public void setPage(int page) {
+        this.page = page;
     }
 
-    private List<C2CBean> context;
-
-    public List<C2CBean> getContext() {
-        return context;
+    public void setTotal_count(int total_count) {
+        this.total_count = total_count;
     }
 
+    public int getPage() {
+        return page;
+    }
+
+    public int getTotal_count() {
+        return total_count;
+    }
+
+    public List<C2CBean> getList() {
+        return list;
+    }
+
+    private List<C2CBean> list;
 
     public static class C2CBean implements Serializable {
-        private String advertiseType;
-        private String memberName;
-        private String avatar;
-        private int advertiseId;
-        private int transactions;
+
+        private int id;
+        private double max_num;
+        private double min_num;
+        private String name;
+        private double num;
         private double price;
-        private double minLimit;
-        private double maxLimit;
-        private double remainAmount;
-        private String createTime;
-        private String payMode;
-        private int coinId;
-        private String unit;
-        private String coinName;
-        private String coinNameCn;
-        private String completeRate;
-        private int realVerified;
-        private int emailVerified;
-        private int phoneVerified;
+        private double trade_num;
+        private double trade_rate;
 
-
-
-        public String getAvatar() {
-            return avatar;
+        public void setMin_num(double min_num) {
+            this.min_num = min_num;
         }
 
-        public void setAvatar(String avatar) {
-            this.avatar = avatar;
+        public void setMax_num(double max_num) {
+            this.max_num = max_num;
         }
 
-        public String getAdvertiseType() {
-            return advertiseType;
+        public void setId(int id) {
+            this.id = id;
         }
 
-
-        public String getMemberName() {
-            return memberName;
+        public void setName(String name) {
+            this.name = name;
         }
 
-
-        public int getAdvertiseId() {
-            return advertiseId;
-        }
-
-
-        public int getTransactions() {
-            return transactions;
-        }
-
-
-        public double getPrice() {
-            return price;
+        public void setNum(int num) {
+            this.num = num;
         }
 
         public void setPrice(double price) {
             this.price = price;
         }
 
-        public double getMinLimit() {
-            return minLimit;
+        public void setTrade_num(double trade_num) {
+            this.trade_num = trade_num;
         }
 
-
-        public double getMaxLimit() {
-            return maxLimit;
+        public void setTrade_rate(double trade_rate) {
+            this.trade_rate = trade_rate;
         }
 
-
-        public double getRemainAmount() {
-            return remainAmount;
+        public double getMin_num() {
+            return min_num;
         }
 
-
-        public String getCreateTime() {
-            return createTime;
+        public double getMax_num() {
+            return max_num;
         }
 
-        public void setCreateTime(String createTime) {
-            this.createTime = createTime;
+        public int getId() {
+            return id;
         }
 
-        public String getPayMode() {
-            return payMode;
+        public double getNum() {
+            return num;
         }
 
-
-        public String getUnit() {
-            return unit;
+        public double getPrice() {
+            return price;
         }
 
-        public void setUnit(String unit) {
-            this.unit = unit;
+        public double getTrade_num() {
+            return trade_num;
         }
 
-        public int getRealVerified() {
-            return realVerified;
+        public double getTrade_rate() {
+            return trade_rate;
         }
 
-        public void setRealVerified(int realVerified) {
-            this.realVerified = realVerified;
-        }
-
-        public int getEmailVerified() {
-            return emailVerified;
-        }
-
-        public void setEmailVerified(int emailVerified) {
-            this.emailVerified = emailVerified;
-        }
-
-        public int getPhoneVerified() {
-            return phoneVerified;
-        }
-
-        public void setPhoneVerified(int phoneVerified) {
-            this.phoneVerified = phoneVerified;
-        }
-
-        public String getCompleteRate() {
-            return completeRate;
-        }
-
-        public void setCompleteRate(String completeRate) {
-            this.completeRate = completeRate;
+        public String getName() {
+            return name;
         }
     }
 }

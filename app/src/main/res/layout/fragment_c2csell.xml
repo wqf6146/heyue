@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:background="@color/main_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_marginTop="10dp"
+         android:layout_height="wrap_content">
+
+         <TextView
+             android:layout_width="wrap_content"
+             android:text="预估可卖：0.00 CNY"
+             android:textColor="@color/tab_font"
+             android:textSize="@dimen/font_small"
+             android:layout_centerVertical="true"
+             android:layout_height="wrap_content"/>
+
+         <TextView
+             android:layout_width="wrap_content"
+             android:textSize="@dimen/font_small"
+             android:textColor="@color/font_blue"
+             android:text="按金额出售"
+             android:layout_alignParentRight="true"
+             android:layout_centerVertical="true"
+             android:layout_height="wrap_content"/>
+
+     </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/main_bg_dark_2"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:layout_height="45dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:textColor="@color/white"
+            android:hint="最大可卖数量为0"
+            android:paddingLeft="5dp"
+            android:textSize="@dimen/font_normal"
+            android:inputType="number"
+            android:maxLength="10"
+            android:id="@+id/edInput"
+            android:textColorHint="@color/font_hint"
+            android:background="@null"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@+id/tvMax"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal"
+            android:text="USDT"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="0.1dp"
+            android:background="@color/font_hint"
+            android:layout_toLeftOf="@+id/tvMax"
+            android:layout_marginRight="10dp"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/font_blue"
+            android:textSize="@dimen/font_normal"
+            android:text="最大"
+            android:id="@+id/tvMax"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="200dp"
+        android:background="@color/Blue"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:id="@+id/rlSell"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/font_normal"
+            android:text="一键出售"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

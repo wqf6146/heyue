@@ -106,15 +106,15 @@ public class C2CBuyOrSellActivity extends BaseActivity implements C2CBuyOrSellCo
         if (bundle != null) {
             c2cBean = (C2C.C2CBean) bundle.getSerializable("c2cBean");
             if (c2cBean != null) {
-                if ("0".equals(c2cBean.getAdvertiseType())) {
-                    tvTitle.setText(getString(R.string.text_sell) + c2cBean.getUnit());
-//                    tvInfo.setText(getString(R.string.text_much_sale));
-                    all_buy.setText(getString(R.string.all_sell));
-                } else {
-                    tvTitle.setText(getString(R.string.text_buy) + c2cBean.getUnit());
-                    all_buy.setText(getString(R.string.all_buy));
-//                    tvInfo.setText(getString(R.string.text_much_buy));
-                }
+//                if ("0".equals(c2cBean.getAdvertiseType())) {
+//                    tvTitle.setText(getString(R.string.text_sell) + c2cBean.getUnit());
+////                    tvInfo.setText(getString(R.string.text_much_sale));
+//                    all_buy.setText(getString(R.string.all_sell));
+//                } else {
+//                    tvTitle.setText(getString(R.string.text_buy) + c2cBean.getUnit());
+//                    all_buy.setText(getString(R.string.all_buy));
+////                    tvInfo.setText(getString(R.string.text_much_buy));
+//                }
                 setButtonText();
             }
         }
@@ -198,7 +198,7 @@ public class C2CBuyOrSellActivity extends BaseActivity implements C2CBuyOrSellCo
         double total = Double.parseDouble(etLocalCoin.getText().toString().trim());
         String strTotal = MathUtils.getRundNumber(total, 4, null) + " " + tvLocalCoinText
                 .getText().toString();
-        dialog.setData(c2cBean.getAdvertiseType(), strPrice, strCount, strTotal);
+//        dialog.setData(c2cBean.getAdvertiseType(), strPrice, strCount, strTotal);
         dialog.show();
     }
 
@@ -207,50 +207,50 @@ public class C2CBuyOrSellActivity extends BaseActivity implements C2CBuyOrSellCo
      */
     public void buyOrSell() {
         if (c2cBean == null || c2CExchangeInfo == null) return;
-        String id = c2cBean.getAdvertiseId() + "";
+//        String id = c2cBean.getAdvertiseId() + "";
         String coinId = c2CExchangeInfo.getOtcCoinId() + "";
         String price = c2CExchangeInfo.getPrice() + "";
         String money = etLocalCoin.getText().toString();
         String amount = etOtherCoin.getText().toString();
         String remark = "";
         HashMap<String, String> map = new HashMap<>();
-        map.put("id", id);
+//        map.put("id", id);
         map.put("coinId", coinId);
         map.put("price", price);
         map.put("money", money);
         map.put("amount", amount);
         map.put("doFeedBack", remark);
         map.put("mode", mode);
-        if ("0".equals(c2cBean.getAdvertiseType())) {
-            presenter.c2cSell(map);
-        } else {
-            presenter.c2cBuy(map);
-        }
+//        if ("0".equals(c2cBean.getAdvertiseType())) {
+//            presenter.c2cSell(map);
+//        } else {
+//            presenter.c2cBuy(map);
+//        }
     }
 
     /**
      * 根据是否登录显示按钮
      */
     private void setButtonText() {
-        if ("0".equals(c2cBean.getAdvertiseType())) {
-            if (MyApplication.getApp().isLogin()) {
-                tvConfirm.setText(getString(R.string.text_sell));
-            } else {
-                tvConfirm.setText(getString(R.string.text_to_login));
-            }
-        } else {
-            if (MyApplication.getApp().isLogin()) {
-                tvConfirm.setText(getString(R.string.text_buy));
-            } else {
-                tvConfirm.setText(getString(R.string.text_to_login));
-            }
-        }
+//        if ("0".equals(c2cBean.getAdvertiseType())) {
+//            if (MyApplication.getApp().isLogin()) {
+//                tvConfirm.setText(getString(R.string.text_sell));
+//            } else {
+//                tvConfirm.setText(getString(R.string.text_to_login));
+//            }
+//        } else {
+//            if (MyApplication.getApp().isLogin()) {
+//                tvConfirm.setText(getString(R.string.text_buy));
+//            } else {
+//                tvConfirm.setText(getString(R.string.text_to_login));
+//            }
+//        }
     }
 
     @Override
     protected void loadData() {
         HashMap<String, String> map = new HashMap<>();
-        map.put("id", c2cBean.getAdvertiseId() + "");
+//        map.put("id", c2cBean.getAdvertiseId() + "");
         presenter.c2cInfo(map);
     }
 
@@ -320,23 +320,23 @@ public class C2CBuyOrSellActivity extends BaseActivity implements C2CBuyOrSellCo
 //        tvExchangeCount.setText(getString(R.string.text_deal_num) + c2CExchangeInfo.getTransactions());
 //        tvRemainAmount.setText(getString(R.string.text_surplus_num) + MathUtils.getRundNumber(Double.valueOf(BigDecimal.valueOf(c2CExchangeInfo.getMaxTradableAmount()).toString()), 8, null));
         if (c2cBean != null) {
-            if ("0".equals(c2cBean.getAdvertiseType())) {
-                if ((c2cBean.getRemainAmount() * c2cBean.getPrice()) >= c2cBean.getMaxLimit()) {//剩余数量大于最大卖出数量
-                    etLocalCoin.setHint("最大可卖" + c2CExchangeInfo.getMaxLimit());
-                    etOtherCoin.setHint("最大可卖" + c2CExchangeInfo.getMaxLimit() / c2cBean.getPrice());
-                } else {
-                    etLocalCoin.setHint("最大可卖" + c2cBean.getRemainAmount() * c2cBean.getPrice());
-                    etOtherCoin.setHint("最大可卖" + c2CExchangeInfo.getNumber());
-                }
-            } else {
-                if ((c2cBean.getRemainAmount() * c2cBean.getPrice()) >= c2cBean.getMaxLimit()) {//剩余数量大于最大卖出数量
-                    etLocalCoin.setHint("最大可买" + c2CExchangeInfo.getMaxLimit());
-                    etOtherCoin.setHint("最大可买" + c2CExchangeInfo.getMaxLimit() / c2cBean.getPrice());
-                } else {
-                    etLocalCoin.setHint("最大可买" + c2cBean.getRemainAmount() * c2cBean.getPrice());
-                    etOtherCoin.setHint("最大可买" + c2CExchangeInfo.getNumber());
-                }
-            }
+//            if ("0".equals(c2cBean.getAdvertiseType())) {
+//                if ((c2cBean.getRemainAmount() * c2cBean.getPrice()) >= c2cBean.getMaxLimit()) {//剩余数量大于最大卖出数量
+//                    etLocalCoin.setHint("最大可卖" + c2CExchangeInfo.getMaxLimit());
+//                    etOtherCoin.setHint("最大可卖" + c2CExchangeInfo.getMaxLimit() / c2cBean.getPrice());
+//                } else {
+//                    etLocalCoin.setHint("最大可卖" + c2cBean.getRemainAmount() * c2cBean.getPrice());
+//                    etOtherCoin.setHint("最大可卖" + c2CExchangeInfo.getNumber());
+//                }
+//            } else {
+//                if ((c2cBean.getRemainAmount() * c2cBean.getPrice()) >= c2cBean.getMaxLimit()) {//剩余数量大于最大卖出数量
+//                    etLocalCoin.setHint("最大可买" + c2CExchangeInfo.getMaxLimit());
+//                    etOtherCoin.setHint("最大可买" + c2CExchangeInfo.getMaxLimit() / c2cBean.getPrice());
+//                } else {
+//                    etLocalCoin.setHint("最大可买" + c2cBean.getRemainAmount() * c2cBean.getPrice());
+//                    etOtherCoin.setHint("最大可买" + c2CExchangeInfo.getNumber());
+//                }
+//            }
         }
     }
 
@@ -385,12 +385,12 @@ public class C2CBuyOrSellActivity extends BaseActivity implements C2CBuyOrSellCo
             }
             shiMingDialog.show();
         } else {
-            if ("0".equals(c2cBean.getAdvertiseType())) {
-                presenter.getAccountSetting();
-            }else {
-                isShiMing();
-
-            }
+//            if ("0".equals(c2cBean.getAdvertiseType())) {
+//                presenter.getAccountSetting();
+//            }else {
+//                isShiMing();
+//
+//            }
 
         }
     }
@@ -462,23 +462,23 @@ public class C2CBuyOrSellActivity extends BaseActivity implements C2CBuyOrSellCo
                 } else if (c2CExchangeInfo != null) {
                     etOtherCoin.setText(MathUtils.getRundNumber(Double.parseDouble(str) / c2CExchangeInfo.getPrice(), 8, null));
 
-                    if ((c2cBean.getRemainAmount() * c2cBean.getPrice()) >= c2cBean.getMaxLimit()) {//剩余数量大于最大卖出数量
-                        if (Double.parseDouble(str) > c2CExchangeInfo.getMaxLimit()) {
-                            text_red.setText(getResources().getString(R.string.max_max));
-                            num_true = 0;
-                        } else {
-                            text_red.setText("");
-                            num_true = 1;
-                        }
-                    } else {
-                        if (Double.parseDouble(str) > c2cBean.getRemainAmount() * c2cBean.getPrice()) {
-                            text_red.setText(getResources().getString(R.string.max_max));
-                            num_true = 0;
-                        } else {
-                            text_red.setText("");
-                            num_true = 1;
-                        }
-                    }
+//                    if ((c2cBean.getRemainAmount() * c2cBean.getPrice()) >= c2cBean.getMaxLimit()) {//剩余数量大于最大卖出数量
+//                        if (Double.parseDouble(str) > c2CExchangeInfo.getMaxLimit()) {
+//                            text_red.setText(getResources().getString(R.string.max_max));
+//                            num_true = 0;
+//                        } else {
+//                            text_red.setText("");
+//                            num_true = 1;
+//                        }
+//                    } else {
+//                        if (Double.parseDouble(str) > c2cBean.getRemainAmount() * c2cBean.getPrice()) {
+//                            text_red.setText(getResources().getString(R.string.max_max));
+//                            num_true = 0;
+//                        } else {
+//                            text_red.setText("");
+//                            num_true = 1;
+//                        }
+//                    }
                     if (Double.parseDouble(str) < c2CExchangeInfo.getMinLimit()) {
                         text_red.setText(getResources().getString(R.string.min_min));
                         num_true = 0;
@@ -493,23 +493,23 @@ public class C2CBuyOrSellActivity extends BaseActivity implements C2CBuyOrSellCo
                     text_red.setText(getResources().getString(R.string.min_min));
                 } else if (c2CExchangeInfo != null) {
                     etLocalCoin.setText(MathUtils.getRundNumber(Double.parseDouble(str) * c2CExchangeInfo.getPrice(), 2, null));
-                    if ((c2cBean.getRemainAmount() * c2cBean.getPrice()) >= c2cBean.getMaxLimit()) {//剩余数量大于最大卖出数量
-                        if (Double.parseDouble(etLocalCoin.getText().toString()) > c2CExchangeInfo.getMaxLimit()) {
-                            text_red.setText(getResources().getString(R.string.max_max));
-                            num_true = 0;
-                        } else {
-                            text_red.setText("");
-                            num_true = 1;
-                        }
-                    } else {
-                        if (Double.parseDouble(etLocalCoin.getText().toString()) > c2cBean.getRemainAmount() * c2cBean.getPrice()) {
-                            text_red.setText(getResources().getString(R.string.max_max));
-                            num_true = 0;
-                        } else {
-                            text_red.setText("");
-                            num_true = 1;
-                        }
-                    }
+//                    if ((c2cBean.getRemainAmount() * c2cBean.getPrice()) >= c2cBean.getMaxLimit()) {//剩余数量大于最大卖出数量
+//                        if (Double.parseDouble(etLocalCoin.getText().toString()) > c2CExchangeInfo.getMaxLimit()) {
+//                            text_red.setText(getResources().getString(R.string.max_max));
+//                            num_true = 0;
+//                        } else {
+//                            text_red.setText("");
+//                            num_true = 1;
+//                        }
+//                    } else {
+//                        if (Double.parseDouble(etLocalCoin.getText().toString()) > c2cBean.getRemainAmount() * c2cBean.getPrice()) {
+//                            text_red.setText(getResources().getString(R.string.max_max));
+//                            num_true = 0;
+//                        } else {
+//                            text_red.setText("");
+//                            num_true = 1;
+//                        }
+//                    }
                     if (Double.parseDouble(etLocalCoin.getText().toString()) < c2CExchangeInfo.getMinLimit()) {
                         text_red.setText(getResources().getString(R.string.min_min));
                         num_true = 0;

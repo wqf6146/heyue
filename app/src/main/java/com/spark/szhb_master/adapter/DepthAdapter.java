@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.entity.DepthListInfo;
-import com.spark.szhb_master.entity.DepthResult;
 import com.spark.szhb_master.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -122,7 +121,7 @@ public class DepthAdapter extends RecyclerView.Adapter<DepthAdapter.MyViewHolder
             super(itemView);
             tvBuy = itemView.findViewById(R.id.tvBuy);
             tvBuyNumber = itemView.findViewById(R.id.tvBuyNumber);
-            tvBuyPrice = itemView.findViewById(R.id.tvBuyPrice);
+            tvBuyPrice = itemView.findViewById(R.id.tvPrice);
             tvSell = itemView.findViewById(R.id.tvSell);
             tvSellNumber = itemView.findViewById(R.id.tvSellNumber);
             tvSellPrice = itemView.findViewById(R.id.tvSellPrice);

@@ -1,10 +1,12 @@
 package com.spark.szhb_master.activity.main;
 
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.spark.szhb_master.MyApplication;
@@ -23,6 +25,7 @@ import com.spark.szhb_master.ui.AvatarImageView;
 import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.NetCodeUtils;
 import com.spark.szhb_master.utils.ToastUtils;
+import com.spark.szhb_master.widget.pwdview.BuyOrSellView;
 
 
 import java.util.ArrayList;
@@ -41,18 +44,22 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     RecyclerView rvContent;
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
-    private ArrayList<C2C.C2CBean> c2cs = new ArrayList<>();
+
     private C2CListAdapter adapter;
-    private CoinInfo coinInfo;
+
     private MainContract.C2CListPresenter presenter;
     private int pageNo = 1;
     private String advertiseType = GlobalConstant.SELL;
     private boolean isInit;
 
-    public static C2CListFragment getInstance(CoinInfo coinInfo) {
+    private int type;  //0买 1卖 2
+
+    List<C2C.C2CBean> c2cs = new ArrayList<>();
+
+    public static C2CListFragment getInstance(int type) {
         C2CListFragment c2CFragment = new C2CListFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("coinInfo", coinInfo);
+        bundle.putInt("type",type);
         c2CFragment.setArguments(bundle);
         return c2CFragment;
     }
@@ -66,26 +73,22 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     protected void initView() {
         super.initView();
         setShowBackBtn(true);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override
     protected void initData() {
         presenter = new C2CListPresenterImpl(Injection.provideTasksRepository(getActivity().getApplicationContext()), this);
-        initRvContent();
         Bundle bundle = getArguments();
-        if (bundle != null) {
-            coinInfo = (CoinInfo) bundle.getSerializable("coinInfo");
-        }
+        type = bundle.getInt("type");
+        initRvContent();
     }
 
     @Override
     protected void loadData() {
         super.loadData();
-        if (coinInfo != null && !isInit) {
-            isInit = true;
-            isNeedLoad = false;
-            getC2cList(true);
-        }
+        getC2cList(false,pageNo);
     }
 
     @Override
@@ -95,15 +98,14 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
             @Override
             public void onRefresh() {
                 pageNo = 1;
-                getC2cList(false);
+                getC2cList(false,pageNo);
             }
         });
 
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                pageNo = pageNo + 1;
-                getC2cList(false);
+                getC2cList(false,pageNo + 1);
             }
         });
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -113,10 +115,24 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                     showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
                     return;
                 }
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("c2cBean", c2cs.get(position));
-                showActivity(C2CBuyOrSellActivity.class, bundle);
-//                presenter.safeSetting(position);
+
+                BuyOrSellView buyOrSellView = new BuyOrSellView(getContext(),type == 0,(C2C.C2CBean) adapter.getData().get(position));
+                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
+                buyOrSellView.setCallbackListener(new BuyOrSellView.CallbackListener() {
+                    @Override
+                    public void submit(double price, double num) {
+
+                    }
+
+                    @Override
+                    public void dismiss() {
+
+                    }
+                });
+
+                bottomSheetDialog.setContentView(buyOrSellView);
+                bottomSheetDialog.setCanceledOnTouchOutside(true);
+                bottomSheetDialog.show();
             }
         });
 
@@ -126,8 +142,11 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     private void initRvContent() {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvContent.setLayoutManager(manager);
-        adapter = new C2CListAdapter(getActivity(), R.layout.item_c2c_list, c2cs);
-        AvatarImageView ivHeader ;
+        if (type == 2){
+            adapter = new C2CListAdapter(getActivity(), R.layout.item_c2c_list,type,c2cs);
+        }else{
+            adapter = new C2CListAdapter(getActivity(), R.layout.item_c2c_list,type,c2cs);
+        }
         adapter.bindToRecyclerView(rvContent);
         adapter.isFirstOnly(true);
         adapter.setEnableLoadMore(false);
@@ -136,39 +155,37 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     /**
      * 获取列表数据
      */
-    public void getC2cList(boolean isShow) {
+    public void getC2cList(boolean isShow , int pageNo) {
         if (isShow)
             displayLoadingPopup();
-        HashMap<String, String> map = new HashMap<>();
-        map.put("pageNo", pageNo + "");
-        map.put("pageSize", GlobalConstant.PageSize + "");
-        map.put("advertiseType", advertiseType);
-        map.put("id", coinInfo.getId());
-        map.put("unit", coinInfo.getUnit());
-        presenter.advertise(map);
-    }
-
-
-    public void setAdvertiseType(String advertiseType) {
-        this.advertiseType = advertiseType;
-        getC2cList(true);
+        HashMap map = new HashMap<>();
+        map.put("page", pageNo);
+        map.put("page_size", GlobalConstant.PageSize);
+        map.put("type", type);
+        presenter.getList(map);
     }
 
     @Override
-    public void advertiseSuccess(C2C obj) {
+    public void getListSuccess(C2C c2c) {
         hideLoadingPopup();
         try {
+
             adapter.setEnableLoadMore(true);
             adapter.loadMoreComplete();
             refreshLayout.setEnabled(true);
             refreshLayout.setRefreshing(false);
-            List<C2C.C2CBean> c2cs = obj.getContext();
+            List<C2C.C2CBean> c2cs = c2c.getList();
             if (c2cs != null && c2cs.size() > 0) {
                 if (pageNo == 1) {
                     this.c2cs.clear();
                 } else {
                     adapter.loadMoreEnd();
                 }
+
+                if (c2c.getList().size() == GlobalConstant.PageSize){
+                    pageNo = c2c.getPage();
+                }
+
                 this.c2cs.addAll(c2cs);
                 adapter.notifyDataSetChanged();
             } else {
@@ -186,7 +203,7 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     }
 
     @Override
-    public void advertiseFail(Integer code, String toastMessage) {
+    public void getListFaild(Integer code, String toastMessage) {
         hideLoadingPopup();
         adapter.setEnableLoadMore(true);
         refreshLayout.setEnabled(true);
@@ -198,32 +215,7 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     public void doPostFail(Integer code, String toastMessage) {
         ToastUtils.showToast(toastMessage);
     }
-    private SafeSetting safeSetting;
-    @Override
-    public void safeSettingSuccess(SafeSetting obj,int position) {
-        if (obj == null)
-            return;
-        safeSetting = obj;
-        if (safeSetting.getRealVerified() == 0) {
-            ShiMingDialog shiMingDialog = new ShiMingDialog(getContext());
-            String name = safeSetting.getRealNameRejectReason();
-            if (safeSetting.getRealVerified() == 0) {
-                if (safeSetting.getRealAuditing() == 1) {
-                    shiMingDialog.setEntrust(7, name,1);
-                } else {
-                    if (safeSetting.getRealNameRejectReason() != null)
-                        shiMingDialog.setEntrust(8, name,1);
-                    else
-                        shiMingDialog.setEntrust(9, name,1);
-                }
-            } else {
-                shiMingDialog.setEntrust(6, name,1);
-            }
-            shiMingDialog.show();
-        } else {
 
-        }
-    }
 
     @Override
     public void setPresenter(MainContract.C2CListPresenter presenter) {

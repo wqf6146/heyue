@@ -1,6 +1,7 @@
 package com.spark.szhb_master.activity.credit;
 
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -25,7 +26,7 @@ public class CreditOneActivity extends BaseActivity{
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
 
-    private List<BaseFragment> fragmentList = new ArrayList<>();
+    private List<Fragment> fragmentList = new ArrayList<>();
     private List<String> tabs = new ArrayList<>();
 
     @Override

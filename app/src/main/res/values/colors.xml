@@ -15,6 +15,7 @@
     <color name="main_bg_dark_2">#293249</color><!--应用整体的背景色-->
 
     <color name="font_dark">#616A7F</color>
+    <color name="font_blue">#7DB0FF</color>
     <color name="font_purple">#6960D5</color>
     <color name="trade_green">#3f01b37d</color>
     <color name="trade_red">#3fEE6560</color>

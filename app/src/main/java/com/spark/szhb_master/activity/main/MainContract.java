@@ -4,6 +4,7 @@ import com.spark.szhb_master.base.Contract;
 import com.spark.szhb_master.entity.AssetsInfo;
 import com.spark.szhb_master.entity.BannerEntity;
 import com.spark.szhb_master.entity.C2C;
+import com.spark.szhb_master.entity.C2cConfig;
 import com.spark.szhb_master.entity.Coin;
 import com.spark.szhb_master.entity.CoinInfo;
 import com.spark.szhb_master.entity.Entrust;
@@ -111,21 +112,14 @@ public interface MainContract {
     }
 
     interface C2CPresenter extends Contract.BasePresenter {
-
-        void all();
-
-        void safeSetting();
-
         void getC2cConfig();
     }
 
     interface C2CView extends Contract.BaseView<C2CPresenter> {
 
-        void allSuccess(List<CoinInfo> obj);
+        void getC2cConfigSuccess(C2cConfig c2cConfig);
 
         void doPostFail(Integer code, String toastMessage);
-
-        void safeSettingSuccess(SafeSetting obj);
     }
 
     interface MyPresenter extends Contract.BasePresenter {
@@ -147,80 +141,40 @@ public interface MainContract {
 
     interface BuyPresenter extends Contract.BasePresenter {
 
-        void exChange(String token, String symbol, String price, String amount, String direction, String type);
+        void fastBuy(HashMap hashMap);
 
-        void walletBase(String token, String s);
-
-        void walletOther(String token, String s);
-
-        void plate(String symbol);
+        void optBuy(HashMap hashMap);
     }
 
     interface BuyView extends Contract.BaseView<BuyPresenter> {
-
-        void exChangeSuccess(String obj);
-
-        void exChangeFail(Integer code, String toastMessage);
-
-        void walletBaseSuccess(Coin obj);
-
-        void walletBaseFail(Integer code, String toastMessage);
-
-        void walletOtherSuccess(Coin obj);
-
-        void walletOtherFail(Integer code, String toastMessage);
-
-        void plateSuccess(Plate obj);
-
-        void plateFail(Integer code, String toastMessage);
+        void fastBuySuccess(String obj);
+        void optBuySuccess(String obj);
+        void doPostFail(Integer code, String toastMessage);
     }
 
     interface SellPresenter extends Contract.BasePresenter {
 
-        void exChange(String token, String symbol, String price, String amount, String direction, String type);
+        void fastSell(HashMap hashMap);
+        void optSell(HashMap hashMap);
 
-        void walletBase(String token, String baseCoin);
-
-        void walletOther(String token, String otherCoin);
-
-        void plate(String symbol);
     }
 
     interface SellView extends Contract.BaseView<SellPresenter> {
-
-        void exChangeSuccess(String obj);
-
-        void exChangeFail(Integer code, String toastMessage);
-
-        void walletBaseSuccess(Coin obj);
-
-        void walletBaseFail(Integer code, String toastMessage);
-
-        void walletOtherSuccess(Coin obj);
-
-        void walletOtherFail(Integer code, String toastMessage);
-
-        void plateSuccess(Plate obj);
-
-        void plateFail(Integer code, String toastMessage);
+        void fastBuySuccess(String obj);
+        void optBuySuccess(String obj);
+        void doPostFail(Integer code, String toastMessage);
     }
 
     interface C2CListPresenter extends Contract.BasePresenter {
-
-        void advertise(HashMap<String, String> params);
-
-        void safeSetting(int position);
+        void getList(HashMap hashMap);
     }
 
-    interface C2CListView extends Contract.BaseView<com.spark.szhb_master.activity.main.MainContract.C2CListPresenter> {
+    interface C2CListView extends Contract.BaseView<MainContract.C2CListPresenter> {
 
-        void advertiseSuccess(C2C obj);
-
-        void advertiseFail(Integer code, String toastMessage);
-
+        void getListSuccess(C2C c2c);
+        void getListFaild(Integer code, String toastMessage);
         void doPostFail(Integer code, String toastMessage);
 
-        void safeSettingSuccess(SafeSetting obj,int position);
     }
 
     interface EntrustPresenter extends Contract.BasePresenter {

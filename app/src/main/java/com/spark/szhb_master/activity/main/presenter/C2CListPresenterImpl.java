@@ -29,49 +29,19 @@ public class C2CListPresenterImpl implements MainContract.C2CListPresenter {
     }
 
     @Override
-    public void advertise(HashMap<String, String> params) {
-        dataRepository.doStringPost(UrlFactory.getAdvertiseUrl(), params, new DataSource.DataCallback() {
+    public void getList(HashMap hashMap) {
+        dataRepository.doStringGet(UrlFactory.getAdvertiseUrl(), hashMap, new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
                 view.hideLoadingPopup();
                 String response = (String) obj;
                 try {
                     JSONObject object = new JSONObject(response);
-                    if (object.optInt("code") == 0) {
+                    if (object.optInt("code") == 1) {
                         C2C c2C = new Gson().fromJson(object.getJSONObject("data").toString(), C2C.class);
-                        view.advertiseSuccess(c2C);
+                        view.getListSuccess(c2C);
                     } else {
-                        view.advertiseFail(object.getInt("code"), object.optString("message"));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    view.advertiseFail(JSON_ERROR, null);
-                }
-            }
-
-            @Override
-            public void onDataNotAvailable(Integer code, String toastMessage) {
-                view.hideLoadingPopup();
-                view.advertiseFail(JSON_ERROR, null);
-            }
-        });
-    }
-
-    @Override
-    public void safeSetting(final int position) {
-        view.displayLoadingPopup();
-        dataRepository.doStringPost(UrlFactory.getSafeSettingUrl(), new DataSource.DataCallback() {
-            @Override
-            public void onDataLoaded(Object obj) {
-                view.hideLoadingPopup();
-                String response = (String) obj;
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (object.optInt("code") == 0) {
-                        SafeSetting safeSetting = new Gson().fromJson(object.getJSONObject("data").toString(), SafeSetting.class);
-                        view.safeSettingSuccess(safeSetting,position);
-                    } else {
-                        view.doPostFail(object.getInt("code"), object.optString("message"));
+                        view.getListFaild(object.getInt("code"), object.optString("msg"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -86,5 +56,6 @@ public class C2CListPresenterImpl implements MainContract.C2CListPresenter {
             }
         });
     }
+
 
 }

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
@@ -119,7 +120,7 @@ public class PromotionActivity extends BaseActivity implements PromotionRewardCo
     @BindView(R.id.num_promot)
     TextView num_promot;
     private List<String> tabs = new ArrayList<>();
-    private List<BaseFragment> fragments = new ArrayList<>();
+    private List<Fragment> fragments = new ArrayList<>();
     private PopupWindow popWnd;
     private Bitmap saveBitmap;
     private LinearLayout llPromotion;

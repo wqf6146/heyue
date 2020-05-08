@@ -45,7 +45,7 @@ public class UrlFactory {
     }
 
     public static String getAdvertiseUrl() {
-        return host + "/otc/advertise/page";
+        return newhost + "/user/fiats/order";
     }
 
     public static String getCountryUrl() {
@@ -233,6 +233,23 @@ public class UrlFactory {
     public static String getChangePhoneUrl() {
         return host + "/uc/approve/change/phone";
     }
+
+
+
+    public static String getFastBuyOrSellUrl() {
+        return newhost + "/user/fiats/fast";
+    }
+
+    public static String getOptBuyOrSellUrl() {
+        return newhost + "/user/fiats";
+    }
+
+
+
+    public static String getC2cConfigUrl() {
+        return newhost + "/user/fiats/config";
+    }
+
 
     public static String getMessageUrl() {
         return host + "/uc/announcement/page";

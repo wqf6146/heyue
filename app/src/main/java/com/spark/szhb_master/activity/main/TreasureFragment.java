@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
@@ -210,10 +211,10 @@ public class TreasureFragment extends BaseNestingTransFragment implements Treasu
         showFragment(page);
     }
 
-    private BaseFragment currentFragment;
+    private Fragment currentFragment;
 
     private void showFragment(int page) { // 用这种需要时才添加fragment的方式，避免一次性将fragment添加到内存中，造成界面卡顿
-        BaseFragment fragment = fragments.get(page);
+        Fragment fragment = fragments.get(page);
         if (currentFragment == fragment) return;
         currentFragment = fragment;
         hideFragments();
