@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/main_bg"
+    android:layout_height="match_parent">
+
+    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 内容控件 -->
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/recycleview"
+            android:layout_weight="1" />
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_bg"
+        android:visibility="invisible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/empty_trea" />
+    </RelativeLayout>
+
+</FrameLayout>

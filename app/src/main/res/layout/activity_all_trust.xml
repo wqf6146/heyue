@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <!--标题-->
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/main_bg"
+        android:id="@+id/rltitle"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/ivBack"
+            android:src="@mipmap/icon_back"
+            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/llSymbolTitle"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvCurrentTrust"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前委托"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_normal"
+              />
+
+            <TextView
+                android:id="@+id/tvHistroyTrust"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxEms="11"
+                android:text="历史委托"
+                android:textColor="@color/tab_font"
+                android:textSize="@dimen/font_small"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:background="@color/main_bg"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tvSymbol"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="2dp"
+            android:layout_marginLeft="10dp"
+            android:drawableRight="@mipmap/ic_arrow_bottom"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxEms="11"
+            android:text="BTC/60"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small"/>
+
+
+        <org.angmarch.views.NiceSpinner
+            android:id="@+id/allSpinner"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            app:backgroundSelector="@color/main_bg"
+            android:textColor="@color/font_hint"
+            android:layout_alignParentRight="true"
+            app:arrowDrawable="@mipmap/ic_arrow_bottom"
+            android:textSize="@dimen/font_small"
+            app:textTint="@color/sec_font_grey" />
+
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:id="@+id/flroot"
+        android:background="@color/main_bg"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/mRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+    </FrameLayout>
+
+
+
+</LinearLayout>

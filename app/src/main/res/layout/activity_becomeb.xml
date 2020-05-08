@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/main_bg"
+    android:padding="10dp"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/rlhead"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/icon_back"
+            android:padding="10dp"
+            android:id="@+id/ar_iv_close"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal"
+            android:text="商家认证"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/main_bg_dark_2"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="60dp"
+            android:textSize="@dimen/font_normal"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:text="邮箱"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:textColorHint="@color/font_hint"
+            android:paddingLeft="15dp"
+            android:layout_marginLeft="10dp"
+            android:maxLines="1"
+            android:textCursorDrawable="@drawable/line_dark_cursor"
+            android:textColor="@color/white"
+            android:hint="请输入邮箱"
+            android:layout_toLeftOf="@+id/tvSendcode"
+            android:inputType="textEmailAddress"
+            android:background="@null"
+            android:id="@+id/edEmail"
+            android:layout_height="50dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/main_bg_dark_2"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="60dp"
+            android:textSize="@dimen/font_normal"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:text="手机号"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:textColorHint="@color/font_hint"
+            android:paddingLeft="15dp"
+            android:layout_marginLeft="10dp"
+            android:maxLines="1"
+            android:textCursorDrawable="@drawable/line_dark_cursor"
+            android:textColor="@color/white"
+            android:hint="请输入手机号"
+            android:layout_toLeftOf="@+id/tvSendcode"
+            android:inputType="textEmailAddress"
+            android:background="@null"
+            android:id="@+id/edPhone"
+            android:layout_height="50dp"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:background="@color/Blue"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/rlDone"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="立即申请"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/KLineChartLib/KLineChartLib.iml" filepath="$PROJECT_DIR$/KLineChartLib/KLineChartLib.iml" group="cay-android2.0-master/KLineChartLib" />
+      <module fileurl="file://$PROJECT_DIR$/MPChart/MPChart.iml" filepath="$PROJECT_DIR$/MPChart/MPChart.iml" group="cay-android2.0-master/MPChart" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="cay-android2.0-master/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cay-android2.0-master.iml" filepath="$PROJECT_DIR$/.idea/modules/cay-android2.0-master.iml" group="cay-android2.0-master" />
+      <module fileurl="file://$PROJECT_DIR$/kchartlib/kchartlib.iml" filepath="$PROJECT_DIR$/kchartlib/kchartlib.iml" group="cay-android2.0-master/kchartlib" />
+      <module fileurl="file://$PROJECT_DIR$/lib-zxing/lib-zxing.iml" filepath="$PROJECT_DIR$/lib-zxing/lib-zxing.iml" group="cay-android2.0-master/lib-zxing" />
+    </modules>
+  </component>
+</project>

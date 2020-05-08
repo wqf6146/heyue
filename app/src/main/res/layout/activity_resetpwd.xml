@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/main_bg"
+    android:padding="10dp"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/rlhead"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/icon_back"
+            android:padding="10dp"
+            android:id="@+id/ar_iv_close"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="重置登录密码"
+        android:textSize="@dimen/font_xlager"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="验证码已发送"
+        android:textSize="@dimen/font_normal"
+        android:id="@+id/tvPhone"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/tab_font"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/main_bg_dark_2"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:textColorHint="@color/font_hint"
+            android:paddingLeft="15dp"
+            android:layout_marginLeft="10dp"
+            android:maxLines="1"
+            android:textCursorDrawable="@drawable/line_dark_cursor"
+            android:textColor="@color/white"
+            android:hint="@string/captcha"
+            android:layout_toLeftOf="@+id/tvSendcode"
+            android:inputType="number"
+            android:background="@null"
+            android:id="@+id/edCode"
+            android:layout_height="50dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/font_normal"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/tvSendcode"
+            android:text="@string/send_code"
+            android:textColor="@color/Blue"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:textColorHint="@color/font_hint"
+        android:paddingLeft="25dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:maxLines="1"
+        android:textCursorDrawable="@drawable/line_dark_cursor"
+        android:textColor="@color/white"
+        android:hint="请输入8-12位含数字、字母密码"
+        android:inputType="text"
+        android:background="@color/main_bg_dark_2"
+        android:id="@+id/edPassword"
+        android:layout_height="50dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:background="@color/Blue"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/rlDone"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="@string/submit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+</LinearLayout>

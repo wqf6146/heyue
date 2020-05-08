@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:id="@+id/mask"
+        android:background="#b3000000"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <LinearLayout
+        android:id="@+id/contentFm"
+        android:background="@color/main_bg"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/main_bg_dark_2"
+            android:orientation="horizontal"
+            android:layout_height="35dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="交易币对"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="10dp"
+                android:textColor="@color/tab_font"
+                android:textSize="@dimen/font_mini"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="最新价"
+                android:gravity="center"
+                android:textColor="@color/tab_font"
+                android:textSize="@dimen/font_mini"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="24H涨跌"
+                android:gravity="right|center_vertical"
+                android:paddingRight="10dp"
+                android:textSize="@dimen/font_mini"
+                android:textColor="@color/tab_font"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/vp_listview"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+</FrameLayout>
