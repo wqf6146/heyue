@@ -30,6 +30,11 @@ public class C2CPresenterImpl implements MainContract.C2CPresenter {
     }
 
     @Override
+    public void getC2cConfig() {
+        
+    }
+
+    @Override
     public void all() {
         view.displayLoadingPopup();
         dataRepository.doStringPost(UrlFactory.getAllUrl(), new DataSource.DataCallback() {
