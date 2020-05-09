@@ -246,8 +246,8 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
     private boolean isFace = false;
     private double doubleBuyCount, doubleSellCount, doubleBuyPrice, doubleSellPrice;
     private EntrustDialog dialog;
-    private String price; // 买入的价格
-    private String amout; // 卖出的价格
+    private String price="0"; // 买入的价格
+    private String amout="0"; // 卖出的价格
     private String type = GlobalConstant.LIMIT_PRICE;
     private String orderId;
     private double usdeBalance = -1;
@@ -756,7 +756,7 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
         mPresenter = presenter;
     }
 
-    private Boolean mCanFly = false;
+    private Boolean mCanFly = true;
 
     /**
      * 价格，数量监听
@@ -1470,16 +1470,16 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
                 amout = (intType == 0 ? etBuyCount.getText().toString().trim() : etSellCount.getText().toString().trim());
                 break;
         }
-        if (StringUtils.isEmpty(amout, price)) {
+        if (num_type == 1){
+            amout = "0";
+        }
+        if (StringUtils.isEmpty(amout, price) && num_type == 0) {
             ToastUtils.showToast(getString(R.string.incomplete_information));
-        } else if (Double.parseDouble(amout) == 0) {
+        } else if (Double.parseDouble(amout) == 0 && num_type == 0) {
             ToastUtils.showToast("委托数量不能为0");
         } else {
-//            tradeBuyOrSellConfirmDialog.setDataParams(map);
-//            tradeBuyOrSellConfirmDialog.show();
-            if (mCanFly){
-//                openPayPasswordDialog(type == GlobalConstant.LIMIT_PRICE);
 
+            if (mCanFly){
                 if (type == GlobalConstant.LIMIT_PRICE)
                     commitLimitOrder(num_type);
                 else
