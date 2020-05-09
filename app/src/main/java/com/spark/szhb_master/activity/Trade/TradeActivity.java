@@ -528,7 +528,10 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
     private SymbolDropDownDialog mSymbolDialog;
     private TipDialog liquidationDialog;
 
-    @OnClick({R.id.tvPrice, R.id.tvLiquidation,R.id.llSymbolTitle, R.id.ivBack,R.id.ivChart, R.id.tvBuyAdd, R.id.tvBuyReduce, R.id.tvSellAdd, R.id.tvSellReduce, R.id.tvAll, R.id.btnBuy, R.id.btnSell})
+    @OnClick({R.id.tvPrice, R.id.tvLiquidation,
+            R.id.llSymbolTitle, R.id.ivBack,R.id.ivChart, R.id.tvBuyAdd,
+            R.id.tvBuyReduce, R.id.tvSellAdd, R.id.tvSellReduce, R.id.tvAll,
+            R.id.btnBuy, R.id.btnSell,R.id.btnBuyQc,R.id.btnSellQc})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -656,18 +659,31 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
                 break;
             case R.id.btnBuy: // 买入
                 if (MyApplication.getApp().isLogin()) {
-                    buyOrSell(0);
+                    buyOrSell(0,0);
                 } else {
                     showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
                 }
                 break;
             case R.id.btnSell: // 卖出
                 if (MyApplication.getApp().isLogin()) {
-                    buyOrSell(1);
+                    buyOrSell(1,0);
                 } else {
                     showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
                 }
-
+                break;
+            case R.id.btnBuyQc:
+                if (MyApplication.getApp().isLogin()) {
+                    buyOrSell(0,1);
+                } else {
+                    showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
+                }
+                break;
+            case R.id.btnSellQc:
+                if (MyApplication.getApp().isLogin()) {
+                    buyOrSell(1,1);
+                } else {
+                    showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
+                }
                 break;
         }
     }
@@ -1190,7 +1206,7 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
     /**
      * 提交限价委托
      */
-    private void commitLimitOrder(int pwd) {
+    private void commitLimitOrder(int num_type) {
         HashMap map = new HashMap<>();
         map.put("mark", currency.getSymbol());
         map.put("price", Double.parseDouble(price));
@@ -1198,17 +1214,17 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
         int type = rbBuy.isChecked() ? 0 : 1;
         map.put("type", type);
         map.put("leverage", currency.getType());
-        map.put("pwd",pwd);
+        map.put("num_type",num_type);
         mPresenter.commitLimitOrder(map);
     }
-    private void commitMarketOrder(int pwd) {
+    private void commitMarketOrder(int num_type) {
         HashMap map = new HashMap<>();
         map.put("mark", currency.getSymbol());
         map.put("num", Integer.parseInt(amout));
         int type = rbBuy.isChecked() ? 0 : 1;
         map.put("type", type);
         map.put("leverage", currency.getType());
-        map.put("pwd",pwd);
+        map.put("num_type",num_type);
         mPresenter.commitMarketOrder(map);
     }
 
@@ -1234,28 +1250,28 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
 
     @Override
     public void safeSettingSuccess(SafeSetting obj) {
-        if (obj == null)
-            return;
-        safeSetting = obj;
-        if (safeSetting.getRealVerified() == 0) {
-            ShiMingDialog shiMingDialog = new ShiMingDialog(this);
-            String name = safeSetting.getRealNameRejectReason();
-            if (safeSetting.getRealVerified() == 0) {
-                if (safeSetting.getRealAuditing() == 1) {
-                    shiMingDialog.setEntrust(7, name, 1);
-                } else {
-                    if (safeSetting.getRealNameRejectReason() != null)
-                        shiMingDialog.setEntrust(8, name, 1);
-                    else
-                        shiMingDialog.setEntrust(9, name, 1);
-                }
-            } else {
-                shiMingDialog.setEntrust(6, name, 1);
-            }
-            shiMingDialog.show();
-        } else {
-            buyOrSell(from);
-        }
+//        if (obj == null)
+//            return;
+//        safeSetting = obj;
+//        if (safeSetting.getRealVerified() == 0) {
+//            ShiMingDialog shiMingDialog = new ShiMingDialog(this);
+//            String name = safeSetting.getRealNameRejectReason();
+//            if (safeSetting.getRealVerified() == 0) {
+//                if (safeSetting.getRealAuditing() == 1) {
+//                    shiMingDialog.setEntrust(7, name, 1);
+//                } else {
+//                    if (safeSetting.getRealNameRejectReason() != null)
+//                        shiMingDialog.setEntrust(8, name, 1);
+//                    else
+//                        shiMingDialog.setEntrust(9, name, 1);
+//                }
+//            } else {
+//                shiMingDialog.setEntrust(6, name, 1);
+//            }
+//            shiMingDialog.show();
+//        } else {
+//            buyOrSell(from);
+//        }
     }
 
     /**
@@ -1436,7 +1452,7 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
      * @param intType 0-买入，1-卖出
      */
     private TipDialog tolowTipDialog;
-    private void buyOrSell(int intType) {
+    private void buyOrSell(int intType,int num_type) {
         if (!MyApplication.getApp().isLogin()) {
             ToastUtils.showToast(getString(R.string.text_login_first));
             return;
@@ -1463,7 +1479,12 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
 //            tradeBuyOrSellConfirmDialog.setDataParams(map);
 //            tradeBuyOrSellConfirmDialog.show();
             if (mCanFly){
-                openPayPasswordDialog(type == GlobalConstant.LIMIT_PRICE);
+//                openPayPasswordDialog(type == GlobalConstant.LIMIT_PRICE);
+
+                if (type == GlobalConstant.LIMIT_PRICE)
+                    commitLimitOrder(num_type);
+                else
+                    commitMarketOrder(num_type);
             }else{
                 if (tolowTipDialog == null){
                     tolowTipDialog = new TipDialog.Builder(this)

@@ -29,6 +29,11 @@ public class C2CListAdapter extends BaseQuickAdapter<C2C.C2CBean, BaseViewHolder
     private Context context;
     private ImgDialog imgDialog;
     private int type;
+    private CallBackEvent callBackEvent;
+
+    public void setCallBackEvent(CallBackEvent callBackEvent) {
+        this.callBackEvent = callBackEvent;
+    }
 
     public C2CListAdapter(Context context, int layoutResId, int type, @Nullable List<C2C.C2CBean> data) {
         super(layoutResId, data);
@@ -38,27 +43,31 @@ public class C2CListAdapter extends BaseQuickAdapter<C2C.C2CBean, BaseViewHolder
 
     @Override
     protected void convert(BaseViewHolder helper, final C2C.C2CBean item) {
-        if (type == 2){
+        helper.setText(R.id.tvName, item.getName()).setText(R.id.tvLimit, String.valueOf(item.getTrade_num()))
+                .setText(R.id.tvPrice, MathUtils.getRundNumber(item.getPrice(), 2, null) +" "+ GlobalConstant.CNY)
+                .setText(R.id.tvTotalNum, "总数量 " + item.getNum())
+                .setText(R.id.tvLimit,"交易限额 " + item.getMin_num() + " - " + item.getMax_num())
+                .setText(R.id.tvSubmit, (type == 1 ?
+                        context.getString(R.string.text_sale_out) : context.getString(R.string.text_buy_in)));
 
-        }else{
-            helper.setText(R.id.tvName, item.getName()).setText(R.id.tvLimit, String.valueOf(item.getTrade_num()))
-                    .setText(R.id.tvPrice, MathUtils.getRundNumber(item.getPrice(), 2, null) +" "+ GlobalConstant.CNY)
-                    .setText(R.id.tvTotalNum, "总数量 " + item.getNum())
-                    .setText(R.id.tvLimit,"交易限额 " + item.getMin_num() + " - " + item.getMax_num())
-                    .setText(R.id.tvSubmit, (type == 1 ?
-                            context.getString(R.string.text_sale_out) : context.getString(R.string.text_buy_in)));
-
-            helper.setBackgroundRes(R.id.tvSubmit,type == 1 ?
-                    R.drawable.shape_bg_red_hover : R.drawable.shape_bg_green_hover);
+        helper.setBackgroundRes(R.id.tvSubmit,type == 1 ?
+                R.drawable.shape_bg_red_hover : R.drawable.shape_bg_green_hover);
 
 //        if (StringUtils.isNotEmpty(item.getAvatar()))
 //            Glide.with(context).load(item.getAvatar()).into((ImageView) helper.getView(R.id.ivHeader));
 //        else
 //            Glide.with(context).load(R.mipmap.icon_default_header_grey).into((ImageView) helper.getView(R.id.ivHeader));
 
-            helper.setGone(R.id.ivZhifubao, false);
-            helper.setGone(R.id.ivWeChat, false);
+        helper.setGone(R.id.ivZhifubao, false);
+        helper.setGone(R.id.ivWeChat, false);
 
+        helper.getView(R.id.tvSubmit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callBackEvent!=null)
+                    callBackEvent.onClickCallback(item);
+            }
+        });
 //        List<String> pays = Arrays.asList(item.getPayMode().split(","));
 //        if (pays.contains("支付宝")) helper.setVisible(R.id.ivZhifubao, true);
 //        else helper.setGone(R.id.ivZhifubao, false);
@@ -89,8 +98,11 @@ public class C2CListAdapter extends BaseQuickAdapter<C2C.C2CBean, BaseViewHolder
 //                }
 //            }
 //        });
-        }
 
+    }
+
+    public interface CallBackEvent {
+        void onClickCallback(C2C.C2CBean item);
     }
 
 

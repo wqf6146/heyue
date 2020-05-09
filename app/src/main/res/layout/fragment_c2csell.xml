@@ -12,21 +12,24 @@
          android:layout_height="wrap_content">
 
          <TextView
+             android:id="@+id/tvCanSellNum"
              android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerVertical="true"
              android:text="预估可卖：0.00 CNY"
              android:textColor="@color/tab_font"
              android:textSize="@dimen/font_small"
-             android:layout_centerVertical="true"
-             android:layout_height="wrap_content"/>
+             android:visibility="invisible" />
 
          <TextView
              android:layout_width="wrap_content"
-             android:textSize="@dimen/font_small"
-             android:textColor="@color/font_blue"
-             android:text="按金额出售"
+             android:layout_height="wrap_content"
              android:layout_alignParentRight="true"
              android:layout_centerVertical="true"
-             android:layout_height="wrap_content"/>
+             android:text="按金额出售"
+             android:textColor="@color/font_blue"
+             android:textSize="@dimen/font_small"
+             android:visibility="invisible" />
 
      </RelativeLayout>
 
@@ -44,6 +47,7 @@
             android:hint="最大可卖数量为0"
             android:paddingLeft="5dp"
             android:textSize="@dimen/font_normal"
+            android:textCursorDrawable="@null"
             android:inputType="number"
             android:maxLength="10"
             android:id="@+id/edInput"

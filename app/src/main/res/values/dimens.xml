@@ -6,6 +6,7 @@
     <dimen name="font_lager">18sp</dimen>
     <dimen name="font_xlager">20sp</dimen>
     <dimen name="font_xxlager">22sp</dimen>
+    <dimen name="font_xxxlager">24sp</dimen>
     <dimen name="sp_30">30dp</dimen>
 
 

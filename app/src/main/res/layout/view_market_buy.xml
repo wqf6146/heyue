@@ -39,6 +39,7 @@
                 android:layout_weight="1"
                 android:background="@color/main_bg_dark_2"
                 android:digits="1234567890."
+                android:textCursorDrawable="@null"
                 android:gravity="center_vertical"
                 android:hint="@string/text_price"
                 android:inputType="number"
@@ -97,6 +98,7 @@
             android:layout_weight="1"
             android:background="@color/transparent"
             android:digits="1234567890."
+            android:textCursorDrawable="@null"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:hint="@string/text_number"
@@ -226,6 +228,7 @@
             android:textColor="@color/Blue"
             android:textSize="@dimen/font_normal"
             android:layout_marginLeft="3dp"
+            android:text="全仓做多"
             android:id="@+id/btnBuyQc"
             android:layout_marginTop="8dp"
             android:layout_height="40dp"/>

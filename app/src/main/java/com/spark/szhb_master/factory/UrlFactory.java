@@ -44,6 +44,18 @@ public class UrlFactory {
         return host + "/otc/coin/all";
     }
 
+    public static String doFiatsOrderUrl() {
+        return newhost + "/user/fiats";
+    }
+
+    public static String doCancelFiatsUrl() {
+        return newhost + "/user/fiats/order/my";
+    }
+
+    public static String getFiatsListUrl() {
+        return newhost + "/user/fiats/order/my";
+    }
+
     public static String getAdvertiseUrl() {
         return newhost + "/user/fiats/order";
     }

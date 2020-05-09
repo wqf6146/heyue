@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.activity.main.presenter.C2cSellPresenterImpl;
 import com.spark.szhb_master.entity.C2cConfig;
@@ -38,6 +39,12 @@ public class C2cSellFragment extends Fragment implements MainContract.SellView {
 
     @BindView(R.id.edInput)
     EditText edInput;
+
+    @BindView(R.id.tvCanSellNum)
+    TextView tvCanSellNum;
+
+    @BindView(R.id.tvMax)
+    TextView tvMax;
 
     private MainContract.SellPresenter presenter;
 
@@ -71,17 +78,27 @@ public class C2cSellFragment extends Fragment implements MainContract.SellView {
                 if (TextUtils.isEmpty(input)){
                     ToastUtils.showToast("请输入正确的信息");
                 }
-                Integer integer = Integer.parseInt(input);
-                if (integer > c2cConfig.getMin_num() && integer < c2cConfig.getMax_num()){
+                Double num = Double.parseDouble(input);
+                if (num > c2cConfig.getMin_num() && num < c2cConfig.getMax_num()){
                     HashMap hashMap = new HashMap();
                     hashMap.put("type",1);
-                    hashMap.put("num",integer);
+                    hashMap.put("num",num);
                     presenter.fastSell(hashMap);
                 }else{
                     ToastUtils.showToast("请输入正确的信息");
                 }
             }
         });
+
+        tvMax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (c2cConfig!=null){
+                    edInput.setText(String.valueOf(c2cConfig.getMax_num()));
+                }
+            }
+        });
+
 
         presenter = new C2cSellPresenterImpl(Injection.provideTasksRepository(getActivity().getApplicationContext()), this);
     }
@@ -91,6 +108,8 @@ public class C2cSellFragment extends Fragment implements MainContract.SellView {
         bInit = true;
         this.c2cConfig = c2cConfig;
         edInput.setHint(c2cConfig.getMin_num() + " - " + c2cConfig.getMax_num());
+
+//        tvCanSellNum.setText("预估可卖：" + );
     }
 
     @Override

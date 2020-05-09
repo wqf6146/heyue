@@ -36,7 +36,6 @@ public class BuyOrSellView extends LinearLayout {
 
     public BuyOrSellView(Context context, boolean bBuyOrSell, C2C.C2CBean cBean) {
         this(context, null,bBuyOrSell,cBean);
-
     }
 
     public BuyOrSellView(Context context, @Nullable AttributeSet attrs,boolean bBuyOrSell,C2C.C2CBean cBean) {
@@ -49,7 +48,7 @@ public class BuyOrSellView extends LinearLayout {
         tvCancel = findViewById(R.id.tvCancel);
         tvSubmit = findViewById(R.id.tvSubmit);
 
-        edPrice = findViewById(R.id.edPrice);
+//        edPrice = findViewById(R.id.edPrice);
         edNum = findViewById(R.id.edNum);
 
         tvText = findViewById(R.id.tvText);
@@ -58,7 +57,7 @@ public class BuyOrSellView extends LinearLayout {
         tvSubmit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                callbackListener.submit(c2CBean.getPrice(),cBean.getNum());
+                callbackListener.submit(cBean, edNum.getText().toString());
             }
         });
         tvCancel.setOnClickListener(new OnClickListener() {
@@ -90,7 +89,7 @@ public class BuyOrSellView extends LinearLayout {
 
 
     public interface CallbackListener {
-        void submit(double price,double num);
+        void submit(C2C.C2CBean item,  String num);
         void dismiss();
     }
 }

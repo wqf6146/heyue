@@ -9,6 +9,7 @@ import com.spark.szhb_master.entity.Coin;
 import com.spark.szhb_master.entity.CoinInfo;
 import com.spark.szhb_master.entity.Entrust;
 import com.spark.szhb_master.entity.Favorite;
+import com.spark.szhb_master.entity.Fiats;
 import com.spark.szhb_master.entity.Message;
 import com.spark.szhb_master.entity.Plate;
 import com.spark.szhb_master.entity.SafeSetting;
@@ -167,12 +168,19 @@ public interface MainContract {
 
     interface C2CListPresenter extends Contract.BasePresenter {
         void getList(HashMap hashMap);
+        void getFaitsList(HashMap hashMap);
+        void doCancelFiats(HashMap hashMap);
+        void doFiatsOrder(HashMap hashMap);
     }
 
     interface C2CListView extends Contract.BaseView<MainContract.C2CListPresenter> {
 
         void getListSuccess(C2C c2c);
         void getListFaild(Integer code, String toastMessage);
+        void doFiatsOrderSuccess(String obj);
+        void getFiatsListSuccess(Fiats fiats);
+        void getFiatsListFaild(Integer code, String toastMessage);
+        void doCancelFiatsSuccess(String obj);
         void doPostFail(Integer code, String toastMessage);
 
     }

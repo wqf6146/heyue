@@ -36,6 +36,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_market_editext"
                 android:digits="1234567890."
+                android:textCursorDrawable="@null"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:hint="@string/text_price"
@@ -94,6 +95,7 @@
             android:background="@null"
             android:digits="1234567890."
             android:ellipsize="end"
+            android:textCursorDrawable="@null"
             android:gravity="center_vertical"
             android:hint="@string/text_number"
             android:inputType="number"
@@ -215,6 +217,7 @@
             android:textColor="@color/Blue"
             android:textSize="@dimen/font_normal"
             android:layout_marginLeft="3dp"
+            android:text="全仓做空"
             android:id="@+id/btnSellQc"
             android:layout_marginTop="8dp"
             android:layout_height="40dp"/>

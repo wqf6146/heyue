@@ -13,20 +13,23 @@
 
          <TextView
              android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerVertical="true"
              android:text="预估可买：0.00 USDT"
              android:textColor="@color/tab_font"
+             android:textCursorDrawable="@null"
              android:textSize="@dimen/font_small"
-             android:layout_centerVertical="true"
-             android:layout_height="wrap_content"/>
+             android:visibility="invisible" />
 
          <TextView
              android:layout_width="wrap_content"
-             android:textSize="@dimen/font_small"
-             android:textColor="@color/font_blue"
-             android:text="按数量购买"
+             android:layout_height="wrap_content"
              android:layout_alignParentRight="true"
              android:layout_centerVertical="true"
-             android:layout_height="wrap_content"/>
+             android:text="按数量购买"
+             android:textColor="@color/font_blue"
+             android:textSize="@dimen/font_small"
+             android:visibility="invisible" />
 
      </RelativeLayout>
 

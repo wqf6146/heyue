@@ -112,7 +112,7 @@
                             android:scaleY="1.1"
                             android:text=""
                             android:textColor="@color/main_font_green"
-                            android:textSize="@dimen/font_xxlager"
+                            android:textSize="@dimen/font_xxxlager"
                             android:textStyle="bold" />
 
                         <LinearLayout

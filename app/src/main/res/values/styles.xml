@@ -31,6 +31,10 @@
         <item name="android:backgroundDimAmount">0.6</item>
     </style>
 
+    <style name="dialog_soft_input" parent="MyDialog">
+        <item name="android:windowSoftInputMode">adjustPan</item>
+    </style>
+
     <style name="dialog_updata" parent="AlertDialog.AppCompat">
         <item name="android:topLeftRadius">@dimen/font_mini</item>
         <item name="android:topRightRadius">@dimen/font_mini</item>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -206,12 +207,15 @@ public class CurrentTrustActivity extends BaseActivity implements ITrustContract
 
     private SymbolListDialog mSymbolDialog;
 
-    @OnClick({R.id.tvSymbol,R.id.tvHistroyTrust,R.id.tvCurrentTrust})
+    @OnClick({R.id.ivBack,R.id.tvSymbol,R.id.tvHistroyTrust,R.id.tvCurrentTrust})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
 
         switch (v.getId()){
+            case R.id.ivBack:
+                finish();
+                break;
             case R.id.tvSymbol:
                 mSymbolDialog.show();
                 mSymbolDialog.dataLoaded(symbolListBean.getSymbolList());
@@ -221,8 +225,8 @@ public class CurrentTrustActivity extends BaseActivity implements ITrustContract
                 tvCurrentTrust.setTextColor(getColor(R.color.white));
                 tvHistroyTrust.setTextColor(getColor(R.color.tab_font));
 
-                tvCurrentTrust.setTextSize(DpPxUtils.dip2px(this,16));
-                tvHistroyTrust.setTextSize(DpPxUtils.dip2px(this,14));
+                tvCurrentTrust.setTextSize(TypedValue.COMPLEX_UNIT_DIP,16);
+                tvHistroyTrust.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
                 refreshText();
                 break;
             case R.id.tvHistroyTrust:
@@ -230,8 +234,8 @@ public class CurrentTrustActivity extends BaseActivity implements ITrustContract
                 tvHistroyTrust.setTextColor(getColor(R.color.white));
                 tvCurrentTrust.setTextColor(getColor(R.color.tab_font));
 
-                tvHistroyTrust.setTextSize(DpPxUtils.dip2px(this,16));
-                tvCurrentTrust.setTextSize(DpPxUtils.dip2px(this,14));
+                tvHistroyTrust.setTextSize(TypedValue.COMPLEX_UNIT_DIP,16);
+                tvCurrentTrust.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
                 refreshText();
                 break;
 

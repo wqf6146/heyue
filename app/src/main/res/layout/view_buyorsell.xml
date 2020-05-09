@@ -41,16 +41,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:padding="5dp"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:textColor="@color/tab_font"
+                android:layout_height="wrap_content"
                 android:text="金额"
-                android:textSize="@dimen/font_normal"
-                android:layout_height="wrap_content"/>
+                android:textColor="@color/tab_font"
+                android:textSize="@dimen/font_normal" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -59,22 +60,25 @@
                 android:background="@color/main_bg_dark_2">
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:background="@null"
-                    android:maxLength="10"
                     android:id="@+id/edPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
                     android:inputType="number"
-                    android:layout_height="match_parent"/>
+                    android:maxLength="10"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:padding="5dp"
-                    android:text="全部"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/font_blue"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_height="wrap_content"/>
+                    android:layout_marginRight="10dp"
+                    android:padding="5dp"
+                    android:text="全部"
+                    android:textColor="@color/font_blue" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -103,7 +107,11 @@
                     android:layout_width="match_parent"
                     android:background="@null"
                     android:maxLength="10"
+                    android:textColor="@color/white"
+                    android:paddingLeft="10dp"
+                    android:textSize="@dimen/font_normal"
                     android:id="@+id/edNum"
+                    android:textCursorDrawable="@null"
                     android:inputType="number"
                     android:layout_height="match_parent"/>
 

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.spark.szhb_master.activity.main.MainContract;
 import com.spark.szhb_master.data.DataSource;
 import com.spark.szhb_master.entity.C2C;
+import com.spark.szhb_master.entity.Fiats;
 import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.factory.UrlFactory;
 
@@ -26,6 +27,91 @@ public class C2CListPresenterImpl implements MainContract.C2CListPresenter {
         this.view = view;
         this.dataRepository = dataRepository;
         this.view.setPresenter(this);
+    }
+
+    @Override
+    public void doFiatsOrder(HashMap hashMap) {
+        dataRepository.doStringPostJson(UrlFactory.doFiatsOrderUrl(), hashMap, new DataSource.DataCallback() {
+            @Override
+            public void onDataLoaded(Object obj) {
+                view.hideLoadingPopup();
+                String response = (String) obj;
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.optInt("code") == 1) {
+                        view.doFiatsOrderSuccess(object.optString("msg"));
+                    } else {
+                        view.doPostFail(object.getInt("code"), object.optString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    view.doPostFail(JSON_ERROR, null);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable(Integer code, String toastMessage) {
+                view.hideLoadingPopup();
+                view.doPostFail(JSON_ERROR, null);
+            }
+        });
+    }
+
+    @Override
+    public void doCancelFiats(HashMap hashMap) {
+        dataRepository.doStringPut(UrlFactory.doCancelFiatsUrl(), hashMap, new DataSource.DataCallback() {
+            @Override
+            public void onDataLoaded(Object obj) {
+                view.hideLoadingPopup();
+                String response = (String) obj;
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.optInt("code") == 1) {
+                        view.doCancelFiatsSuccess(object.optString("msg"));
+                    } else {
+                        view.doPostFail(object.getInt("code"), object.optString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    view.doPostFail(JSON_ERROR, null);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable(Integer code, String toastMessage) {
+                view.hideLoadingPopup();
+                view.doPostFail(JSON_ERROR, null);
+            }
+        });
+    }
+
+    @Override
+    public void getFaitsList(HashMap hashMap) {
+        dataRepository.doStringGet(UrlFactory.getFiatsListUrl(), hashMap, new DataSource.DataCallback() {
+            @Override
+            public void onDataLoaded(Object obj) {
+                view.hideLoadingPopup();
+                String response = (String) obj;
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.optInt("code") == 1) {
+                        Fiats fiats = new Gson().fromJson(object.getJSONObject("data").toString(), Fiats.class);
+                        view.getFiatsListSuccess(fiats);
+                    } else {
+                        view.getFiatsListFaild(object.getInt("code"), object.optString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    view.doPostFail(JSON_ERROR, null);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable(Integer code, String toastMessage) {
+                view.hideLoadingPopup();
+                view.doPostFail(JSON_ERROR, null);
+            }
+        });
     }
 
     @Override

@@ -204,7 +204,8 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     private String symbolType;
     private DataParse kData = new DataParse();
 
-    private String typeLists[] = {"1min", "5min", "15min", "30min", "60min","4hour","1day", "1mon"};
+    private String typeNameLists[] = {"1分钟", "5分钟", "15分钟", "30分钟", "1小时","4小时","1天", "1月"};
+    private String typeLists[] = {"1min", "5min", "15min", "30min", "1hour","4hour","1day", "1month"};
     private int tcpstatus = 0;
 
     @Override
@@ -525,7 +526,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
      * @param count
      */
     private void intMoreTab(int count) {
-        List<String> titles = Arrays.asList(typeLists);
+        List<String> titles = Arrays.asList(typeNameLists);
         for (int i = count; i < titles.size(); i++) {
             View popTextView = LayoutInflater.from(activity).inflate(R.layout.textview_pop, null);
             TextView textView = popTextView.findViewById(R.id.tvPop);
@@ -558,7 +559,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
      * @param count
      */
     private void initTextView(int count) {
-        List<String> titles = Arrays.asList(typeLists);
+        List<String> titles = Arrays.asList(typeNameLists);
         for (int i = 0; i < titles.size(); i++) {
             if (i < count) {
                 View popTextView = LayoutInflater.from(activity).inflate(R.layout.textview_pop, null);
@@ -1110,6 +1111,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                         macdView.setSelected(true);
                         rsiView.setSelected(false);
                         kdjView.setSelected(false);
+                        wrView.setSelected(false);
                         hideChildView.setSelected(false);
                         kChartView.setChildDraw(childType);
                     }
@@ -1121,6 +1123,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                         macdView.setSelected(false);
                         rsiView.setSelected(false);
                         kdjView.setSelected(true);
+                        wrView.setSelected(false);
                         hideChildView.setSelected(false);
                         kChartView.setChildDraw(childType);
                     }
@@ -1132,6 +1135,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                         macdView.setSelected(false);
                         rsiView.setSelected(true);
                         kdjView.setSelected(false);
+                        wrView.setSelected(false);
                         hideChildView.setSelected(false);
                         kChartView.setChildDraw(childType);
                     }
@@ -1155,6 +1159,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                     kdjView.setSelected(false);
                     wrView.setSelected(false);
                     hideChildView.setSelected(true);
+                    kChartView.hideChildDraw();
                 }
 
 
