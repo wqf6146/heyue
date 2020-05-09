@@ -11,7 +11,10 @@ import com.spark.szhb_master.activity.login.LoginActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.MainActivity;
 import com.spark.szhb_master.base.BaseActivity;
+import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.entity.User;
+import com.spark.szhb_master.factory.socket.NEWCMD;
+import com.spark.szhb_master.serivce.SocketMessage;
 import com.spark.szhb_master.utils.FileUtils;
 import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.LogUtils;
@@ -21,6 +24,8 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.Config;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
 import org.litepal.LitePal;
 import org.xutils.x;
 
@@ -30,6 +35,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -45,6 +53,90 @@ public class MyApplication extends Application {
     private TextView tvToast; // Toast
     private int mWidth; // 当前手机屏幕的宽高
     private int mHeight;
+
+
+    private List<TcpEntity> mTcpEntity = new ArrayList<>();
+
+    public List<TcpEntity> getTcpEntity() {
+        return mTcpEntity;
+    }
+
+    public void addTcpEntityWithStatus(TcpEntity tcpEntity,String status){
+        int exit = -1;
+        for (int i=0;i<mTcpEntity.size();i++){
+            TcpEntity local = mTcpEntity.get(i);
+            if (local.getTcpKey().equals(tcpEntity.getTcpKey())){
+                exit = i;
+                local.setStatus(status);
+                break;
+            }
+        }
+        if (exit == -1){
+            tcpEntity.setStatus(status);
+            mTcpEntity.add(tcpEntity);
+        }
+    }
+
+    public void delTcpEntityWithStatus(TcpEntity tcpEntity){
+        for (int i=0;i<mTcpEntity.size();i++){
+            TcpEntity local = mTcpEntity.get(i);
+            if (local.getTcpKey().equals(tcpEntity.getTcpKey())){
+                mTcpEntity.remove(i);
+            }
+        }
+    }
+
+    public void startBaseTcp(){
+        //首页货币信息推送
+        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_HOME_TRADE,
+                buildGetBodyJson("market.overview3", "1").toString())); // 需要id
+        //合约推送
+        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SIDE_TRADE,
+                buildGetBodyJson("market.overview", "1").toString())); // 需要id
+    }
+
+    public void stopBaseTcp(){
+        //首页货币信息推送
+        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_HOME_TRADE,
+                buildGetBodyJson("market.overview3", "0").toString())); // 需要id
+        //合约推送
+        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SIDE_TRADE,
+                buildGetBodyJson("market.overview", "0").toString())); // 需要id
+    }
+
+
+    public void startTcp(TcpEntity tcpEntity){
+        addTcpEntityWithStatus(tcpEntity,"1");
+        EventBus.getDefault().post(new SocketMessage(0, tcpEntity.getNewcmd(),
+                buildGetBodyJson(tcpEntity.getTcpKey(), "1").toString())); //
+    }
+
+    public void stopTcp(TcpEntity tcpEntity){
+        delTcpEntityWithStatus(tcpEntity);
+        EventBus.getDefault().post(new SocketMessage(0, tcpEntity.getNewcmd(),
+                buildGetBodyJson(tcpEntity.getTcpKey(), "0").toString())); //
+    }
+
+
+    public void delSomeTcp(){
+        for (int i=0;i<mTcpEntity.size();i++){
+            TcpEntity local = mTcpEntity.get(i);
+            EventBus.getDefault().post(new SocketMessage(0, local.getNewcmd(),
+                    buildGetBodyJson(local.getTcpKey(), "0").toString())); //
+        }
+        mTcpEntity.clear();
+    }
+
+    private JSONObject buildGetBodyJson(String value, String type) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("value", value);
+            obj.put("type", type);
+            return obj;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
     @Override
     public void onCreate() {

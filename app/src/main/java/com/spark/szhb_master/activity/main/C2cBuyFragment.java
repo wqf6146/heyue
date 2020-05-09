@@ -99,7 +99,7 @@ public class C2cBuyFragment extends Fragment implements MainContract.BuyView {
                     return;
                 }
                 Integer integer = Integer.parseInt(input);
-                if (integer > c2cConfig.getMin_num() && integer < c2cConfig.getMax_num()){
+                if (integer >= c2cConfig.getMin_num() && integer < c2cConfig.getMax_num()){
                     HashMap hashMap = new HashMap();
                     hashMap.put("type",0);
                     hashMap.put("num",integer);

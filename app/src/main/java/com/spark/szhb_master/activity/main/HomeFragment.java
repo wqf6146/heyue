@@ -389,12 +389,17 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
      */
     private void skipTrade() {
         if (currency != null) {
-            Intent intent = new Intent(activity, TradeActivity.class);
+//            Intent intent = new Intent(activity, TradeActivity.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable("currency", currency);
+//            bundle.putInt("type", 1);
+//            intent.putExtras(bundle);
+//            activity.startActivity(intent); //  执行父级activity的回调
+
             Bundle bundle = new Bundle();
+            bundle.putString("symbol", currency.getSymbol());
             bundle.putSerializable("currency", currency);
-            bundle.putInt("type", 1);
-            intent.putExtras(bundle);
-            activity.startActivity(intent); //  执行父级activity的回调
+            showActivity(KlineActivity.class, bundle);
         }
     }
 

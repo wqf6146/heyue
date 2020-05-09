@@ -36,9 +36,8 @@
                 android:layout_centerVertical="true"
                 android:drawablePadding="10dp"
                 android:textColor="@color/white"
-                android:drawableRight="@drawable/vip"
                 android:singleLine="true"
-                android:text="Sukey"
+                android:text="用户昵称"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -53,7 +52,7 @@
                 android:text="累计成交"
                 android:layout_marginRight="5dp"
                 android:textColor="@color/tab_font"
-                android:textSize="12sp" />
+                android:textSize="@dimen/font_mini" />
 
             <TextView
                 android:id="@+id/tvTradeAmount"

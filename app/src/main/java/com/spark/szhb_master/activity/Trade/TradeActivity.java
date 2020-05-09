@@ -56,6 +56,7 @@ import com.spark.szhb_master.entity.NewEntrust;
 import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.entity.SymbolBean;
 import com.spark.szhb_master.entity.SymbolStep;
+import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.entity.TradeCOM;
 import com.spark.szhb_master.factory.UrlFactory;
 import com.spark.szhb_master.factory.socket.NEWCMD;
@@ -433,8 +434,8 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
             getWallet();
             btnBuy.setText("做多" + strSymbol);
             btnSale.setText("做空" + strSymbol);
-            btnBuyQc.setText("全仓" + currency.getType() + "X");
-            btnSellQc.setText("全仓" + currency.getType() + "X");
+//            btnBuyQc.setText("全仓" + currency.getType() + "X");
+//            btnSellQc.setText("全仓" + currency.getType() + "X");
         } else {
             btnBuy.setText("登录/注册");
             btnSale.setText("登录/注册");
@@ -700,12 +701,6 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
             tcpStatus = false;
             stop(currency.getSymbol(), currency.getType());
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        stopTcp();
     }
 
     private int from = 0;
@@ -1373,12 +1368,14 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
     private void startTCP(String symbol, String type) {
         tcpStatus = true;
         String st = "market." + symbol + "_" + type + ".depth.step10";
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
-                buildGetBodyJson(st, "1").toString())); // 需要id
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
+//                buildGetBodyJson(st, "1").toString())); // 需要id
+        MyApplication.getApp().startTcp(new TcpEntity(st,NEWCMD.SUBSCRIBE_SYMBOL_DEPTH));
 
         String sthead = "market." + symbol + "_" + type + ".detail";
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
-                buildGetBodyJson(sthead, "1").toString()));
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
+//                buildGetBodyJson(sthead, "1").toString()));
+        MyApplication.getApp().startTcp(new TcpEntity(sthead,NEWCMD.SUBSCRIBE_SYMBOL_DETAIL));
     }
 
     /**
@@ -1388,12 +1385,14 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
 //        EventBus.getDefault().post(new SocketMessage(0, ISocket.CMD.UNSUBSCRIBE_EXCHANGE_TRADE,
 //                buildGetBodyJson(symbol, id).toString()));
         String st = "market." + symbol + "_" + type + ".depth.step10";
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
-                buildGetBodyJson(st, "0").toString())); // 需要id
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
+//                buildGetBodyJson(st, "0").toString())); // 需要id
+        MyApplication.getApp().stopTcp(new TcpEntity(st,NEWCMD.SUBSCRIBE_SYMBOL_DEPTH));
 
         String sthead = "market." + symbol + "_" + type + ".detail";
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
-                buildGetBodyJson(sthead, "0").toString()));
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
+//                buildGetBodyJson(sthead, "0").toString()));
+        MyApplication.getApp().stopTcp(new TcpEntity(sthead,NEWCMD.SUBSCRIBE_SYMBOL_DETAIL));
 
     }
 

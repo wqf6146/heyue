@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.activity.Trade.TradeActivity;
+import com.spark.szhb_master.activity.kline.KlineActivity;
 import com.spark.szhb_master.adapter.HeyueAdapter;
 import com.spark.szhb_master.base.BaseTransFragment;
 import com.spark.szhb_master.entity.Currency;
@@ -110,12 +111,17 @@ public class HeyueFragment extends BaseTransFragment implements MainContract.Hey
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 //                ((MarketOperateCallback) getActivity()).itemClick(BTCMarketFragment.this.adapter.getItem(position), type);
                 NewCurrency currency = (NewCurrency) adapter.getItem(position);
-                Intent intent = new Intent(activity, TradeActivity.class);
+//                Intent intent = new Intent(activity, TradeActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("currency", currency);
+//                bundle.putInt("type", 1);
+//                intent.putExtras(bundle);
+//                activity.startActivityForResult(intent, 1); //  执行父级activity的回调
+
                 Bundle bundle = new Bundle();
+                bundle.putString("symbol", currency.getSymbol());
                 bundle.putSerializable("currency", currency);
-                bundle.putInt("type", 1);
-                intent.putExtras(bundle);
-                activity.startActivityForResult(intent, 1); //  执行父级activity的回调
+                showActivity(KlineActivity.class, bundle);
             }
         });
     }

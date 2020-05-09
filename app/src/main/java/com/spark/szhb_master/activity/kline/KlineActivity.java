@@ -48,6 +48,7 @@ import com.spark.szhb_master.entity.Exchange;
 import com.spark.szhb_master.entity.NewCurrency;
 import com.spark.szhb_master.entity.SymbolBean;
 import com.spark.szhb_master.entity.SymbolStep;
+import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.factory.socket.NEWCMD;
 import com.spark.szhb_master.ui.CustomViewPager;
 import com.spark.szhb_master.ui.intercept.MyScrollView;
@@ -292,13 +293,13 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     public void onStop() {
         super.onStop();
 
-        String st = "market." + symbol + "_" + symbolType + ".klist." + typeLists[type];
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_KLIST,
-                buildGetBodyJson(st, "0").toString())); //
-
-        String sthead = "market." + symbol + "_" + symbolType + ".detail";
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
-                buildGetBodyJson(sthead, "0").toString()));
+//        String st = "market." + symbol + "_" + symbolType + ".klist." + typeLists[type];
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_KLIST,
+//                buildGetBodyJson(st, "0").toString())); //
+//
+//        String sthead = "market." + symbol + "_" + symbolType + ".detail";
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
+//                buildGetBodyJson(sthead, "0").toString()));
 
 
         EventBus.getDefault().unregister(this);
@@ -334,12 +335,14 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     private void reInit(NewCurrency currency) {
 
         String st = "market." + symbol + "_" + symbolType + ".klist." + typeLists[type];
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_KLIST,
-                buildGetBodyJson(st, "0").toString())); //
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_KLIST,
+//                buildGetBodyJson(st, "0").toString())); //
+        MyApplication.getApp().stopTcp(new TcpEntity(st,NEWCMD.SUBSCRIBE_SYMBOL_KLIST));
 
         String sthead = "market." + symbol + "_" + symbolType + ".detail";
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
-                buildGetBodyJson(sthead, "0").toString()));
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
+//                buildGetBodyJson(sthead, "0").toString()));
+        MyApplication.getApp().stopTcp(new TcpEntity(sthead,NEWCMD.SUBSCRIBE_SYMBOL_DETAIL));
 
 
         kChartAdapter.clearData();
@@ -820,20 +823,24 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
 
     private void startDetailTCP() {
         String detail = "market." + symbol + "_" + symbolType + ".detail";
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
-                buildGetBodyJson(detail, "1").toString()));
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
+//                buildGetBodyJson(detail, "1").toString()));
+
+        MyApplication.getApp().startTcp(new TcpEntity(detail,NEWCMD.SUBSCRIBE_SYMBOL_DETAIL));
     }
 
     private void startKlistTcp(int type){
         String klist = "market." + symbol + "_" + symbolType + ".klist." + typeLists[type];
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_KLIST,
-                buildGetBodyJson(klist, "1").toString())); //
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_KLIST,
+//                buildGetBodyJson(klist, "1").toString())); //
+        MyApplication.getApp().startTcp(new TcpEntity(klist,NEWCMD.SUBSCRIBE_SYMBOL_KLIST));
     }
 
     private void stopKlistTcp(int type){
         String klist = "market." + symbol + "_" + symbolType + ".klist." + typeLists[type];
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_KLIST,
-                buildGetBodyJson(klist, "0").toString())); //
+//        EventBus.getDefault().post(new SocketMessage(0, ,
+//                buildGetBodyJson(klist, "0").toString())); //
+        MyApplication.getApp().stopTcp(new TcpEntity(klist,NEWCMD.SUBSCRIBE_SYMBOL_KLIST));
     }
 
     private JSONObject buildGetBodyJson(String value, String type) {

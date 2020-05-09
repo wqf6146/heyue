@@ -34,7 +34,7 @@ public class HomePresenterImpl implements MainContract.HomePresenter {
 
     @Override
     public void banners(HashMap<String, String> map) {
-        view.displayLoadingPopup();
+//        view.displayLoadingPopup();
         dataRepository.doStringPost(UrlFactory.getBannersUrl(), map, new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
@@ -65,7 +65,7 @@ public class HomePresenterImpl implements MainContract.HomePresenter {
 
     @Override
     public void getMarqueeText(HashMap<String, String> map) {
-        view.displayLoadingPopup();
+//        view.displayLoadingPopup();
         dataRepository.doStringPost(UrlFactory.getMessageUrl(), map, new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
@@ -96,7 +96,7 @@ public class HomePresenterImpl implements MainContract.HomePresenter {
 
     @Override
     public void safeSetting() {
-        view.displayLoadingPopup();
+//        view.displayLoadingPopup();
         dataRepository.doStringPost(UrlFactory.getSafeSettingUrl(), new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {

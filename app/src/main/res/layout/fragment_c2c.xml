@@ -13,9 +13,10 @@
 
         <com.spark.szhb_master.ui.MyViewPager
             android:id="@+id/viewPager"
-            android:background="@color/main_bg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/main_bg"
+            android:visibility="visible" />
 
     </LinearLayout>
 
@@ -25,10 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="70dp"
         android:src="@mipmap/ic_add"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
 </RelativeLayout>
 

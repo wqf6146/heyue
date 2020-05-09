@@ -170,19 +170,15 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
         MobclickAgent.onPageStart(mPageName);
         //EventBus.getDefault().post(new SocketMessage(0, ISocket.CMD.SUBSCRIBE_SYMBOL_THUMB, null));
 
-        //首页货币信息推送
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_HOME_TRADE,
-                buildGetBodyJson("market.overview3", 1).toString())); // 需要id
 
 
-        //合约推送
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SIDE_TRADE,
-                buildGetBodyJson("market.overview", 1).toString())); // 需要id
+        MyApplication.getApp().startBaseTcp();
+        MyApplication.getApp().delSomeTcp();
 
         if (isAgain) {
             isAgain = false;
             if (StringUtils.isNotEmpty(getToken())) {
-                presenter.find();
+//                presenter.find();
             }
         }
         if (MyApplication.app.isLogin()) {
@@ -198,7 +194,7 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
             notLoginCurrencies();
         }
         if (MyApplication.getApp().isLoginStatusChange()) { // 登录回来，刷新展示登录状态的数据
-            presenter.allCurrency();
+//            presenter.allCurrency();
             MyApplication.getApp().setLoginStatusChange(false);
         }
 
@@ -252,6 +248,9 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
         if (fragment!=null){
             fragment.dismiss();
         }
+
+        MyApplication.getApp().stopBaseTcp();
+
         stopService(new Intent(MainActivity.this, MyTextService.class));
         if (nWl != null) {
             nWl.release();
@@ -415,10 +414,10 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
 
     @Override
     protected void loadData() {
-        presenter.getNewVersion();
-        presenter.getRate();
-        presenter.homeCurrency();
-        presenter.allCurrency();
+//        presenter.getNewVersion();
+//        presenter.getRate();
+//        presenter.homeCurrency();
+//        presenter.allCurrency();
     }
 
     private void tcpNotify() {
@@ -503,7 +502,7 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
     }
 
     public void find() {
-        presenter.find();
+//        presenter.find();
     }
 
     @Override
@@ -693,7 +692,7 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
         baseBtc = Currency.baseCurrencies(currencyListAll, "BTC");
         baseEth = Currency.baseCurrencies(currencyListAll, "ETH");
         if (MyApplication.getApp().isLogin()) {
-            presenter.find();
+//            presenter.find();
         }
         setData(); // 请求成功为前三个模块设置数据，这里所有数据源都是这里的currencies，几个fragment共用，这段内存数据 一改全改
 //        if (tradeFragment != null)

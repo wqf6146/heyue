@@ -292,7 +292,7 @@ public class MyFragment extends BaseTransFragment implements MainContract.MyView
                 if (!PermissionUtils.isCanUseStorage(getActivity()))
                     checkPermission(GlobalConstant.PERMISSION_STORAGE, Permission.STORAGE);
                 else {
-                    presenter.getNewVision();
+//                    presenter.getNewVision();
                 }
                 break;
 //            case R.id.tvLogOut:
@@ -315,7 +315,7 @@ public class MyFragment extends BaseTransFragment implements MainContract.MyView
         public void onSucceed(int requestCode, @NonNull List<String> grantPermissions) {
             switch (requestCode) {
                 case GlobalConstant.PERMISSION_STORAGE:
-                    presenter.getNewVision();
+//                    presenter.getNewVision();
                     break;
             }
         }

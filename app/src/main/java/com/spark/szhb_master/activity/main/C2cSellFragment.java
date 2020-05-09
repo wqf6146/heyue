@@ -79,13 +79,13 @@ public class C2cSellFragment extends Fragment implements MainContract.SellView {
                     ToastUtils.showToast("请输入正确的信息");
                 }
                 Double num = Double.parseDouble(input);
-                if (num > c2cConfig.getMin_num() && num < c2cConfig.getMax_num()){
+                if (num >= c2cConfig.getMin_num() && num <= c2cConfig.getMax_num()){
                     HashMap hashMap = new HashMap();
                     hashMap.put("type",1);
                     hashMap.put("num",num);
                     presenter.fastSell(hashMap);
                 }else{
-                    ToastUtils.showToast("请输入正确的信息");
+                    ToastUtils.showToast("请输入" + c2cConfig.getMin_num() + " - " + c2cConfig.getMax_num() + "之间的数量");
                 }
             }
         });

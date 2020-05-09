@@ -92,7 +92,7 @@ public class ResetAccountPwdActivity extends BaseActivity implements AccountPwdC
         else {
             HashMap<String, String> map = new HashMap<>();
             map.put("newPassword", newPassword);
-            map.put("code", code);
+            map.put("code", "111111");
             presenter.resetAccountPwd(map);
         }
     }

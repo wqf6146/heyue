@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.adapter.DepthAdapter;
 import com.spark.szhb_master.base.BaseActivity;
@@ -25,6 +26,7 @@ import com.spark.szhb_master.entity.DepthListInfo;
 import com.spark.szhb_master.entity.DepthResult;
 import com.spark.szhb_master.entity.Exchange;
 import com.spark.szhb_master.entity.SymbolStep;
+import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.factory.socket.ISocket;
 import com.spark.szhb_master.factory.socket.NEWCMD;
 import com.spark.szhb_master.serivce.SocketMessage;
@@ -102,7 +104,6 @@ public class DepthFragment extends BaseFragment implements KlineContract.DepthVi
 
 
         startTCP();
-
     }
 
     @Override
@@ -111,13 +112,15 @@ public class DepthFragment extends BaseFragment implements KlineContract.DepthVi
         EventBus.getDefault().register(this);
         mRunning = true;
         startTCP();
+        if (mHandler!=null){
+            mHandler.removeCallbacks(mBackgroundRunnable);
+            mHandler.post(mBackgroundRunnable);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (pTcpSwitch == 0)
-            stopTcp();
         EventBus.getDefault().unregister(this);
         mRunning = false;
     }
@@ -125,12 +128,12 @@ public class DepthFragment extends BaseFragment implements KlineContract.DepthVi
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
-        if (isVisible){
-            if (!tcpStatus)
-                startTCP();
-        }else{
-            stopTcp();
-        }
+//        if (isVisible){
+//            if (!tcpStatus)
+//                startTCP();
+//        }else{
+//            stopTcp();
+//        }
     }
 
     @Override
@@ -141,16 +144,20 @@ public class DepthFragment extends BaseFragment implements KlineContract.DepthVi
     private void stopTcp(){
         tcpStatus = false;
         String depth = "market." + symbol + "_" + symbolType + ".depth.step10";
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
-                buildGetBodyJson(depth, "0").toString())); // 需要id
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
+//                buildGetBodyJson(depth, "0").toString())); // 需要id
+
+        MyApplication.getApp().stopTcp(new TcpEntity(depth,NEWCMD.SUBSCRIBE_SYMBOL_DEPTH));
     }
 
     private void startTCP() {
         if (!TextUtils.isEmpty(symbol) && !TextUtils.isEmpty(symbolType)){
             tcpStatus = true;
             String depth = "market." + symbol + "_" + symbolType + ".depth.step10";
-            EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
-                    buildGetBodyJson(depth, "1").toString())); // 需要id
+//            EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
+//                    buildGetBodyJson(depth, "1").toString())); // 需要id
+
+            MyApplication.getApp().startTcp(new TcpEntity(depth,NEWCMD.SUBSCRIBE_SYMBOL_DEPTH));
         }
     }
 

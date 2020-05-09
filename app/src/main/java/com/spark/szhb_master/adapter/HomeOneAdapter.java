@@ -30,7 +30,7 @@ public class HomeOneAdapter extends BaseQuickAdapter<NewCurrency, BaseViewHolder
 
         helper.setText(R.id.tvCurrencyName1, item.getSymbol())
                 .setText(R.id.tvClose, item.getClose())
-                .setText(R.id.tvAddPercent, (Float.parseFloat(item.getScale()) >= 0 ? "+" : "-") + item.getScale() + "%")
+                .setText(R.id.tvAddPercent, (Float.parseFloat(item.getScale()) >= 0 ? "+" : "") + item.getScale() + "%")
                 .setText(R.id.tvVol, "≈" + item.getConvert() + GlobalConstant.USD)
                 .setTextColor(R.id.tvAddPercent, Float.parseFloat(item.getScale()) >= 0 ? ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_green) : ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_red))
                 .setTextColor(R.id.tvClose, Float.parseFloat(item.getScale()) >= 0 ? ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_green) : ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_red));

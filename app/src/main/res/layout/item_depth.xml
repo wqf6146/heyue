@@ -85,7 +85,7 @@
                     android:gravity="left|center_vertical"
                     android:paddingLeft="2dp"
                     android:text="@string/price"
-                    android:textColor="@color/font_kline_depth_sell"
+                    android:textColor="@color/main_font_red"
                     android:textSize="@dimen/sp_12" />
 
                 <TextView

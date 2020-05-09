@@ -14,6 +14,7 @@ import com.spark.szhb_master.dialog.ImgDialog;
 import com.spark.szhb_master.entity.C2C;
 import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.MathUtils;
+import com.spark.szhb_master.utils.StringUtils;
 import com.spark.szhb_master.utils.VersionCompareUtil;
 import com.spark.szhb_master.widget.pwdview.BuyOrSellView;
 
@@ -43,7 +44,10 @@ public class C2CListAdapter extends BaseQuickAdapter<C2C.C2CBean, BaseViewHolder
 
     @Override
     protected void convert(BaseViewHolder helper, final C2C.C2CBean item) {
-        helper.setText(R.id.tvName, item.getName()).setText(R.id.tvLimit, String.valueOf(item.getTrade_num()))
+        if (!StringUtils.isEmpty(item.getName())){
+            helper.setText(R.id.tvName, item.getName());
+        }
+        helper.setText(R.id.tvLimit, String.valueOf(item.getTrade_num()))
                 .setText(R.id.tvPrice, MathUtils.getRundNumber(item.getPrice(), 2, null) +" "+ GlobalConstant.CNY)
                 .setText(R.id.tvTotalNum, "总数量 " + item.getNum())
                 .setText(R.id.tvLimit,"交易限额 " + item.getMin_num() + " - " + item.getMax_num())

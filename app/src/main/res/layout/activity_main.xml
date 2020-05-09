@@ -20,10 +20,6 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1px"
-            android:background="@color/grey_a5a5a5" />
 
         <LinearLayout
             android:clipChildren="false"

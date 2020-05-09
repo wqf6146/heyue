@@ -162,7 +162,7 @@ public class SafeActivity extends BaseActivity implements SafeContract.View {
                 String phoneCode = google_code.getText().toString();//手机验证码
                 HashMap map = new HashMap<>();
                 map.put("pwd", Integer.parseInt(pwd));
-                map.put("code", Integer.parseInt(phoneCode));
+                map.put("code", "111111");//Integer.parseInt(phoneCode)
                 pwdPresenter.updateZjmmPwd(map);//
             }
         });

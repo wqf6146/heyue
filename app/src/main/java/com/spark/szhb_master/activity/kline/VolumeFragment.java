@@ -13,10 +13,12 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.adapter.VolumeAdapter;
 import com.spark.szhb_master.base.BaseActivity;
 import com.spark.szhb_master.base.BaseFragment;
+import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.entity.VolumeBean;
 import com.spark.szhb_master.entity.VolumeInfo;
 import com.spark.szhb_master.factory.socket.ISocket;
@@ -116,9 +118,9 @@ public class VolumeFragment extends BaseFragment implements KlineContract.Volume
         super.onStop();
         // 取消订阅
         //EventBus.getDefault().post(new SocketMessage(0, ISocket.CMD.UNSUBSCRIBE_EXCHANGE_TRADE, symbol));
-        if (pTcpSwitch == 0){
-            stopTcp();
-        }
+//        if (pTcpSwitch == 0){
+//            stopTcp();
+//        }
 
         EventBus.getDefault().unregister(this);
         mRunning = false;
@@ -127,16 +129,18 @@ public class VolumeFragment extends BaseFragment implements KlineContract.Volume
     private void stopTcp(){
         tcpStatus = false;
         String tradedetail = "market." + symbol + "_" + symbolType + ".trade.detail";
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_TRADEDETAIL,
-                buildGetBodyJson(tradedetail, "0").toString()));
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_TRADEDETAIL,
+//                buildGetBodyJson(tradedetail, "0").toString()));
+        MyApplication.getApp().stopTcp(new TcpEntity(tradedetail,NEWCMD.SUBSCRIBE_SYMBOL_TRADEDETAIL));
     }
 
     private void startTCP() {
         // 开始订阅
         tcpStatus = true;
         String tradedetail = "market." + symbol + "_" + symbolType + ".trade.detail";
-        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_TRADEDETAIL,
-                buildGetBodyJson(tradedetail, "1").toString()));
+//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_TRADEDETAIL,
+//                buildGetBodyJson(tradedetail, "1").toString()));
+        MyApplication.getApp().startTcp(new TcpEntity(tradedetail,NEWCMD.SUBSCRIBE_SYMBOL_TRADEDETAIL));
     }
 
     private JSONObject buildGetBodyJson(String value, String type) {

@@ -26,10 +26,10 @@
              android:layout_height="wrap_content"
              android:layout_alignParentRight="true"
              android:layout_centerVertical="true"
-             android:text="按金额出售"
+             android:text="按数量出售"
              android:textColor="@color/font_blue"
              android:textSize="@dimen/font_small"
-             android:visibility="invisible" />
+             android:visibility="visible" />
 
      </RelativeLayout>
 
