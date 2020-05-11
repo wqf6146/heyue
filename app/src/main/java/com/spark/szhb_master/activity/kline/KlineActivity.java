@@ -35,6 +35,7 @@ import com.github.fujianlian.klinechart.formatter.DateFormatter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.spark.szhb_master.R;
+import com.spark.szhb_master.activity.Trade.NewTradeActivity;
 import com.spark.szhb_master.activity.Trade.TradeActivity;
 import com.spark.szhb_master.activity.main.MainActivity;
 import com.spark.szhb_master.activity.mychart.DataParse;
@@ -89,8 +90,10 @@ import static android.widget.RelativeLayout.CENTER_IN_PARENT;
 
 public class KlineActivity extends BaseActivity implements KlineContract.View, View.OnClickListener {
 
-//    @BindView(R.id.llLandText)
-//    LinearLayout llLandText;
+    @BindView(R.id.fldiap)
+    FrameLayout fldiap;
+
+
     @BindView(R.id.kDataText)
     TextView mDataText;
     @BindView(R.id.kDataOne)
@@ -205,7 +208,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     private String symbolType;
     private DataParse kData = new DataParse();
 
-    private String typeNameLists[] = {"1分钟", "5分钟", "15分钟", "30分钟", "1小时","4小时","1天", "1月"};
+    private String typeNameLists[] = {"1分钟", "5分钟", "15分", "30分", "1小时","4小时","1天", "1月"};
     private String typeLists[] = {"1min", "5min", "15min", "30min", "1hour","4hour","1day", "1month"};
     private int tcpstatus = 0;
 
@@ -321,7 +324,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         setImmersionBar(rlTitle);
 
         if (mSymbolDialog == null){
-            mSymbolDialog = new SymbolDropDownDialog(this,flroot,mTvTitleSymbolType);
+            mSymbolDialog = new SymbolDropDownDialog(this,fldiap,mTvTitleSymbolType);
             mSymbolDialog.setOnItemClickCallback(new SymbolDropDownDialog.OnItemClickCallback() {
                 @Override
                 public void onitemClick(NewCurrency currency) {
@@ -457,7 +460,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                 Intent intent = new Intent(this, TradeActivity.class);
                 intent.putExtras(bundle);
 //                setResult(RESULT_OK, intent);
-                showActivity(TradeActivity.class,bundle,0);
+                showActivity(NewTradeActivity.class,bundle,0);
                 return;
 //            case R.id.tv_collect:
 //                MainActivity.isAgain = true;

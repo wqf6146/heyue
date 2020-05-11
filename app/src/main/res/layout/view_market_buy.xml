@@ -5,7 +5,8 @@
     android:id="@+id/llMarketBuy"
     android:background="@color/main_bg"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="300dp"
+    android:gravity="center_vertical"
     android:orientation="vertical">
 
     <LinearLayout
@@ -80,7 +81,7 @@
         android:id="@+id/tvBuyRMB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
+        android:padding="8dp"
         android:text="0.0CNY"
         android:textColor="#838f9d"
         android:textSize="@dimen/font_mini" />
@@ -118,6 +119,55 @@
             android:text="手"
             android:textColor="#838f9d"
             android:textSize="@dimen/font_small" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/font_mini"
+        android:text="止盈止损设置(选填)"
+        android:textColor="@color/tab_font"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edBuyTakeProfit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_market_editext"
+            android:hint="止盈价"
+            android:inputType="number"
+            android:minWidth="60dp"
+            android:padding="5dp"
+            android:textColor="@color/tab_font"
+            android:textColorHint="@color/tab_font"
+            android:textSize="@dimen/font_mini" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="&amp;"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/edBuyStopLoss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/bg_market_editext"
+            android:hint="止损价"
+            android:minWidth="60dp"
+            android:padding="5dp"
+            android:inputType="number"
+            android:textColor="@color/tab_font"
+            android:textColorHint="@color/tab_font"
+            android:textSize="@dimen/font_mini" />
     </LinearLayout>
 
     <TextView

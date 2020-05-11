@@ -77,6 +77,7 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
         refreshViewHolder.setLoadingMoreText("加载更多");
         // 设置下拉刷新和上拉加载更多的风格
         mRefreshlayout.setIsShowLoadingMoreView(true);
+        mRefreshlayout.setPullDownRefreshEnable(false);
         mRefreshlayout.setRefreshViewHolder(refreshViewHolder);
 
         entrustList = new ArrayList<>();
@@ -156,21 +157,43 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
 
     @Override
     public void getCurrentEntrustSuccess(NewEntrust entrustEntity) {
-        if (entrustEntity.getPage() == 1 && entrustEntity.getList().size() == 0){
-            rlEmpty.setVisibility(View.VISIBLE);
-        }else{
-            rlEmpty.setVisibility(View.GONE);
+//        if (entrustEntity.getPage() == 1 && entrustEntity.getList().size() == 0){
+//            rlEmpty.setVisibility(View.VISIBLE);
+//        }else{
+//            rlEmpty.setVisibility(View.GONE);
+//
+//            if (entrustEntity.getList().size() > 0 && entrustEntity.getList().size() < mPageSize){
+//                mPage = entrustEntity.getPage();
+//                if (mRefreshlayout.getCurrentRefreshStatus() == BGARefreshLayout.RefreshStatus.REFRESHING){
+//                    entrustList.clear();
+//                }
+//                entrustList.addAll(entrustEntity.getList());
+//            }
+//
+//
+//            trustAdapter.notifyDataSetChanged();
+//        }
 
-            if (entrustEntity.getList().size() > 0 && entrustEntity.getList().size() < mPageSize){
-                mPage = entrustEntity.getPage();
-                if (mRefreshlayout.getCurrentRefreshStatus() == BGARefreshLayout.RefreshStatus.REFRESHING){
-                    entrustList.clear();
-                }
-                entrustList.addAll(entrustEntity.getList());
+        if (entrustEntity != null && entrustEntity.getList().size() > 0) {
+            if (mPage == 1) {
+                this.entrustList.clear();
+            } else {
+                mRefreshlayout.endLoadingMore();
             }
 
+            if (entrustList.size() == mPageSize){
+                mPage = entrustEntity.getPage();
+            }
 
+            this.entrustList.addAll(entrustEntity.getList());
             trustAdapter.notifyDataSetChanged();
+        } else {
+            if (mPage == 1) {
+//                if (pageNo == 1 && obj.getTotalElement() == 0 ) {
+                this.entrustList.clear();
+                rlEmpty.setVisibility(View.VISIBLE);
+                trustAdapter.notifyDataSetChanged();
+            }
         }
     }
 

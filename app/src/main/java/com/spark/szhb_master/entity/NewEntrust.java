@@ -65,6 +65,24 @@ public class NewEntrust {
         private double harvest_price;
         private double loss_price;
         private double overnight_fee;
+        private double harvest_num;
+        private double income_rate;
+
+        public void setHarvest_num(double harvest_num) {
+            this.harvest_num = harvest_num;
+        }
+
+        public void setIncome_rate(double income_rate) {
+            this.income_rate = income_rate;
+        }
+
+        public double getHarvest_num() {
+            return harvest_num;
+        }
+
+        public double getIncome_rate() {
+            return income_rate;
+        }
 
         public void setOvernight_fee(double overnight_fee) {
             this.overnight_fee = overnight_fee;

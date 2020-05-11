@@ -1,6 +1,7 @@
 package com.spark.szhb_master.adapter;
 
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -8,6 +9,7 @@ import com.spark.szhb_master.R;
 import com.spark.szhb_master.entity.NewEntrust;
 import com.spark.szhb_master.utils.DateUtils;
 
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +21,7 @@ import java.util.List;
  */
 
 public class TrustAdapter extends BaseQuickAdapter<NewEntrust.ListBean, BaseViewHolder> {
-    private int type = 0; //0-当前持仓 1-当前委托
+    private int type = 0; //0-当前持仓 1-当前委托 2历史委托
     public TrustAdapter(@Nullable List<NewEntrust.ListBean> data) {
         super(R.layout.item_trust, data);
     }
@@ -45,32 +47,32 @@ public class TrustAdapter extends BaseQuickAdapter<NewEntrust.ListBean, BaseView
         helper.setText(R.id.tv_symbol, item.getMark());
         String time = DateUtils.getFormatTime(null, new Date( new Long(new Long(item.getCreated_at()) * 1000)));
         helper.setText(R.id.trust_time, time);
-//        if (GlobalConstant.LIMIT_PRICE.equals(item.getType())) { // 限价
-//            helper.setText(R.id.trust_price, MathUtils.getRundNumber(item.getPrice(), 2, null));
-//            // 数量
-//            helper.setText(R.id.trust_num, String.valueOf(BigDecimal.valueOf(item.getAmount())));
-//        } else { // 市价
-//            helper.setText(R.id.trust_price, String.valueOf(MyApplication.getApp().getString(R.string.text_best_prices)));
-//            // 数量 如果是市价并买入情况就是--
-//            if (GlobalConstant.BUY.equals(item.getDirection())) {
-//                helper.setText(R.id.trust_num, String.valueOf("--"));
-//            } else {
-//                helper.setText(R.id.trust_num, MathUtils.getRundNumber(Double.valueOf(String.valueOf(BigDecimal.valueOf(item.getAmount()))), 2, null));
-//            }
-//        }
-//        String symbol = item.getSymbol();
-//        int i = symbol.indexOf("/");
         helper.setText(R.id.trust_num, String.valueOf(item.getNum()));
         helper.setText(R.id.trust_price, String.valueOf(item.getPrice()));
         helper.setText(R.id.trust_newprice, String.valueOf(item.getNew_price()));
 
+//        NumberFormat nf = NumberFormat.getNumberInstance();
+//        nf.setMaximumFractionDigits(2);
+        helper.setText(R.id.trust_shouyi, String.valueOf(item.getHarvest_num()));
+        helper.setText(R.id.trust_shouyilv, String.valueOf(item.getIncome_rate()));
+
+        helper.setText(R.id.trust_guoyef, String.valueOf(item.getOvernight_fee()));
+        helper.setText(R.id.trust_shouxufei, String.valueOf(item.getFee()));
+        helper.setText(R.id.trust_zhiyingjia, String.valueOf(item.getHarvest_price()));
+        helper.setText(R.id.trust_zhisunjia, String.valueOf(item.getLoss_price()));
+        helper.setText(R.id.trust_baozhengjin, String.valueOf(item.getConsume_num()));
+
+        helper.getView(R.id.trust_btn).setTag(item.getId());
+        helper.addOnClickListener(R.id.trust_btn);
         if (type == 0){
             helper.setText(R.id.trust_btn, "平仓");
-        }else{
+        }else if (type == 1){
             helper.setText(R.id.trust_btn, "撤销");
+        }else {
+            helper.setVisible(R.id.trust_btn, false);
         }
-        helper.getView(R.id.trust_btn).setTag(item.getId());
 
-        helper.addOnClickListener(R.id.trust_btn);
+
+
     }
 }

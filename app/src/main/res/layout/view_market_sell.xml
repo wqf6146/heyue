@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/llMarketSell"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_height="300dp"
+    android:gravity="center_vertical"
     android:background="@color/main_bg"
+    android:orientation="vertical"
     android:visibility="visible">
 
     <LinearLayout
@@ -23,6 +24,7 @@
                 android:layout_width="45dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="－"
                 android:background="@drawable/bg_market_lesstv"
                 android:textColor="#52A3FF"
@@ -77,7 +79,7 @@
         android:id="@+id/tvSellRMB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
+        android:padding="8dp"
         android:text="0.0CNY"
         android:textColor="#838f9d"
         android:textSize="@dimen/font_mini" />
@@ -117,6 +119,62 @@
     </LinearLayout>
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/font_mini"
+        android:text="止盈止损设置(选填)"
+        android:textColor="@color/tab_font"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edSellTakeProfit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_market_editext"
+            android:hint="止盈价"
+            android:minWidth="60dp"
+            android:inputType="number"
+            android:digits="1234567890."
+            android:ellipsize="end"
+            android:textCursorDrawable="@null"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:textColor="@color/tab_font"
+            android:textColorHint="@color/tab_font"
+            android:textSize="@dimen/font_mini" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="&amp;"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/edSellStopLoss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/bg_market_editext"
+            android:hint="止损价"
+            android:textCursorDrawable="@null"
+            android:digits="1234567890."
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:minWidth="60dp"
+            android:inputType="number"
+            android:padding="5dp"
+            android:textColor="@color/tab_font"
+            android:textColorHint="@color/tab_font"
+            android:textSize="@dimen/font_mini" />
+    </LinearLayout>
 
 
     <LinearLayout

@@ -326,8 +326,6 @@
 
     </FrameLayout>
 
-
-
     <LinearLayout
         android:id="@+id/llVertical"
         android:layout_width="match_parent"
@@ -373,4 +371,10 @@
             android:textSize="@dimen/font_mini"
             android:visibility="gone" />
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:id="@+id/fldiap"
+        android:layout_below="@+id/rltitle"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

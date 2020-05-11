@@ -82,6 +82,7 @@
         <activity android:name="com.spark.szhb_master.activity.setting.SettingActivity" />
         <activity android:name="com.spark.szhb_master.activity.switch_user.SwitchUserActivity" />
         <activity android:name="com.spark.szhb_master.activity.feed.FeedbackActivity" />
+        <activity android:name=".activity.Trade.NewTradeActivity"/>
         <activity android:name="com.spark.szhb_master.activity.aboutus.AboutUsActivity" />
         <activity android:name="com.spark.szhb_master.activity.language.LanguageActivity" />
         <activity android:name="com.spark.szhb_master.activity.releaseAd.PubAdsActivity" />

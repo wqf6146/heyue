@@ -116,7 +116,7 @@ public class CurrentTrustActivity extends BaseActivity implements ITrustContract
     public void getSymbolHistroyListSuccess(NewEntrust newEntrust) {
         refreshLayout.setEnabled(true);
         refreshLayout.setRefreshing(false);
-        mAdapter.setType(1);
+        mAdapter.setType(2);
         mAdapter.setEnableLoadMore(true);
         mAdapter.loadMoreComplete();
         if (newEntrust == null) return;

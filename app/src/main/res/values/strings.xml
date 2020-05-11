@@ -48,6 +48,8 @@
     <string name="no_network">当前无网络</string>
     <string name="parse_error">数据异常</string>
 
+
+
     <!--权限-->
     <string name="camera_permission">权限不可用，请开启相机权限</string>
     <string name="storage_permission">权限不可用，请开启存储权限</string>
