@@ -37,6 +37,11 @@ public class LocalDataSource implements DataSource {
     }
 
     @Override
+    public void doStringDelete(String url, HashMap<String, String> params, DataCallback dataCallback) {
+
+    }
+
+    @Override
     public void doStringPost(String url, DataCallback dataCallback) {
 
     }

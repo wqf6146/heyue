@@ -57,7 +57,10 @@ public class DataRepository implements DataSource {
         else mRemoteDataSource.doDownload(url, dataCallback);
     }
 
-
+    @Override
+    public void doStringDelete(String url, HashMap<String, String> params, DataCallback dataCallback) {
+        mRemoteDataSource.doStringDelete(url,params, dataCallback);
+    }
 
     @Override
     public void doUploadFile(String url, File file, DataCallback dataCallback) {

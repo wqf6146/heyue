@@ -254,7 +254,6 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     public void getFiatsListSuccess(Fiats fiats) {
         hideLoadingPopup();
         try {
-
             fiatsListAdapter.setEnableLoadMore(true);
             fiatsListAdapter.loadMoreComplete();
             refreshLayout.setEnabled(true);
@@ -263,7 +262,7 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
             if (fiatsBeans != null && fiatsBeans.size() > 0) {
                 if (pageNo == 1) {
                     this.fiats.clear();
-                } else {
+                } else if (fiatsBeans.size() < GlobalConstant.PageSize){
                     fiatsListAdapter.loadMoreEnd();
                 }
 
@@ -274,7 +273,7 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                 this.fiats.addAll(fiatsBeans);
                 fiatsListAdapter.notifyDataSetChanged();
             } else {
-                if (pageNo == 1) {
+                if (fiatsBeans.size() == 1) {
 //                if (pageNo == 1 && obj.getTotalElement() == 0 ) {
                     this.fiats.clear();
                     fiatsListAdapter.setEmptyView(R.layout.empty_no_message);
@@ -291,27 +290,23 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     public void getListSuccess(C2C c2c) {
         hideLoadingPopup();
         try {
-
             c2CListAdapter.setEnableLoadMore(true);
             c2CListAdapter.loadMoreComplete();
             refreshLayout.setEnabled(true);
             refreshLayout.setRefreshing(false);
             List<C2C.C2CBean> c2cs = c2c.getList();
             if (c2cs != null && c2cs.size() > 0) {
-                if (pageNo == 1) {
+                if (c2c.getPage() == 1) {
                     this.c2cs.clear();
-                } else {
+                } else if (c2cs.size() < GlobalConstant.PageSize){
                     c2CListAdapter.loadMoreEnd();
                 }
 
-                if (c2c.getList().size() == GlobalConstant.PageSize){
-                    pageNo = c2c.getPage();
-                }
-
+                pageNo = c2c.getPage();
                 this.c2cs.addAll(c2cs);
                 c2CListAdapter.notifyDataSetChanged();
             } else {
-                if (pageNo == 1) {
+                if (c2c.getPage() == 1) {
 //                if (pageNo == 1 && obj.getTotalElement() == 0 ) {
                     this.c2cs.clear();
                     c2CListAdapter.setEmptyView(R.layout.empty_no_message);

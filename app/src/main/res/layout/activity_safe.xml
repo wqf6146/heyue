@@ -103,7 +103,7 @@
             android:layout_weight="1"
             android:textColor="@color/Blue"
             android:textSize="@dimen/font_small"
-            android:gravity="right"
+            android:gravity="right|center"
             android:text="重置" />
 
         <ImageView style="@style/icon_more" />
@@ -126,13 +126,31 @@
             android:layout_weight="1"
             android:textColor="@color/Blue"
             android:textSize="@dimen/font_small"
-            android:gravity="right"
+            android:gravity="right|center"
             android:text="重置" />
 
         <ImageView style="@style/icon_more" />
 
     </LinearLayout>
 
+    <LinearLayout
+        style="@style/layout_my_info"
+        android:id="@+id/rlSfksz"
+        android:layout_marginTop="10dp"
+        android:visibility="visible">
+
+        <TextView
+            style="@style/textview_tag"
+            android:text="收付款设置" />
+
+        <View
+            android:layout_width="@dimen/chart_0.5dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+        <ImageView style="@style/icon_more" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

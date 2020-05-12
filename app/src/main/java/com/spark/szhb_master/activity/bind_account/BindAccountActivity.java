@@ -110,7 +110,7 @@ public class BindAccountActivity extends BaseActivity implements BindAccountCont
         HashMap<String, String> map = new HashMap<>();
         switch (v.getId()) {
             case R.id.llUnionPayAccount:
-                showActivity(BindBankActivity.class, bundle, 0);
+//                showActivity(BindBankActivity.class, bundle, 0);
                 break;
             case R.id.llWeiChatAccount:
             case R.id.llAliAccount:

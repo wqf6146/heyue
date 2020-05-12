@@ -60,6 +60,11 @@ public class UrlFactory {
         return newhost + "/user/fiats/order";
     }
 
+
+    public static String getC2cHistroyOrderUrl() {
+        return newhost + "/user/fiats/trade";
+    }
+
     public static String getCountryUrl() {
         return host + "/uc/support/country";
     }
@@ -82,6 +87,23 @@ public class UrlFactory {
 
     public static String getBecomeBUrl() {
         return newhost + "/user/shop/attest";
+    }
+
+
+    public static String getAddBankUrl() {
+        return newhost + "/user/pay/config";
+    }
+
+    public static String getChangeBankUrl() {
+        return newhost + "/user/pay/config";
+    }
+
+    public static String getDeleteBankUrl() {
+        return newhost + "/user/pay/config";
+    }
+
+    public static String getBankListUrl() {
+        return newhost + "/user/pay/config";
     }
 
     public static String getAllAdsUrl() {

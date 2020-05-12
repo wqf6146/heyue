@@ -3,6 +3,7 @@ package com.spark.szhb_master.utils.okhttp;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.spark.szhb_master.utils.okhttp.delete.DeleteJsonBuilder;
 import com.spark.szhb_master.utils.okhttp.get.GetBuilder;
 import com.spark.szhb_master.utils.okhttp.post.PostFormBuilder;
 import com.spark.szhb_master.utils.okhttp.post.PostJsonBuilder;
@@ -66,6 +67,10 @@ public class  OkhttpUtils {
 
     public static PutJsonBuilder put() {
         return new PutJsonBuilder();
+    }
+
+    public static DeleteJsonBuilder delete() {
+        return new DeleteJsonBuilder();
     }
 
     public static PostJsonBuilder postJson() {

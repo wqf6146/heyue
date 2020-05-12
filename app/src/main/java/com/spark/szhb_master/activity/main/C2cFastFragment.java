@@ -1,5 +1,6 @@
 package com.spark.szhb_master.activity.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.spark.szhb_master.R;
+import com.spark.szhb_master.activity.c2corder.C2cOrderActivity;
 import com.spark.szhb_master.adapter.PagerAdapter;
 import com.spark.szhb_master.entity.C2cConfig;
 import com.spark.szhb_master.utils.DpPxUtils;
@@ -76,6 +78,15 @@ public class C2cFastFragment extends Fragment {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
         initTabView();
+
+        tvOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), C2cOrderActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     private C2cConfig c2cConfig;

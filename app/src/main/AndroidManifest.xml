@@ -83,6 +83,7 @@
         <activity android:name="com.spark.szhb_master.activity.switch_user.SwitchUserActivity" />
         <activity android:name="com.spark.szhb_master.activity.feed.FeedbackActivity" />
         <activity android:name=".activity.Trade.NewTradeActivity"/>
+        <activity android:name=".activity.c2corder.C2cOrderActivity"/>
         <activity android:name="com.spark.szhb_master.activity.aboutus.AboutUsActivity" />
         <activity android:name="com.spark.szhb_master.activity.language.LanguageActivity" />
         <activity android:name="com.spark.szhb_master.activity.releaseAd.PubAdsActivity" />
@@ -113,7 +114,6 @@
         <activity android:name="com.spark.szhb_master.activity.entrust.TrustDetailActivity" />
         <activity android:name="com.spark.szhb_master.activity.bind_account.BindAccountActivity" />
         <activity android:name="com.spark.szhb_master.activity.bind_account.BindAliActivity" />
-        <activity android:name="com.spark.szhb_master.activity.bind_account.BindBankActivity" />
         <activity android:name="com.spark.szhb_master.activity.my_promotion.PromotionActivity" />
         <activity android:name="com.spark.szhb_master.activity.safe.GoogleAuthorActivity" />
         <activity android:name="com.spark.szhb_master.activity.safe.GoogleCodeActivity" />
@@ -126,6 +126,8 @@
         <activity android:name="com.spark.szhb_master.activity.Treasure.HistoryActivity" />
         <activity android:name="com.spark.szhb_master.activity.Treasure.RuleAcitivity" />
         <activity android:name="com.spark.szhb_master.activity.Treasure.DiggingDetialActivity" />
+        <activity android:name=".activity.Bind_bank.BankListActivity"/>
+        <activity android:name=".activity.Bind_bank.BindBankActivity"/>
         <activity android:name="com.spark.szhb_master.activity.Treasure.GetTreaActivity" />
         <activity android:name="com.spark.szhb_master.activity.Treasure.PowerUpActivity" />
         <activity android:name="com.spark.szhb_master.activity.Treasure.SuanActivity" />

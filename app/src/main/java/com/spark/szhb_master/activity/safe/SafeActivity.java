@@ -16,6 +16,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.spark.szhb_master.R;
+import com.spark.szhb_master.activity.Bind_bank.BankListActivity;
 import com.spark.szhb_master.activity.account_pwd.ResetPwdActivity;
 import com.spark.szhb_master.activity.edit_login_pwd.EditLoginPwdActivity;
 import com.spark.szhb_master.base.BaseActivity;
@@ -79,7 +80,7 @@ public class SafeActivity extends BaseActivity implements SafeContract.View {
     }
 
 
-    @OnClick({R.id.lldlmm,R.id.llzjmm})
+    @OnClick({R.id.lldlmm,R.id.llzjmm,R.id.rlSfksz})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -90,6 +91,8 @@ public class SafeActivity extends BaseActivity implements SafeContract.View {
             case R.id.llzjmm:
                 openPayPasswordDialog();
                 break;
+            case R.id.rlSfksz:
+                showActivity(BankListActivity.class,null);
         }
     }
 

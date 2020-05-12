@@ -1,99 +1,88 @@
-package com.spark.szhb_master.activity.main;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+package com.spark.szhb_master.activity.c2corder;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.spark.szhb_master.R;
-import com.spark.szhb_master.activity.c2corder.C2cOrderActivity;
+import com.spark.szhb_master.activity.main.C2CListFragment;
 import com.spark.szhb_master.adapter.PagerAdapter;
+import com.spark.szhb_master.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import butterknife.OnClick;
 
-public class C2cOptionFragment extends Fragment {
+public class C2cOrderActivity extends BaseActivity {
 
-    protected View rootView;
-
-    Unbinder unbinder;
+    @BindView(R.id.rlhead)
+    RelativeLayout rlhead;
 
     @BindView(R.id.tablayout)
     TabLayout tabLayout;
 
-    @BindView(R.id.tvOrder)
-    TextView tvOrder;
-
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
-    private List<Fragment> mTabFragments = new ArrayList<>();
-
-    public static C2cOptionFragment newInstance(){
-        C2cOptionFragment fragment = new C2cOptionFragment();
-        return fragment;
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_c2coptional, null);
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
+    protected void initView() {
+        super.initView();
+        setImmersionBar(rlhead);
 
         initTabLayout();
     }
 
-    private List<String> tabs = new ArrayList<>();
+    @Override
+    protected void initData() {
+        super.initData();
+    }
+
+    @OnClick({R.id.ar_iv_close})
+    @Override
+    protected void setOnClickListener(View v) {
+        switch (v.getId()){
+            case R.id.ar_iv_close:
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    protected int getActivityLayoutId() {
+        return R.layout.activity_c2corder;
+    }
+
+    private List<Fragment> mTabFragments = new ArrayList<>();
 
     private void initTabLayout() {
-        mTabFragments.add(C2CListFragment.getInstance(0));
-        mTabFragments.add(C2CListFragment.getInstance(1));
-        mTabFragments.add(C2CListFragment.getInstance(2));
+        mTabFragments.add(C2cOrderListFragment.getInstance(0));
+        mTabFragments.add(C2cOrderListFragment.getInstance(1));
+        mTabFragments.add(C2cOrderListFragment.getInstance(2));
 
-        tabs.add("我买");
-        tabs.add("我卖");
-        tabs.add("委托");
+        tabs.add("进行中");
+        tabs.add("已完成");
+        tabs.add("已取消");
 
-        viewPager.setAdapter(new PagerAdapter(getChildFragmentManager(), mTabFragments, tabs));
+        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), mTabFragments, tabs));
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
         initTabView();
-
-        tvOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), C2cOrderActivity.class);
-                startActivity(intent);
-
-            }
-        });
     }
 
+    private List<String> tabs = new ArrayList<>();
     private void initTabView() {
         for (int i = 0; i < tabs.size(); i++) {
             //获取tab
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             //给tab设置自定义布局
-            TextView textView = new TextView(getContext());
+            TextView textView = new TextView(this);
             textView.setGravity(Gravity.CENTER);
             tab.setCustomView(textView);
             //填充数据
@@ -135,17 +124,5 @@ public class C2cOptionFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-    }
-
-    @Override
-    public void onDestroyView() {
-        unbinder.unbind();
-        super.onDestroyView();
-    }
-
-    @Nullable
-    @Override
-    public View getView() {
-        return rootView;
     }
 }

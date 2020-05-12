@@ -616,7 +616,7 @@
     <string name="alipay_binding">支付宝绑定</string>
     <string name="bank_card_binding">银行卡绑定</string>
     <string name="bank">开户银行</string>
-    <string name="account_opening_branch">开户支行</string>
+    <string name="account_opening_branch">开户支行(选填)</string>
     <string name="account_opening_branchTip">请输入开户支行</string>
     <string name="confirm_cardnumber">确认卡号</string>
     <string name="diff_cardnumber">银行卡号不一致</string>

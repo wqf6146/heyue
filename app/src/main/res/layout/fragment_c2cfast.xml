@@ -36,7 +36,7 @@
             android:text="订单"
             android:textColor="@color/font_blue"
             android:textSize="@dimen/font_small"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
     </LinearLayout>
 

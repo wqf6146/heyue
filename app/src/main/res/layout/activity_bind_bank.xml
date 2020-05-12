@@ -1,18 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_bg"
     android:orientation="vertical">
 
     <!--标题-->
-    <include layout="@layout/view_head" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/rlhead"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/icon_back"
+            android:padding="10dp"
+            android:id="@+id/ar_iv_close"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal"
+            android:text="添加银行卡"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/font_lager"
+        android:textColor="@color/white"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:text="填写银行卡信息"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         style="@style/layout_my_info"
-        android:layout_marginTop="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <TextView
             style="@style/textview_tag"
@@ -22,66 +51,21 @@
         <EditText
             android:id="@+id/etName"
             style="@style/edittext_normal"
-            android:enabled="false" />
+            android:inputType="text"
+            android:hint="请输入持卡人姓名" />
 
     </LinearLayout>
 
-    <View style="@style/line_bg_grey" />
-
-    <LinearLayout
-        android:id="@+id/llBank"
-        style="@style/layout_my_info">
-
-        <TextView
-            style="@style/textview_tag"
-            android:minWidth="90dp"
-            android:text="@string/bank" />
-
-        <TextView
-            android:id="@+id/tvBank"
-            style="@style/edittext_normal"
-            android:layout_weight="1"
-            android:enabled="false" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="10dp"
-            android:src="@mipmap/icon_more" />
-    </LinearLayout>
-
-    <View style="@style/line_bg_grey" />
-
-    <LinearLayout
-        android:id="@+id/llBranch"
-        style="@style/layout_my_info">
-
-        <TextView
-            style="@style/textview_tag"
-            android:minWidth="90dp"
-            android:text="@string/account_opening_branch" />
-
-        <EditText
-            android:id="@+id/etBranch"
-            style="@style/edittext_normal"
-            android:hint="@string/account_opening_branchTip" />
-
-    </LinearLayout>
-
-    <View style="@style/line_bg_grey" />
-
-    <View
-        style="@style/line_bg_grey"
-        android:layout_marginTop="10dp" />
-
-    <LinearLayout style="@style/layout_my_info">
+    <LinearLayout style="@style/layout_my_info"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp">
 
         <TextView
             android:id="@+id/tvAccount"
             style="@style/textview_tag"
             android:minWidth="90dp"
-            android:text="@string/unionpay_account" />
+            android:text="卡号" />
 
         <EditText
             android:id="@+id/etAccount"
@@ -91,10 +75,11 @@
 
     </LinearLayout>
 
-    <View style="@style/line_bg_grey" />
-
     <LinearLayout
         android:id="@+id/llConfirmAccount"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         style="@style/layout_my_info">
 
         <TextView
@@ -110,24 +95,78 @@
 
     </LinearLayout>
 
-    <View style="@style/line_bg_grey" />
-
-    <LinearLayout style="@style/layout_my_info">
+    <LinearLayout
+        android:id="@+id/llBank"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        style="@style/layout_my_info">
 
         <TextView
             style="@style/textview_tag"
             android:minWidth="90dp"
-            android:text="@string/text_money_pwd" />
+            android:text="@string/bank" />
 
         <EditText
-            android:id="@+id/etNewPwd"
+            android:id="@+id/etBankHang"
             style="@style/edittext_normal"
-            android:hint="@string/text_enter_money_pwd"
-            android:inputType="textPassword" />
+            android:hint="请输入开户行"
+            android:inputType="text" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/llBranch"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        style="@style/layout_my_info">
+
+        <TextView
+            style="@style/textview_tag"
+            android:minWidth="90dp"
+            android:text="@string/account_opening_branch" />
+
+        <EditText
+            android:id="@+id/etBranch"
+            style="@style/edittext_normal"
+            android:paddingLeft="10dp"
+            android:inputType="text"
+            android:hint="@string/account_opening_branchTip" />
 
     </LinearLayout>
 
-    <View style="@style/line_bg_grey" />
+    <RelativeLayout
+        style="@style/layout_my_info"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            style="@style/textview_tag"
+            android:minWidth="90dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/tvcode"
+            android:text="发送验证码" />
+
+        <EditText
+            style="@style/edittext_normal"
+            android:hint="@string/phone_code"
+            android:layout_toLeftOf="@+id/tvSendcode"
+            android:layout_toRightOf="@+id/tvcode"
+            android:layout_centerVertical="true"
+            android:inputType="number"
+            android:id="@+id/edCode" />
+
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/tvSendcode"
+            style="@style/textveiw_msg_code"/>
+
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"

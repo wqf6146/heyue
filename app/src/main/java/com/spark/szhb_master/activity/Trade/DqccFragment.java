@@ -97,9 +97,7 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
                 presenter.commitUndersellContrat(hashMap);
             }
         });
-
         mRecycleView.setAdapter(trustAdapter);
-
     }
 
     @Override
@@ -183,7 +181,7 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
             this.entrustList.addAll(entrustEntity.getList());
             trustAdapter.notifyDataSetChanged();
         } else {
-            if (mPage == 1) {
+            if (entrustEntity.getList().size() == 1) {
 //                if (pageNo == 1 && obj.getTotalElement() == 0 ) {
                 this.entrustList.clear();
                 rlEmpty.setVisibility(View.VISIBLE);

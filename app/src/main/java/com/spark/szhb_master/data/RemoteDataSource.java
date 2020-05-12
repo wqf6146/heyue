@@ -24,7 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -231,8 +233,52 @@ public class RemoteDataSource implements DataSource {
         String token = "";
         if (MyApplication.getApp().getCurrentUser() != null)
             token = MyApplication.getApp().getCurrentUser().getToken() == null ? "" : MyApplication.getApp().getCurrentUser().getToken();
+
+        String p = "";
+        Iterator<Map.Entry> it = params.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = it.next();
+            p += entry.getKey() + "=";
+            p += entry.getValue();
+            if (it.hasNext()){
+                p += "&";
+            }
+        }
+        url = url + "?" + p;
         LogUtils.i("token==" + token);
-            OkhttpUtils.get().url(url).addHeader("Authorization", token).addParams(params).build().execute(new StringCallback() {
+            OkhttpUtils.get().url(url).addHeader("Authorization", token).build().execute(new StringCallback() {
+            @Override
+            public void onError(Request request, Exception e) {
+                dataCallback.onDataNotAvailable(OKHTTP_ERROR, null);
+            }
+
+            @Override
+            public boolean onResponse(String response) {
+                LogUtils.i("onResponse：" + response.toString());
+                dataCallback.onDataLoaded(response);
+                return false;
+            }
+
+        });
+    }
+
+    /***
+     * Delete
+     * @param url
+     * @param params
+     * @param dataCallback
+     */
+    @Override
+    public void doStringDelete(String url, HashMap<String, String> params, DataCallback dataCallback) {
+        String token = "";
+        if (MyApplication.getApp().getCurrentUser() != null)
+            token = MyApplication.getApp().getCurrentUser().getToken() == null ? "" : MyApplication.getApp().getCurrentUser().getToken();
+        LogUtils.i("token==" + token);
+
+        JSONObject jsonBody = new JSONObject(params);
+
+        OkhttpUtils.delete().url(url).addHeader("Content-Type","application/json")
+                .addHeader("Authorization", token).body(jsonBody.toString()).build().execute(new StringCallback() {
             @Override
             public void onError(Request request, Exception e) {
                 dataCallback.onDataNotAvailable(OKHTTP_ERROR, null);
