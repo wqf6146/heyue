@@ -177,7 +177,7 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                             }else{
                                 HashMap hashMap = new HashMap();
                                 hashMap.put("id",c2CBean.getId());
-                                hashMap.put("type",type);
+                                hashMap.put("type",type == 0 ? 1 : 0);
                                 hashMap.put("num",Double.parseDouble(num));
                                 presenter.doFiatsOrder(hashMap);
                             }

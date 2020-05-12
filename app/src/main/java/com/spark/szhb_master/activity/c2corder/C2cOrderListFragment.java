@@ -1,15 +1,18 @@
 package com.spark.szhb_master.activity.c2corder;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.adapter.C2cOrderAdapter;
-import com.spark.szhb_master.base.BaseFragment;
 import com.spark.szhb_master.entity.C2cOrder;
 import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.NetCodeUtils;
@@ -19,12 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 import config.Injection;
 
-public class C2cOrderListFragment extends BaseFragment implements C2cOrderContract.View,BGARefreshLayout.BGARefreshLayoutDelegate {
+public class C2cOrderListFragment extends Fragment implements C2cOrderContract.View,BGARefreshLayout.BGARefreshLayoutDelegate {
 
     @BindView(R.id.recycleview)
     RecyclerView recyclerView;
@@ -34,6 +39,7 @@ public class C2cOrderListFragment extends BaseFragment implements C2cOrderContra
 
     @BindView(R.id.rlEmpty)
     RelativeLayout rlRmpty;
+
 
 
     private int type,page;
@@ -52,13 +58,49 @@ public class C2cOrderListFragment extends BaseFragment implements C2cOrderContra
     @Override
     public void onResume() {
         super.onResume();
-        if (!bInit){
-            bInit = true;
-            init();
-        }
         refreshLayout.beginRefreshing();
     }
 
+    private View rootView;
+    Unbinder unbinder;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        rootView = inflater.inflate(R.layout.view_recycleview, null);
+        ButterKnife.bind(this, rootView);
+        init();
+        return rootView;
+    }
+
+    @Override
+    public void hideLoadingPopup() {
+        refreshLayout.endLoadingMore();
+        refreshLayout.endRefreshing();
+    }
+
+    @Override
+    public void displayLoadingPopup() {
+
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Bundle bundle = getArguments();
+        type = bundle.getInt("type");
+
+        new C2COrderListPresenter(Injection.provideTasksRepository(getActivity()), this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (unbinder!=null)
+            unbinder.unbind();
+        super.onDestroyView();
+    }
 
     private boolean bInit = false;
     private void init(){
@@ -74,9 +116,10 @@ public class C2cOrderListFragment extends BaseFragment implements C2cOrderContra
         refreshLayout.setRefreshViewHolder(refreshViewHolder);
 
         listBeanList = new ArrayList<>();
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new C2cOrderAdapter(getActivity(),listBeanList);
         adapter.setType(type);
+        adapter.bindToRecyclerView(recyclerView);
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -85,12 +128,12 @@ public class C2cOrderListFragment extends BaseFragment implements C2cOrderContra
         });
         recyclerView.setAdapter(adapter);
     }
-    @Override
-    public void hideLoadingPopup() {
-        super.hideLoadingPopup();
-        refreshLayout.endLoadingMore();
-        refreshLayout.endRefreshing();
-    }
+//    @Override
+//    public void hideLoadingPopup() {
+//        super.hideLoadingPopup();
+//        refreshLayout.endLoadingMore();
+//        refreshLayout.endRefreshing();
+//    }
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
@@ -157,20 +200,6 @@ public class C2cOrderListFragment extends BaseFragment implements C2cOrderContra
     @Override
     public void setPresenter(C2cOrderContract.Presenter presenter) {
         this.presenter = presenter;
-    }
-
-    @Override
-    protected void initView() {
-        super.initView();
-        Bundle bundle = getArguments();
-        type = bundle.getInt("type");
-
-        new C2COrderListPresenter(Injection.provideTasksRepository(getActivity()), this);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.view_recycleview;
     }
 
 
