@@ -47,7 +47,7 @@ public class TrustAdapter extends BaseQuickAdapter<NewEntrust.ListBean, BaseView
         helper.setText(R.id.tv_symbol, item.getMark());
         String time = DateUtils.getFormatTime(null, new Date( new Long(new Long(item.getCreated_at()) * 1000)));
         helper.setText(R.id.trust_time, time);
-        helper.setText(R.id.trust_num, String.valueOf(item.getNum()));
+        helper.setText(R.id.trust_num, item.getNum() + "手");
         helper.setText(R.id.trust_price, String.valueOf(item.getPrice()));
         helper.setText(R.id.trust_newprice, String.valueOf(item.getNew_price()));
 

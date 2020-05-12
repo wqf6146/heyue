@@ -128,38 +128,45 @@
                 android:layout_width="match_parent"
                 android:scrollbars="none"
                 android:layout_marginLeft="5dp"
-                android:layout_height="130dp">
+                android:layout_height="100dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:padding="5dp"
                     android:layout_height="match_parent">
                     <RelativeLayout
-                        android:layout_width="250dp"
+                        android:layout_width="200dp"
                         android:id="@+id/fm_rl_zjzh"
-                        android:background="@color/Blue"
+                        android:background="@drawable/bg_light_blue"
                         android:paddingLeft="15dp"
                         android:paddingTop="5dp"
                         android:paddingBottom="10dp"
                         android:orientation="vertical"
                         android:layout_height="match_parent">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:text="@string/zjzh"
-                            android:textColor="@color/white"
-                            android:layout_marginTop="10dp"
-                            android:textSize="@dimen/font_small"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_centerVertical="true">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/zjzh"
+                                android:textColor="@color/white"
+                                android:layout_above="@+id/fm_tv_zjzhbtc"
+                                android:textSize="@dimen/font_small"
+                                android:layout_height="wrap_content"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="@dimen/font_lager"
-                            android:textColor="@color/white"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/fm_tv_zjzhbtc"
-                            android:text="0.00 BTC"
-                            android:layout_height="wrap_content"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="@dimen/font_lager"
+                                android:textColor="@color/white"
+                                android:layout_centerVertical="true"
+                                android:id="@+id/fm_tv_zjzhbtc"
+                                android:text="0.00 BTC"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -168,13 +175,14 @@
                             android:layout_alignParentBottom="true"
                             android:id="@+id/fm_tv_zjzhusdt"
                             android:layout_marginBottom="10dp"
+                            android:visibility="gone"
                             android:text="≈ 0.00 USDT"
                             android:layout_height="wrap_content"/>
 
                     </RelativeLayout>
                     <RelativeLayout
-                        android:layout_width="250dp"
-                        android:background="@color/main_bg_gray"
+                        android:layout_width="200dp"
+                        android:background="@drawable/bg_dark_blue"
                         android:id="@+id/fm_rl_hyqczh"
                         android:layout_marginLeft="10dp"
                         android:paddingLeft="15dp"
@@ -183,22 +191,31 @@
                         android:orientation="vertical"
                         android:layout_height="match_parent">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:text="@string/hyqczh"
-                            android:textColor="@color/white"
-                            android:layout_marginTop="10dp"
-                            android:textSize="@dimen/font_small"
-                            android:layout_height="wrap_content"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="@dimen/font_lager"
-                            android:textColor="@color/white"
+                            android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:id="@+id/fm_tv_hyqczhbtc"
-                            android:text="0.00 BTC"
-                            android:layout_height="wrap_content"/>
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="@string/hyqczh"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/font_small"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textSize="@dimen/font_lager"
+                                android:textColor="@color/white"
+                                android:layout_centerVertical="true"
+                                android:id="@+id/fm_tv_hyqczhbtc"
+                                android:text="0.00 BTC"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -206,6 +223,7 @@
                             android:textColor="@color/white"
                             android:layout_alignParentBottom="true"
                             android:id="@+id/fm_tv_hyqczhusdt"
+                            android:visibility="gone"
                             android:layout_marginBottom="10dp"
                             android:text="≈ 0.00 USDT"
                             android:layout_height="wrap_content"/>

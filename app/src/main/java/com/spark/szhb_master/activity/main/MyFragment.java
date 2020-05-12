@@ -432,14 +432,14 @@ public class MyFragment extends BaseTransFragment implements MainContract.MyView
 
 
         tvTotalAssets.setText(String.format(getString(R.string.mytotalassets),assetsInfo.getSum()));
-        tvTotalAssetsConverts.setVisibility(View.VISIBLE);
-        tvTotalAssetsConverts.setText(String.format(getString(R.string.mytotalassetsconverts),assetsInfo.getSum_convert()));
+//        tvTotalAssetsConverts.setVisibility(View.VISIBLE);
+//        tvTotalAssetsConverts.setText(String.format(getString(R.string.mytotalassetsconverts),assetsInfo.getSum_convert()));
         tvZjzhBtc.setText(String.format(getString(R.string.mytotalassets),assetsInfo.getUsable()));
-        tvZjzhUsdt.setVisibility(View.VISIBLE);
-        tvZjzhUsdt.setText(String.format(getString(R.string.mytotalassetsconverts),assetsInfo.getUsable_convert()));
+//        tvZjzhUsdt.setVisibility(View.VISIBLE);
+//        tvZjzhUsdt.setText(String.format(getString(R.string.mytotalassetsconverts),assetsInfo.getUsable_convert()));
         tvHyqczhBtc.setText(String.format(getString(R.string.mytotalassets),assetsInfo.getFrost()));
-        tvHyqczhUsdt.setVisibility(View.VISIBLE);
-        tvHyqczhUsdt.setText(String.format(getString(R.string.mytotalassetsconverts),assetsInfo.getFrost_convert()));
+//        tvHyqczhUsdt.setVisibility(View.VISIBLE);
+//        tvHyqczhUsdt.setText(String.format(getString(R.string.mytotalassetsconverts),assetsInfo.getFrost_convert()));
 
     }
 //    7073
