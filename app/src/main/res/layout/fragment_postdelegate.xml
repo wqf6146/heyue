@@ -99,6 +99,7 @@
                         android:maxLength="10"
                         android:paddingLeft="10dp"
                         android:textColor="@color/white"
+                        android:textCursorDrawable="@null"
                         android:textColorHint="@color/font_hint"
                         android:textSize="@dimen/font_mini" />
 
@@ -184,6 +185,7 @@
                     android:layout_toRightOf="@+id/tvJMinNum"
                     android:background="@drawable/bg_market_editext"
                     android:hint="最小交易数量"
+                    android:textCursorDrawable="@null"
                     android:maxLength="10"
                     android:paddingLeft="10dp"
                     android:textColor="@color/white"
@@ -217,6 +219,7 @@
                     android:hint="最大交易数量"
                     android:inputType="number"
                     android:maxLength="10"
+                    android:textCursorDrawable="@null"
                     android:paddingLeft="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/font_hint"
@@ -248,6 +251,7 @@
                     android:background="@drawable/bg_market_editext"
                     android:gravity="left|top"
                     android:inputType="text"
+                    android:textCursorDrawable="@null"
                     android:maxLines="5"
                     android:padding="10dp"
                     android:textColor="@color/white"
