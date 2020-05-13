@@ -35,11 +35,12 @@ public class C2cFastFragment extends Fragment {
     @BindView(R.id.tablayout)
     TabLayout tabLayout;
 
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
+
     @BindView(R.id.tvOrder)
     TextView tvOrder;
 
-    @BindView(R.id.viewpager)
-    ViewPager viewPager;
 
     private List<Fragment> mTabFragments = new ArrayList<>();
 

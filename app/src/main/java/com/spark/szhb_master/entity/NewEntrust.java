@@ -66,13 +66,13 @@ public class NewEntrust {
         private double loss_price;
         private double overnight_fee;
         private double harvest_num;
-        private double income_rate;
+        private String income_rate;
 
         public void setHarvest_num(double harvest_num) {
             this.harvest_num = harvest_num;
         }
 
-        public void setIncome_rate(double income_rate) {
+        public void setIncome_rate(String income_rate) {
             this.income_rate = income_rate;
         }
 
@@ -80,7 +80,7 @@ public class NewEntrust {
             return harvest_num;
         }
 
-        public double getIncome_rate() {
+        public String getIncome_rate() {
             return income_rate;
         }
 

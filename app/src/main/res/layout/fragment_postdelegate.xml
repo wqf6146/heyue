@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@color/main_bg"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingRight="20dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="20dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tvJPrice"
+                    android:textSize="@dimen/font_normal"
+                    android:text="单价"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/tvJPrice"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/edPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_market_editext"
+                        android:digits="1234567890."
+                        android:hint="请输入您预期出售单价"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/font_hint"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/font_mini" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:textSize="@dimen/font_normal"
+                        android:text="CNY"
+                        android:textColor="@color/white"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingRight="20dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/tvJNum"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="数量"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/tvJNum"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/edNum"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_market_editext"
+                        android:hint="请输入您预期出售数量"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/font_hint"
+                        android:textSize="@dimen/font_mini" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:textSize="@dimen/font_normal"
+                        android:text="USDT"
+                        android:textColor="@color/white"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingRight="20dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/tvJTotalPrice"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="总价格"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/tvJTotalPrice"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvTotalPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center"
+                        android:paddingLeft="10dp"
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_xlager" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:textSize="@dimen/font_normal"
+                        android:text="CNY"
+                        android:textColor="@color/white"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingRight="20dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/tvJMinNum"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="最小交易数量"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal" />
+
+                <EditText
+                    android:id="@+id/edMinNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/tvJMinNum"
+                    android:background="@drawable/bg_market_editext"
+                    android:hint="最小交易数量"
+                    android:maxLength="10"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/font_hint"
+                    android:textSize="@dimen/font_mini" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingRight="20dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/tvJMaxNum"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="最大交易数量"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal" />
+
+                <EditText
+                    android:id="@+id/edMaxNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/tvJMaxNum"
+                    android:background="@drawable/bg_market_editext"
+                    android:hint="最大交易数量"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/font_hint"
+                    android:textSize="@dimen/font_mini" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:paddingRight="20dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/tvJremark"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="委托单备注"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal" />
+
+                <EditText
+                    android:id="@+id/edRemark"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/tvJremark"
+                    android:background="@drawable/bg_market_editext"
+                    android:gravity="left|top"
+                    android:inputType="text"
+                    android:maxLines="5"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/font_hint"
+                    android:textSize="@dimen/font_mini" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="200dp"
+                android:layout_marginTop="50dp"
+                android:background="@color/Blue"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/rlSubmit"
+                android:layout_height="50dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="完成"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

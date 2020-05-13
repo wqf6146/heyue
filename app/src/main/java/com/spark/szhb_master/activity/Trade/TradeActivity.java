@@ -483,8 +483,8 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
 //            tvLatest.setTextColor(Float.parseFloat(currency.getScale()) >= 0 ? ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_green) :
 //                    ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_red));
             strSymbol = symbol;
-            tvBuySymbol.setText(strSymbol);
-            tvSellSymbol.setText(strSymbol);
+//            tvBuySymbol.setText(strSymbol);
+//            tvSellSymbol.setText(strSymbol);
             btnBuy.setText(getString(R.string.text_buy_in) + strSymbol);
             btnSale.setText(getString(R.string.text_sale_out) + strSymbol);
             if (GlobalConstant.CNY.equals(CommonUtils.getUnitBySymbol(symbol))) {
@@ -1070,8 +1070,8 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
         llSellTradeCount.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
         if (currency != null) {
             //String symbol = (intType == 0 ? currency.getSymbol().substring(0, currency.getSymbol().indexOf("/")) : currency.getSymbol().substring(currency.getSymbol().indexOf("/") + 1, currency.getSymbol().length()));
-            tvBuySymbol.setText(currency.getSymbol());
-            tvSellSymbol.setText(currency.getSymbol());
+//            tvBuySymbol.setText(currency.getSymbol());
+//            tvSellSymbol.setText(currency.getSymbol());
         }
         etBuyCount.setHint(intType == 0 ? getString(R.string.text_number) : getString(R.string.text_entrust));
         tvBuyRMB.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
@@ -1400,8 +1400,8 @@ public class TradeActivity extends BaseActivity implements TradeContract.View{
         if (currency != null) {
             try {
                 if (GlobalConstant.LIMIT_PRICE.equals(type))
-                    tvBuySymbol.setText(symbol);
-                tvSellSymbol.setText(symbol);
+//                    tvBuySymbol.setText(symbol);
+//                tvSellSymbol.setText(symbol);
                 btnBuy.setText(String.valueOf(getString(R.string.text_buy_in) + symbol));
                 btnSale.setText(String.valueOf(getString(R.string.text_sale_out) + symbol));
 //                getExchangeAndSymbolInfo();

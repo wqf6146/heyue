@@ -112,7 +112,7 @@
                             android:scaleY="1.1"
                             android:text=""
                             android:textColor="@color/main_font_green"
-                            android:textSize="@dimen/font_xxxlager"
+                            android:textSize="@dimen/font_xxxxlager"
                             android:textStyle="bold" />
 
                         <LinearLayout
@@ -341,7 +341,7 @@
             android:layout_weight="1"
             android:background="@drawable/ripple_green_no_corner"
             android:gravity="center"
-            android:text="买入BTC"
+            android:text="做多BTC"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font_lager" />
 
@@ -352,7 +352,7 @@
             android:layout_weight="1"
             android:background="@drawable/ripple_red_no_corner"
             android:gravity="center"
-            android:text="卖出BTC"
+            android:text="做空BTC"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font_lager" />
 

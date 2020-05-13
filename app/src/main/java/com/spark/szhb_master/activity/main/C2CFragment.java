@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.spark.szhb_master.R;
+import com.spark.szhb_master.activity.delegate.PostDelegateActivity;
 import com.spark.szhb_master.activity.login.LoginActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.presenter.C2CPresenterImpl;
@@ -147,6 +148,7 @@ public class C2CFragment extends BaseNestingTransFragment implements MainContrac
                 clickTabSell();
                 break;
             case R.id.ivAdd:
+                showActivity(PostDelegateActivity.class,null);
                 break;
         }
 

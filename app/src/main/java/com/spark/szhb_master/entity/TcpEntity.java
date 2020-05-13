@@ -2,7 +2,11 @@ package com.spark.szhb_master.entity;
 
 import com.spark.szhb_master.factory.socket.NEWCMD;
 
-public class TcpEntity {
+import java.io.Serializable;
+
+public class TcpEntity implements Serializable {
+
+    private static final long serialVersionUID = -2083503801443301445L;
     private String tcpKey;
     private String status;
     private NEWCMD newcmd;

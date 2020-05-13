@@ -88,14 +88,18 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     }
 
     @Override
-    protected void loadData() {
-        super.loadData();
+    public void onResume() {
+        super.onResume();
         if (type == 2){
             getFaitsList(false,pageNo);
         }else{
             getC2cList(false,pageNo);
         }
+    }
 
+    @Override
+    protected void loadData() {
+        super.loadData();
     }
 
     @Override

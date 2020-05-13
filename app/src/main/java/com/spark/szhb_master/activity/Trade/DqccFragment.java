@@ -1,6 +1,7 @@
 package com.spark.szhb_master.activity.Trade;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -47,12 +48,13 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
     private TradeContract.DqccPresenter presenter;
     private TrustAdapter trustAdapter;
     private List<NewEntrust.ListBean> entrustList;
+    private OnCallBackEvent onCallBackEvent;
 
     public static DqccFragment getInstance(String symbol, String symbolType) {
         DqccFragment dqccFragment = new DqccFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("symbol", symbol);
-        bundle.putSerializable("symbolType", symbolType);
+        bundle.putSerializable("mark", symbol);
+        bundle.putSerializable("leverage", symbolType);
         dqccFragment.setArguments(bundle);
         return dqccFragment;
     }
@@ -73,6 +75,11 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
     @Override
     protected int getLayoutId() {
         return R.layout.view_recycleview;
+    }
+
+    @Override
+    protected boolean isImmersionBarEnabled() {
+        return false;
     }
 
     @Override
@@ -97,6 +104,7 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
                 presenter.commitUndersellContrat(hashMap);
             }
         });
+        trustAdapter.bindToRecyclerView(mRecycleView);
         mRecycleView.setAdapter(trustAdapter);
     }
 
@@ -104,6 +112,8 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
     public void undersellContratSuccess(String msg) {
         ToastUtils.showToast("平仓成功");
         beginRefreshing();
+        if (onCallBackEvent!=null)
+            onCallBackEvent.undersellContratSuccess();
     }
 
     @Override
@@ -112,7 +122,7 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
         map.put("mark", mMark);
         map.put("leverage", mLeverage);
         map.put("page", mPage + 1);
-        map.put("page_size", 20);
+        map.put("page_size", GlobalConstant.PageSize);
         presenter.getCurrentHave(map);
         return true;
     }
@@ -124,12 +134,12 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
         map.put("mark", mMark);
         map.put("leverage", mLeverage);
         map.put("page", mPage);
-        map.put("page_size", 20);
+        map.put("page_size", GlobalConstant.PageSize);
         presenter.getCurrentHave(map);
     }
 
     private String mMark,mLeverage;
-    private int mPage = 1,mPageSize=20;
+    private int mPage = 1;
 
     @Override
     protected void initData() {
@@ -147,45 +157,48 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
         }
     }
 
+    public void reInit(String mark,String leverage){
+        mMark = mark;
+        mLeverage = leverage;
+        mRefreshlayout.beginRefreshing();
+    }
+
+    public void refresh(){
+        mPage = 1;
+        HashMap map = new HashMap<>();
+        map.put("mark", mMark);
+        map.put("leverage", mLeverage);
+        map.put("page", mPage);
+        map.put("page_size", GlobalConstant.PageSize);
+        presenter.getCurrentHave(map);
+    }
+
     public void beginRefreshing(){
         mRefreshlayout.beginRefreshing();
     }
 
     @Override
     public void getCurrentHaveSuccess(NewEntrust entrustEntity) {
-//        if (entrustEntity.getPage() == 1 && entrustEntity.getList().size() == 0){
-//            rlEmpty.setVisibility(View.VISIBLE);
-//        }else{
-//            rlEmpty.setVisibility(View.GONE);
-//
-//            if (entrustEntity.getList().size() > 0 && entrustEntity.getList().size() < mPageSize){
-//                mPage = entrustEntity.getPage();
-//                if (mRefreshlayout.getCurrentRefreshStatus() == BGARefreshLayout.RefreshStatus.REFRESHING){
-//                    entrustList.clear();
-//                }
-//                entrustList.addAll(entrustEntity.getList());
-//            }
-//            trustAdapter.notifyDataSetChanged();
-//        }
         if (entrustEntity != null && entrustEntity.getList().size() > 0) {
-            if (mPage == 1) {
+            if (onCallBackEvent!=null)
+                onCallBackEvent.showEmpty(false);
+            if (entrustEntity.getPage() == 1) {
                 this.entrustList.clear();
-            } else {
+            } else if (entrustEntity.getList().size() < GlobalConstant.PageSize){
                 mRefreshlayout.endLoadingMore();
             }
 
-            if (entrustList.size() == mPageSize){
-                mPage = entrustEntity.getPage();
-            }
+            mPage = entrustEntity.getPage();
 
             this.entrustList.addAll(entrustEntity.getList());
             trustAdapter.notifyDataSetChanged();
         } else {
-            if (entrustEntity.getList().size() == 1) {
-//                if (pageNo == 1 && obj.getTotalElement() == 0 ) {
+            if (entrustEntity.getPage() == 1) {
                 this.entrustList.clear();
-                rlEmpty.setVisibility(View.VISIBLE);
+                trustAdapter.setEmptyView(R.layout.empty_no_message);
                 trustAdapter.notifyDataSetChanged();
+                if (onCallBackEvent!=null)
+                    onCallBackEvent.showEmpty(true);
             }
         }
     }
@@ -206,5 +219,14 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
     @Override
     public void setPresenter(TradeContract.DqccPresenter presenter) {
         this.presenter = presenter;
+    }
+
+    public void setOnCallBackEvent(OnCallBackEvent onCallBackEvent) {
+        this.onCallBackEvent = onCallBackEvent;
+    }
+
+    public interface OnCallBackEvent {
+        void undersellContratSuccess();
+        void showEmpty(boolean isShow);
     }
 }

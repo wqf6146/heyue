@@ -33,7 +33,8 @@
                 android:layout_marginLeft="2dp"
                 android:text="/USDT"
                 android:textColor="@color/font_hint"
-                android:textSize="@dimen/font_small" />
+                android:textSize="@dimen/font_small"
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView

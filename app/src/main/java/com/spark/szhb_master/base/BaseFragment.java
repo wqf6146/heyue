@@ -219,12 +219,10 @@ public abstract class BaseFragment extends Fragment {
     protected void fillWidget() {
     }
 
-    ;
 
     protected void loadData() {
     }
 
-    ;
 
     protected boolean isImmersionBarEnabled() {
         return true;

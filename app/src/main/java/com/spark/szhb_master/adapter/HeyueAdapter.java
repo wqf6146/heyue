@@ -60,7 +60,10 @@ public class HeyueAdapter extends BaseQuickAdapter<NewCurrency, BaseViewHolder> 
         boolean tol = Float.parseFloat(item.getScale()) > 0 ? true : false;
 
         helper.setText(R.id.tvBuySymbol, item.getSymbol());
-        helper.setText(R.id.tvSecSymbol, "/" + item.getType());
+        if (item.getSymbol().equals("BTC")){
+            helper.setText(R.id.tvSecSymbol, "/" + item.getType()).setVisible(R.id.tvSecSymbol,true);
+        }
+
         helper.setText(R.id.tvPrice, item.getClose());
         if (tol){
             helper.setText(R.id.item_home_chg, "+"+ item.getScale() + "%");

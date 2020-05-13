@@ -16,54 +16,44 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.github.fujianlian.klinechart.DataHelper;
 import com.github.fujianlian.klinechart.KLineChartAdapter;
 import com.github.fujianlian.klinechart.KLineChartView;
-
 import com.github.fujianlian.klinechart.KLineEntity;
 import com.github.fujianlian.klinechart.draw.Status;
 import com.github.fujianlian.klinechart.formatter.DateFormatter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.activity.Trade.NewTradeActivity;
 import com.spark.szhb_master.activity.Trade.TradeActivity;
 import com.spark.szhb_master.activity.main.MainActivity;
 import com.spark.szhb_master.activity.mychart.DataParse;
 import com.spark.szhb_master.activity.mychart.KLineBean;
-import com.spark.szhb_master.activity.mychart.MinutesBean;
 import com.spark.szhb_master.adapter.MyPagerAdapter;
 import com.spark.szhb_master.adapter.PagerAdapter;
-import com.spark.szhb_master.base.BaseFragment;
+import com.spark.szhb_master.base.BaseActivity;
 import com.spark.szhb_master.entity.ChartBean;
-import com.spark.szhb_master.entity.Exchange;
+import com.spark.szhb_master.entity.Currency;
+import com.spark.szhb_master.entity.Favorite;
 import com.spark.szhb_master.entity.NewCurrency;
 import com.spark.szhb_master.entity.SymbolBean;
-import com.spark.szhb_master.entity.SymbolStep;
 import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.factory.socket.NEWCMD;
+import com.spark.szhb_master.serivce.SocketResponse;
 import com.spark.szhb_master.ui.CustomViewPager;
+import com.spark.szhb_master.ui.MyViewPager;
 import com.spark.szhb_master.ui.intercept.MyScrollView;
 import com.spark.szhb_master.utils.DpPxUtils;
 import com.spark.szhb_master.utils.GlobalConstant;
-import com.spark.szhb_master.MyApplication;
-import com.spark.szhb_master.base.BaseActivity;
-import com.spark.szhb_master.entity.Currency;
-import com.spark.szhb_master.entity.Favorite;
-import com.spark.szhb_master.factory.socket.ISocket;
-import com.spark.szhb_master.serivce.SocketMessage;
-import com.spark.szhb_master.serivce.SocketResponse;
-import com.spark.szhb_master.ui.MyViewPager;
-
 import com.spark.szhb_master.utils.ToastUtils;
 import com.spark.szhb_master.widget.SymbolDropDownDialog;
 
@@ -76,8 +66,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -85,8 +73,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import config.Injection;
-
-import static android.widget.RelativeLayout.CENTER_IN_PARENT;
 
 public class KlineActivity extends BaseActivity implements KlineContract.View, View.OnClickListener {
 
@@ -113,7 +99,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
 //    @BindView(R.id.kLandUp)
 //    TextView kLandUp;
 //    @BindView(R.id.kLandLow)
-//    TextView kLandLow;
+//    `TextView kLandLow;`
 
     @BindView(R.id.scrollView)
     MyScrollView scrollView;
@@ -172,7 +158,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     private ArrayList<View> views;
     private TextView selectedTextView;
     private KLineChartAdapter kChartAdapter;
-    private int type;
+    private int type = 2;
     private String symbol = "";
     private String resolution;
     private KlineContract.Presenter presenter;
@@ -295,19 +281,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     @Override
     public void onStop() {
         super.onStop();
-
-//        String st = "market." + symbol + "_" + symbolType + ".klist." + typeLists[type];
-//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_KLIST,
-//                buildGetBodyJson(st, "0").toString())); //
-//
-//        String sthead = "market." + symbol + "_" + symbolType + ".detail";
-//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
-//                buildGetBodyJson(sthead, "0").toString()));
-
-
         EventBus.getDefault().unregister(this);
-
-
     }
 
     @Override
@@ -392,14 +366,6 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         startKlistTcp(type);
     }
 
-//    private LineChartManager lineChartManager2;
-//    private LineChartManager lineChartManager;
-//
-//    private void initchart() {
-//        lineChartManager2 = new LineChartManager(mLineChart);
-//        lineChartManager = new LineChartManager(lineChartbuy);
-//    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -413,15 +379,9 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                 initViewpager(titles);
                 initDepthData();
             }
-            selectedTextView = textViews.get(1);
+            selectedTextView = textViews.get(2);
             type = (int) selectedTextView.getTag();
         }
-    }
-
-    @Override
-    protected void loadData() {
-        super.loadData();
-//        presenter.allCurrency();
     }
 
 
@@ -799,7 +759,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                 kCount.setText(strCount);
 //                kRange.setText(getString(R.string.gains) + mCurrency.getScale() + "%");
                 mDataOne.setText(strDataOne);
-                mDataText.setText("≈" + mCurrency.getConvert() + "USDT");
+                mDataText.setText("≈ " + mCurrency.getConvert() + " USDT");
                 mDataOne.setTextColor(mCurrency.getScale() < 0 ? getResources().getColor(R.color.main_font_red) : getResources().getColor(R.color.main_font_green));
 //                kRange.setTextColor(mCurrency.getScale()  < 0 ? getResources().getColor(R.color.main_font_red) : getResources().getColor(R.color.main_font_green));
 //                kRange.setTextColor(mCurrency.getScale()  < 0 ? getResources().getColor(R.color.main_font_red) : getResources().getColor(R.color.main_font_green));
@@ -899,6 +859,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
 
             }
         });
+        viewPager.setCurrentItem(type);
         setPagerView();
     }
 

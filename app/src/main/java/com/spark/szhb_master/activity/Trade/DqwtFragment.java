@@ -13,6 +13,7 @@ import com.spark.szhb_master.adapter.TrustAdapter;
 import com.spark.szhb_master.base.BaseFragment;
 import com.spark.szhb_master.entity.Entrust;
 import com.spark.szhb_master.entity.NewEntrust;
+import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.NetCodeUtils;
 import com.spark.szhb_master.utils.ToastUtils;
 
@@ -51,12 +52,13 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
     private TradeContract.DqwtPresenter presenter;
     private TrustAdapter trustAdapter;
     private List<NewEntrust.ListBean> entrustList;
+    private OnCallBackEvent callBackEvent;
 
     public static DqwtFragment getInstance(String symbol, String symbolType) {
         DqwtFragment depthFragment = new DqwtFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("symbol", symbol);
-        bundle.putSerializable("symbolType", symbolType);
+        bundle.putSerializable("mark", symbol);
+        bundle.putSerializable("leverage", symbolType);
         depthFragment.setArguments(bundle);
         return depthFragment;
     }
@@ -92,6 +94,7 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
                 presenter.undoLimitContrat(hashMap);
             }
         });
+        trustAdapter.bindToRecyclerView(mRecycleView);
         mRecycleView.setAdapter(trustAdapter);
 
     }
@@ -109,7 +112,7 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
         map.put("mark", mMark);
         map.put("leverage", mLeverage);
         map.put("page", mPage + 1);
-        map.put("page_size", 20);
+        map.put("page_size", GlobalConstant.PageSize);
         presenter.getCurrentEntrust(map);
         return true;
     }
@@ -121,12 +124,22 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
         map.put("mark", mMark);
         map.put("leverage", mLeverage);
         map.put("page", mPage);
-        map.put("page_size", 20);
+        map.put("page_size", GlobalConstant.PageSize);
+        presenter.getCurrentEntrust(map);
+    }
+
+    public void refresh(){
+        mPage = 1;
+        HashMap map = new HashMap<>();
+        map.put("mark", mMark);
+        map.put("leverage", mLeverage);
+        map.put("page", mPage);
+        map.put("page_size", GlobalConstant.PageSize);
         presenter.getCurrentEntrust(map);
     }
 
     private String mMark,mLeverage;
-    private int mPage = 1,mPageSize=20;
+    private int mPage = 1;
 
     @Override
     protected void initData(){
@@ -145,6 +158,12 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
         }
     }
 
+    public void reInit(String mark,String leverage){
+        mMark = mark;
+        mLeverage = leverage;
+        mRefreshlayout.beginRefreshing();
+    }
+
     public void beginRefreshing(){
         mRefreshlayout.beginRefreshing();
     }
@@ -153,46 +172,42 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
     public void undoLimitContratSuccess(String msg) {
         ToastUtils.showToast("撤销成功");
         beginRefreshing();
+        if (callBackEvent!=null)
+            callBackEvent.undoLimitContratSuccess();
+    }
+
+    public void setCallBackEvent(OnCallBackEvent callBackEvent) {
+        this.callBackEvent = callBackEvent;
+    }
+
+    @Override
+    protected boolean isImmersionBarEnabled() {
+        return false;
     }
 
     @Override
     public void getCurrentEntrustSuccess(NewEntrust entrustEntity) {
-//        if (entrustEntity.getPage() == 1 && entrustEntity.getList().size() == 0){
-//            rlEmpty.setVisibility(View.VISIBLE);
-//        }else{
-//            rlEmpty.setVisibility(View.GONE);
-//
-//            if (entrustEntity.getList().size() > 0 && entrustEntity.getList().size() < mPageSize){
-//                mPage = entrustEntity.getPage();
-//                if (mRefreshlayout.getCurrentRefreshStatus() == BGARefreshLayout.RefreshStatus.REFRESHING){
-//                    entrustList.clear();
-//                }
-//                entrustList.addAll(entrustEntity.getList());
-//            }
-//
-//
-//            trustAdapter.notifyDataSetChanged();
-//        }
 
         if (entrustEntity != null && entrustEntity.getList().size() > 0) {
-            if (mPage == 1) {
+            if (callBackEvent!=null)
+                callBackEvent.showEmpty(false);
+            if (entrustEntity.getPage() == 1) {
                 this.entrustList.clear();
-            } else {
+            } else if (entrustEntity.getList().size() < GlobalConstant.PageSize){
                 mRefreshlayout.endLoadingMore();
             }
 
-            if (entrustList.size() == mPageSize){
-                mPage = entrustEntity.getPage();
-            }
+            mPage = entrustEntity.getPage();
 
             this.entrustList.addAll(entrustEntity.getList());
             trustAdapter.notifyDataSetChanged();
         } else {
-            if (mPage == 1) {
-//                if (pageNo == 1 && obj.getTotalElement() == 0 ) {
+            if (entrustEntity.getPage() == 1) {
                 this.entrustList.clear();
-                rlEmpty.setVisibility(View.VISIBLE);
+                trustAdapter.setEmptyView(R.layout.empty_no_message);
                 trustAdapter.notifyDataSetChanged();
+                if (callBackEvent!=null)
+                    callBackEvent.showEmpty(true);
             }
         }
     }
@@ -212,5 +227,12 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
     @Override
     public void setPresenter(TradeContract.DqwtPresenter presenter) {
         this.presenter = presenter;
+    }
+
+
+
+    public interface OnCallBackEvent {
+        void undoLimitContratSuccess();
+        void showEmpty(boolean isShow);
     }
 }

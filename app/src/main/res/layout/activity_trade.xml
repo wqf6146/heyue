@@ -48,12 +48,12 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="380dp"
+                                android:layout_height="350dp"
                                 android:orientation="horizontal">
 
                                 <LinearLayout
                                     android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:orientation="vertical"
                                     android:paddingBottom="10dp">
@@ -136,7 +136,7 @@
 
                                 <LinearLayout
                                     android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginRight="8dp"
                                     android:layout_weight="1"
@@ -175,8 +175,8 @@
                                     <android.support.v7.widget.RecyclerView
                                         android:id="@+id/recyclerSell"
                                         android:layout_width="match_parent"
-                                        android:layout_weight="1"
-                                        android:layout_height="0dp" />
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1" />
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
@@ -205,7 +205,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:text="--"
                                                 android:textColor="@color/main_font_green"
-                                                android:textSize="@dimen/font_normal"
+                                                android:textSize="@dimen/font_xxlager"
                                                 android:textStyle="bold" />
                                         </LinearLayout>
 
@@ -223,15 +223,10 @@
                                     <android.support.v7.widget.RecyclerView
                                         android:id="@+id/recyclerBuy"
                                         android:layout_width="match_parent"
-                                        android:layout_weight="1"
-                                        android:layout_height="0dp"/>
+                                        android:layout_height="0dp"
+                                        android:layout_weight="1" />
                                 </LinearLayout>
                             </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp"
-                                android:background="@color/main_bg" />
 
                         </LinearLayout>
                     </android.support.design.widget.CollapsingToolbarLayout>
@@ -283,11 +278,56 @@
                         android:textSize="@dimen/font_small" />
                 </LinearLayout>
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewpager"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/main_bg" />
+                    android:layout_height="match_parent">
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/main_bg" />
+
+<!--                    <RelativeLayout-->
+<!--                        android:id="@+id/rlEmptyView"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:background="@color/main_bg"-->
+<!--                        android:visibility="gone">-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_centerHorizontal="true"-->
+<!--                            android:layout_marginTop="50dp"-->
+<!--                            android:orientation="vertical">-->
+
+<!--                            <ImageView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center_horizontal"-->
+<!--                                android:src="@mipmap/no_order" />-->
+
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/tvMessageView"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center_horizontal"-->
+<!--                                android:layout_marginTop="8dp"-->
+<!--                                android:text="@string/no_data"-->
+<!--                                android:textColor="@color/main_font_grey"-->
+<!--                                android:textSize="@dimen/font_normal" />-->
+
+<!--                        </LinearLayout>-->
+
+<!--                        &lt;!&ndash;android:src="@mipmap/icon_no_data" />&ndash;&gt;-->
+
+<!--                    </RelativeLayout>-->
+
+                </FrameLayout>
+
+
             </LinearLayout>
 
             <!--</android.support.v4.widget.NestedScrollView>-->

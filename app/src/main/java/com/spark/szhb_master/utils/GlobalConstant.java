@@ -57,6 +57,7 @@ public class GlobalConstant {
     public static final String JPY = "JPY";
     public static final int PageSize = 10;
     public static final String UserSaveFileName = "user.info";
+    public static final String WebSocketFileName = "websocket.info";
     public static final String LOGIN_LANGUAGE = "LOGIN_LANGUAGE";
 
     public static final String APP_ID = "wx9f595f5316941e1f";

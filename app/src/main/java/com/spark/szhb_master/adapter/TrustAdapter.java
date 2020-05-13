@@ -9,6 +9,7 @@ import com.spark.szhb_master.R;
 import com.spark.szhb_master.entity.NewEntrust;
 import com.spark.szhb_master.utils.DateUtils;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
@@ -53,14 +54,22 @@ public class TrustAdapter extends BaseQuickAdapter<NewEntrust.ListBean, BaseView
 
 //        NumberFormat nf = NumberFormat.getNumberInstance();
 //        nf.setMaximumFractionDigits(2);
-        helper.setText(R.id.trust_shouyi, String.valueOf(item.getHarvest_num()));
-        helper.setText(R.id.trust_shouyilv, String.valueOf(item.getIncome_rate()));
 
-        helper.setText(R.id.trust_guoyef, String.valueOf(item.getOvernight_fee()));
-        helper.setText(R.id.trust_shouxufei, String.valueOf(item.getFee()));
+        String shouyi = new BigDecimal(new Double(item.getHarvest_num())).setScale(4,BigDecimal.ROUND_HALF_UP).toString();
+//        String shouyilv = new BigDecimal(new Double(item.getIncome_rate())).setScale(4,BigDecimal.ROUND_HALF_UP) + "%";
+
+        helper.setText(R.id.trust_shouyi, shouyi);
+        helper.setText(R.id.trust_shouyilv, item.getIncome_rate());
+
+
+        String guoyef = new BigDecimal(new Double(item.getOvernight_fee())).setScale(4,BigDecimal.ROUND_HALF_UP).toString();
+        String shouxufei = new BigDecimal(new Double(item.getFee())).setScale(4,BigDecimal.ROUND_HALF_UP).toString();
+        String bzj = new BigDecimal(new Double(item.getConsume_num())).setScale(4,BigDecimal.ROUND_HALF_UP).toString();
+        helper.setText(R.id.trust_guoyef, guoyef);
+        helper.setText(R.id.trust_shouxufei, shouxufei);
         helper.setText(R.id.trust_zhiyingjia, String.valueOf(item.getHarvest_price()));
         helper.setText(R.id.trust_zhisunjia, String.valueOf(item.getLoss_price()));
-        helper.setText(R.id.trust_baozhengjin, String.valueOf(item.getConsume_num()));
+        helper.setText(R.id.trust_baozhengjin, bzj);
 
         helper.getView(R.id.trust_btn).setTag(item.getId());
         helper.addOnClickListener(R.id.trust_btn);

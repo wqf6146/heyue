@@ -1,9 +1,13 @@
 package com.spark.szhb_master;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -36,6 +40,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -54,6 +59,25 @@ public class MyApplication extends Application {
     private int mWidth; // 当前手机屏幕的宽高
     private int mHeight;
 
+    private String TAG = MyApplication.class.toString();
+
+    // 正常状态
+    public static final int STATE_NORMAL = 0;
+    // 从后台回到前台
+    public static final int STATE_BACK_TO_FRONT = 1;
+    // 从前台进入后台
+    public static final int STATE_FRONT_TO_BACK = 2;
+
+    // APP状态
+    private static int sAppState = STATE_NORMAL;
+    // 标记程序是否已进入后台(依据onStop回调)
+    private boolean flag;
+    // 标记程序是否已进入后台(依据onTrimMemory回调)
+    private boolean background;
+    // 从前台进入后台的时间
+    private static long frontToBackTime;
+    // 从后台返回前台的时间
+    private static long backToFrontTime;
 
     private List<TcpEntity> mTcpEntity = new ArrayList<>();
 
@@ -127,6 +151,22 @@ public class MyApplication extends Application {
         mTcpEntity.clear();
     }
 
+    public void stopAlltcp(){
+        for (int i=0;i<mTcpEntity.size();i++){
+            TcpEntity local = mTcpEntity.get(i);
+            EventBus.getDefault().post(new SocketMessage(0, local.getNewcmd(),
+                    buildGetBodyJson(local.getTcpKey(), "0").toString())); //
+        }
+    }
+
+    public void sendTcp(){
+        for (int i=0;i<mTcpEntity.size();i++){
+            TcpEntity local = mTcpEntity.get(i);
+            EventBus.getDefault().post(new SocketMessage(0, local.getNewcmd(),
+                    buildGetBodyJson(local.getTcpKey(), "1").toString())); //
+        }
+    }
+
     private JSONObject buildGetBodyJson(String value, String type) {
         JSONObject obj = new JSONObject();
         try {
@@ -158,6 +198,112 @@ public class MyApplication extends Application {
         //开启debug模式，方便定位错误，具体错误检查方式可以查看http://dev.umeng.com/social/android/quick-integration的报错必看，正式发布，请关闭该模式
         Config.DEBUG = true;
 
+
+        this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                if (background || flag) {
+                    background = false;
+                    flag = false;
+                    sAppState = STATE_BACK_TO_FRONT;
+                    backToFrontTime = System.currentTimeMillis();
+                    Log.e(TAG, "onResume: STATE_BACK_TO_FRONT");
+                    if (needWakeWebSock()) {
+                        getCurrenTcpFromFile();
+                        resumeTcp();
+                    }
+                } else {
+                    sAppState = STATE_NORMAL;
+                }
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                //判断当前activity是否处于前台
+                if (!isCurAppTop()) {
+                    // 从前台进入后台
+                    sAppState = STATE_FRONT_TO_BACK;
+                    frontToBackTime = System.currentTimeMillis();
+                    flag = true;
+                    Log.e(TAG, "onStop: " + "STATE_FRONT_TO_BACK");
+
+                    saveCurrentTcp();
+                    stopAllChildTcp();
+                } else {
+                    // 否则是正常状态
+                    sAppState = STATE_NORMAL;
+                }
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+            }
+        });
+    }
+
+    private void stopAllChildTcp() {
+        stopBaseTcp();
+        stopAlltcp();
+    }
+
+    public void resumeTcp(){
+        startBaseTcp();
+        sendTcp();
+    }
+
+    public static boolean needWakeWebSock() {
+        return sAppState == STATE_BACK_TO_FRONT;
+    }
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        // TRIM_MEMORY_UI_HIDDEN是UI不可见的回调, 通常程序进入后台后都会触发此回调,大部分手机多是回调这个参数
+        // TRIM_MEMORY_BACKGROUND也是程序进入后台的回调, 不同厂商不太一样, 魅族手机就是回调这个参数
+        if (level == Application.TRIM_MEMORY_UI_HIDDEN || level == TRIM_MEMORY_BACKGROUND) {
+            background = true;
+        } else if (level == Application.TRIM_MEMORY_COMPLETE) {
+            background = !isCurAppTop();
+        }
+        if (background) {
+            frontToBackTime = System.currentTimeMillis();
+            sAppState = STATE_FRONT_TO_BACK;
+        } else {
+            sAppState = STATE_NORMAL;
+        }
+
+    }
+
+    public boolean isCurAppTop() {
+
+        String curPackageName = getPackageName();
+        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
+        if (list != null && list.size() > 0) {
+            ActivityManager.RunningTaskInfo info = list.get(0);
+            String topPackageName = info.topActivity.getPackageName();
+            String basePackageName = info.baseActivity.getPackageName();
+            if (topPackageName.equals(curPackageName) && basePackageName.equals(curPackageName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void initView() {
@@ -237,6 +383,39 @@ public class MyApplication extends Application {
         }
     }
 
+    public synchronized void saveCurrentTcp() {
+        try {
+            File file = FileUtils.getLongSaveFile(this, "WebSocket", GlobalConstant.WebSocketFileName);
+            if (file.exists()) {
+                file.delete();
+            }
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+            TcpEntity[] tcpEntities = new TcpEntity[mTcpEntity.size()];
+            mTcpEntity.toArray(tcpEntities);
+            oos.writeObject(tcpEntities);
+            oos.flush();
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 删除本地存储的文件
+     */
+    public void deleteCurrentTcp() {
+        this.mTcpEntity = null;
+        File file = FileUtils.getLongSaveFile(this, "WebSocket", GlobalConstant.WebSocketFileName);
+        if (file != null && file.exists()) {
+            file.delete();
+        }
+    }
+
     /**
      * 删除本地存储的文件
      */
@@ -246,6 +425,27 @@ public class MyApplication extends Application {
         if (file != null && file.exists()) {
             file.delete();
         }
+    }
+
+    public void getCurrenTcpFromFile() {
+        try {
+            File file = new File(FileUtils.getLongSaveDir(this, "WebSocket"), GlobalConstant.WebSocketFileName);
+            if (file != null && file.exists()) {
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+                TcpEntity[] tcpEntities = (TcpEntity[]) ois.readObject();
+                List<TcpEntity> tcpEntityList = Arrays.asList(tcpEntities);
+                this.mTcpEntity = new ArrayList<>(tcpEntityList);
+                if (this.mTcpEntity == null) {
+                    this.mTcpEntity = new ArrayList<>();
+                }
+                ois.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void getCurrentUserFromFile() {

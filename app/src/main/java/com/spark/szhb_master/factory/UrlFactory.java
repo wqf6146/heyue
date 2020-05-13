@@ -90,6 +90,10 @@ public class UrlFactory {
     }
 
 
+    public static String getFiatsBUrl() {
+        return newhost + "/user/fiats/order/add";
+    }
+
     public static String getAddBankUrl() {
         return newhost + "/user/pay/config";
     }

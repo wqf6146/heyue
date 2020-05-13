@@ -1,7 +1,6 @@
 package com.spark.szhb_master.activity.Trade;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -17,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,18 +42,14 @@ import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.MainActivity;
 import com.spark.szhb_master.adapter.PagerAdapter;
 import com.spark.szhb_master.adapter.SellAdapter;
-import com.spark.szhb_master.adapter.TrustAdapter;
 import com.spark.szhb_master.base.BaseActivity;
 import com.spark.szhb_master.dialog.EntrustDialog;
 import com.spark.szhb_master.dialog.TradeBuyOrSellConfirmDialog;
 import com.spark.szhb_master.entity.AssetsInfo;
 import com.spark.szhb_master.entity.ContratInfo;
-import com.spark.szhb_master.entity.Currency;
-import com.spark.szhb_master.entity.Entrust;
 import com.spark.szhb_master.entity.Exchange;
 import com.spark.szhb_master.entity.Favorite;
 import com.spark.szhb_master.entity.NewCurrency;
-import com.spark.szhb_master.entity.NewEntrust;
 import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.entity.SymbolBean;
 import com.spark.szhb_master.entity.SymbolStep;
@@ -67,6 +63,7 @@ import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.LogUtils;
 import com.spark.szhb_master.utils.MathUtils;
 import com.spark.szhb_master.utils.NetCodeUtils;
+import com.spark.szhb_master.utils.PriceTextWatcher;
 import com.spark.szhb_master.utils.ScreenUtil;
 import com.spark.szhb_master.utils.StatusBarUtil;
 import com.spark.szhb_master.utils.StringUtils;
@@ -91,7 +88,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import config.Injection;
 
 /**
@@ -100,7 +96,7 @@ import config.Injection;
  * desc  : 这是我重写的交易界面，在原来上我不知道怎么改了
  */
 
-public class NewTradeActivity extends BaseActivity implements TradeContract.View{
+public class NewTradeActivity extends BaseActivity implements TradeContract.View {
     public static final String TAG = NewTradeActivity.class.getSimpleName();
 
     @BindView(R.id.fldiap)
@@ -162,7 +158,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     TextView tvMoney;
     @BindView(R.id.tvBuyCanUse)
     TextView tvBuyCanUse;
-//    @BindView(R.id.tvCanSell)
+    //    @BindView(R.id.tvCanSell)
 //    TextView tvCanSell;
     @BindView(R.id.tvBuyRMB)
     TextView tvBuyRMB;
@@ -257,21 +253,24 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     EditText edBuyStopLoss;
 
 
+    private DqccFragment dqccFragment;
+    private DqwtFragment dqwtFragment;
+
+
     private NewCurrency currency;
-    private List<Exchange> sellExchangeList;
-    private List<Exchange> buyExchangeList;
-    private List<NewEntrust.ListBean> entrustList;
+    private List<Exchange> sellExchangeList = new ArrayList<>();
+    private List<Exchange> buyExchangeList = new ArrayList<>();
     private SellAdapter sellAdapter; // 卖出适配器
     private SellAdapter buyAdapter; // 买入适配器
-    private TrustAdapter trustAdapter; // 委托适配器
+
     private TradeContract.Presenter mPresenter;
     private int baseCoinScale = 2; // 价格
     private int coinScale = 2; // 数量
     private boolean isFace = false;
     private double doubleBuyCount, doubleSellCount, doubleBuyPrice, doubleSellPrice;
     private EntrustDialog dialog;
-    private String price="0"; // 买入的价格
-    private String amout="0"; // 卖出的价格
+    private String price = "0"; // 买入的价格
+    private String amout = "0"; // 卖出的价格
     private String type = GlobalConstant.LIMIT_PRICE;
     private String orderId;
     private double usdeBalance = -1;
@@ -280,9 +279,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     private double sellCountBalance_two = 0; // 可卖币的多少
     private double buyCountBalance = 0; // 可用的币
     private double buyCountBalance_two = 0; // 可用的币
-    private boolean isGetWallet;
-    public static List<Favorite> mFavorte = new ArrayList<>();
-    private List<Currency> currencyListAll = new ArrayList<>();
+
     private boolean isFirst = true;
     private boolean isLoginStateOld;
 
@@ -313,23 +310,6 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-
-            if (currency!=null)
-                setTCPBySymbol(currency);
-        }
-
-    }
-
-
-    public interface OperateCallback {
-        void GoneLine();
-        void tohome();
-    }
 
     @Override
     public void onDestroy() {
@@ -356,8 +336,8 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         StatusBarUtil.immersive(this);
         StatusBarUtil.setPaddingSmart(this, toolbar);
 
-        if (mSymbolDialog == null){
-            mSymbolDialog = new SymbolDropDownDialog(this,fldiap,mTvTitleSymbolType);
+        if (mSymbolDialog == null) {
+            mSymbolDialog = new SymbolDropDownDialog(this, fldiap, mTvTitleSymbolType);
             mSymbolDialog.setOnItemClickCallback(new SymbolDropDownDialog.OnItemClickCallback() {
                 @Override
                 public void onitemClick(NewCurrency currency) {
@@ -376,6 +356,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             int lastScrollY = 0;
+
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 int[] location = new int[2];
@@ -394,14 +375,14 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ((DqwtFragment)mTabFragments.get(1)).beginRefreshing();
-                ((DqccFragment)mTabFragments.get(0)).beginRefreshing();
+                dqccFragment.beginRefreshing();
+                dqwtFragment.beginRefreshing();
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         refreshLayout.setRefreshing(false);
                     }
-                },200);
+                }, 200);
             }
         });
     }
@@ -468,14 +449,11 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 //                    mRadioGroup.check(R.id.rbBuy);
                     LogUtils.i("handler");
                     initSellAndBuyView();
-                    initTrustView();
                     //tvBuyTradeCount.setText(getString(R.string.text_entrust) + " --");
                     //tvSellTradeCount.setText(getString(R.string.text_entrust) + " --");
                     setViewListener();
                     if (currency != null) {
                         initTabViewpager();
-
-//                        setTCPBySymbol(currency);
                         setViewText();
                         checkLogin();
                     }
@@ -489,8 +467,33 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     private void initTabViewpager() {
         mTabFragments = new ArrayList<>();
 
-        mTabFragments.add(DqccFragment.getInstance(currency.getSymbol(),currency.getType()));
-        mTabFragments.add(DqwtFragment.getInstance(currency.getSymbol(),currency.getType()));
+        dqccFragment= DqccFragment.getInstance(currency.getSymbol(), currency.getType());
+        dqccFragment.setOnCallBackEvent(new DqccFragment.OnCallBackEvent() {
+            @Override
+            public void undersellContratSuccess() {
+                getWallet();
+            }
+
+            @Override
+            public void showEmpty(boolean isShow) {
+//                rlEmpty.setVisibility(isShow ? View.VISIBLE : View.GONE);
+            }
+        });
+        mTabFragments.add(dqccFragment);
+
+        dqwtFragment = DqwtFragment.getInstance(currency.getSymbol(), currency.getType());
+        dqwtFragment.setCallBackEvent(new DqwtFragment.OnCallBackEvent() {
+            @Override
+            public void undoLimitContratSuccess() {
+                getWallet();
+            }
+
+            @Override
+            public void showEmpty(boolean isShow) {
+//                rlEmpty.setVisibility(isShow ? View.VISIBLE : View.GONE);
+            }
+        });
+        mTabFragments.add(dqwtFragment);
 
         tabs.add("当前持仓");
         tabs.add("当前委托");
@@ -499,6 +502,22 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         mViewPager.setOffscreenPageLimit(2);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition(),false);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
 
@@ -511,14 +530,11 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
             getWallet();
             btnBuy.setText("做多" + strSymbol);
             btnSale.setText("做空" + strSymbol);
-//            btnBuyQc.setText("全仓" + currency.getType() + "X");
-//            btnSellQc.setText("全仓" + currency.getType() + "X");
+            dqccFragment.reInit(currency.getSymbol(),currency.getType());
+            dqwtFragment.reInit(currency.getSymbol(),currency.getType());
         } else {
             btnBuy.setText("登录/注册");
             btnSale.setText("登录/注册");
-//            tvLogin.setVisibility(View.VISIBLE);
-//            tvEmpty.setVisibility(View.VISIBLE);
-            //recyclerCurrentEntrust.setVisibility(View.GONE);
         }
         isFirst = false;
     }
@@ -535,7 +551,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 
     @Override
     protected void loadData() {
-        LogUtils.i("loadData");
+
     }
 
     private String strSymbol;
@@ -560,8 +576,8 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 //            tvLatest.setTextColor(Float.parseFloat(currency.getScale()) >= 0 ? ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_green) :
 //                    ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_red));
             strSymbol = symbol;
-            tvBuySymbol.setText(strSymbol);
-            tvSellSymbol.setText(strSymbol);
+//            tvBuySymbol.setText(strSymbol);
+//            tvSellSymbol.setText(strSymbol);
             btnBuy.setText(getString(R.string.text_buy_in) + strSymbol);
             btnSale.setText(getString(R.string.text_sale_out) + strSymbol);
             if (GlobalConstant.CNY.equals(CommonUtils.getUnitBySymbol(symbol))) {
@@ -574,15 +590,6 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         }
     }
 
-    /**
-     * 初始化委托信息
-     */
-    private void initTrustView() {
-        entrustList = new ArrayList<>();
-        //recyclerCurrentEntrust.setLayoutManager(new LinearLayoutManager(activity));
-        trustAdapter = new TrustAdapter(entrustList);
-        //recyclerCurrentEntrust.setAdapter(trustAdapter);
-    }
 
     /**
      * 初始化卖出的盘口信息和买入的盘口信息
@@ -607,17 +614,17 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     private TipDialog liquidationDialog;
 
     @OnClick({R.id.tvPrice, R.id.tvLiquidation,
-            R.id.llSymbolTitle, R.id.ivBack,R.id.ivChart, R.id.tvBuyAdd,
+            R.id.llSymbolTitle, R.id.ivBack, R.id.ivChart, R.id.tvBuyAdd,
             R.id.tvBuyReduce, R.id.tvSellAdd, R.id.tvSellReduce, R.id.tvAll,
-            R.id.btnBuy, R.id.btnSell,R.id.btnBuyQc,R.id.btnSellQc})
+            R.id.btnBuy, R.id.btnSell, R.id.btnBuyQc, R.id.btnSellQc})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
         switch (v.getId()) {
             case R.id.llSymbolTitle:
-                if (mSymbolDialog != null && !mSymbolDialog.isHasShow()){
+                if (mSymbolDialog != null && !mSymbolDialog.isHasShow()) {
                     mSymbolDialog.show();
-                }else if (mSymbolDialog != null && mSymbolDialog.isHasShow()){
+                } else if (mSymbolDialog != null && mSymbolDialog.isHasShow()) {
                     mSymbolDialog.dismiss();
                 }
                 break;
@@ -625,7 +632,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                 finish();
                 break;
             case R.id.tvLiquidation:
-                if (liquidationDialog == null){
+                if (liquidationDialog == null) {
                     liquidationDialog = new TipDialog.Builder(this)
                             .setPicResources(R.mipmap.woo)
                             .setMessage("是否一键平仓?")
@@ -679,7 +686,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                 Bundle bundle = new Bundle();
                 bundle.putString("symbol", currency.getSymbol());
                 bundle.putSerializable("currency", currency);
-                bundle.putInt("tcpstatus",1);
+                bundle.putInt("tcpstatus", 1);
                 stopTcp();
                 showActivity(KlineActivity.class, bundle, 1);
                 break;
@@ -728,8 +735,8 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
             case R.id.tvAll: // 查看当前委托的全部
                 if (MyApplication.getApp().isLogin() && currency != null) { // 如果登录了就可以进入
                     bundle = new Bundle();
-                    bundle.putString("currency",currency.getSymbol());
-                    bundle.putString("type",currency.getType());
+                    bundle.putString("currency", currency.getSymbol());
+                    bundle.putString("type", currency.getType());
                     showActivity(CurrentTrustActivity.class, bundle);
                 } else if (!MyApplication.getApp().isLogin()) {
                     showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
@@ -737,32 +744,42 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                 break;
             case R.id.btnBuy: // 买入
                 if (MyApplication.getApp().isLogin()) {
-                    buyOrSell(0,0);
+                    buyOrSell(0, 0);
                 } else {
                     showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
                 }
                 break;
             case R.id.btnSell: // 卖出
                 if (MyApplication.getApp().isLogin()) {
-                    buyOrSell(1,0);
+                    buyOrSell(1, 0);
                 } else {
                     showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
                 }
                 break;
             case R.id.btnBuyQc:
                 if (MyApplication.getApp().isLogin()) {
-                    buyOrSell(0,1);
+                    buyOrSell(0, 1);
                 } else {
                     showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
                 }
                 break;
             case R.id.btnSellQc:
                 if (MyApplication.getApp().isLogin()) {
-                    buyOrSell(1,1);
+                    buyOrSell(1, 1);
                 } else {
                     showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
                 }
                 break;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+            if (currency != null)
+                setTCPBySymbol(currency);
         }
     }
 
@@ -773,6 +790,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     }
 
     private boolean tcpStatus = false;
+
     private void stopTcp() {
         if (tcpStatus) {
             tcpStatus = false;
@@ -825,7 +843,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     @Override
     public void commitLiquidationSuccess(String msg) {
         ToastUtils.showToast("一键平仓成功");
-        ((DqccFragment)mTabFragments.get(0)).beginRefreshing();
+        ((DqccFragment) mTabFragments.get(0)).beginRefreshing();
     }
 
     @Override
@@ -853,49 +871,20 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            if (currency == null) return;
-            if (CommonUtils.getUnitBySymbol(currency.getSymbol()).equals(GlobalConstant.CNY)) {
-                exchangeRate = 1;
-                exchangeRate = 1 * MainActivity.rate * currency.getBaseUsdRate();
+            if (TextUtils.isEmpty(charSequence)){
+                tvBuyTradeCount.setText("--");
+                tvSellTradeCount.setText("--");
+                return;
             }
-            if (intType == 0) { // 卖出价格
+            if (currency == null || mContartInfo==null) return;
+
+            if (intType == 0 || intType == 2) { // 卖出价格
                 if (StringUtils.isNotEmpty(etBuyPrice.getText().toString().trim())) {
                     doubleBuyPrice = MathUtils.getDoubleTransferString(etBuyPrice.getText().toString().trim());
                 } else {
                     doubleBuyPrice = 0.0;
                 }
 
-                if (type.equals(GlobalConstant.LIMIT_PRICE)) { // 限价
-//                    tvBuyRMB.setText(String.valueOf("≈" + MathUtils.getRundNumber(doubleBuyPrice * 1 * MainActivity.rate * currency.getBaseUsdRate(),
-//                            2, null) + GlobalConstant.CNY));
-                    if (StringUtils.isNotEmpty(etBuyCount.getText().toString().trim())) {
-
-                        tvBuyTradeCount.setText(getTradeNum(doubleBuyPrice,MathUtils.getDoubleTransferString(etBuyCount.getText().toString().trim())) + currency.getSymbol());
-                    }
-                }
-            } else if (intType == 1) { // 买入价格
-                if (StringUtils.isNotEmpty(etSellPrice.getText().toString().trim())) {
-                    doubleSellPrice = MathUtils.getDoubleTransferString(etSellPrice.getText().toString().trim());
-                } else {
-                    doubleSellPrice = 0.0;
-                }
-
-                if (type.equals(GlobalConstant.LIMIT_PRICE)) {
-//                    tvSellRMB.setText(String.valueOf("≈" + MathUtils.getRundNumber(doubleSellPrice * exchangeRate,
-//                            2, null) + GlobalConstant.CNY));
-                    tvSellRMB.setText(String.valueOf("≈" + MathUtils.getRundNumber(doubleSellPrice * 1 * MainActivity.rate * currency.getBaseUsdRate(),
-                            2, null) + "CNY"));
-
-                    if (StringUtils.isNotEmpty(etSellCount.getText().toString().trim())) {
-                        tvSellTradeCount.setText(getTradeNum(doubleSellPrice,MathUtils.getDoubleTransferString(etSellCount.getText().toString().trim())) + currency.getSymbol());
-                    }
-                }
-            } else if (intType == 2) { // 买入数量
                 String strBuyCount = etBuyCount.getText().toString().trim();
                 if (StringUtils.isNotEmpty(strBuyCount)) {
                     doubleBuyCount = MathUtils.getDoubleTransferString(strBuyCount);
@@ -903,36 +892,29 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                     doubleBuyCount = 0.0;
                 }
 
-                CalCanPlaceOrderNum(doubleBuyPrice);
-                if (doubleBuyCount > mCanPlaceOrderNum){
-                    ToastUtils.showToast("可用量不足");
-                    mCanFly = false;
-                }else{
-                    mCanFly = true;
+                if (doubleBuyCount!=0 && doubleBuyPrice!=0){
+                    CalCanPlaceOrderNum(doubleBuyPrice);
+                    if (doubleBuyCount > mCanPlaceOrderNum) {
+                        ToastUtils.showToast("可用量不足");
+                        mCanFly = false;
+                    } else {
+                        mCanFly = true;
+                    }
+
+                    if (type.equals(GlobalConstant.LIMIT_PRICE)) { // 限价
+                        tvBuyTradeCount.setText(getTradeNum(doubleBuyPrice, doubleBuyCount) + "USDT");
+                    } else {
+                        tvBuyTradeCount.setText(getString(R.string.text_entrust) + " --");
+                    }
                 }
 
-                if (type.equals(GlobalConstant.LIMIT_PRICE)) { // 限价
-                    tvBuyTradeCount.setText(getTradeNum(doubleBuyPrice,doubleBuyCount) + currency.getSymbol());
-
-//                    if (buyCountBalance == 0) buyCountBalance = 1;
-//                    if (doubleBuyPrice == 0) doubleBuyPrice = 1;
-//                    double progress = doubleBuyPrice * doubleBuyCount / buyCountBalance;//
-//                    buySeekBar.setProgress(progress * 1000 >= 1000 ? 1000 : (float) progress * 1000);
+            } else if (intType == 1 || intType == 3) { // 买入价格
+                if (StringUtils.isNotEmpty(etSellPrice.getText().toString().trim())) {
+                    doubleSellPrice = MathUtils.getDoubleTransferString(etSellPrice.getText().toString().trim());
                 } else {
-                    tvBuyTradeCount.setText(getString(R.string.text_entrust) + " " + String.valueOf("--"));
-                    if (buyCountBalance == 0) buyCountBalance = 1;
-//                    double progress = doubleBuyCount / usdeBalance;
-//                    buySeekBar.setProgress(Float.parseFloat(tvBuyCanUse+""));
-//                    buySeekBar.setProgress((float)(Double.valueOf(MathUtils.getRundNumber(usdeBalance, 2, null)) * progress));
-//                    buySeekBar.setProgress(progress * 1000 >= 1000 ? 1000 : (float) progress * 1000);
+                    doubleSellPrice = 0.0;
                 }
 
-                int posDot = strBuyCount.indexOf(".");
-                if (posDot <= 0) return;
-                if (strBuyCount.length() - (posDot + 1) > coinScale) {
-                    editable.delete(posDot + 1 + coinScale, posDot + 2 + coinScale);
-                }
-            } else if (intType == 3) { // 做空数量
                 String strSellCount = etSellCount.getText().toString().trim();
                 if (StringUtils.isNotEmpty(strSellCount)) {
                     doubleSellCount = MathUtils.getDoubleTransferString(strSellCount);
@@ -940,57 +922,80 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                     doubleSellCount = 0.0;
                 }
 
-                CalCanPlaceOrderNum(doubleSellPrice);
-                if (doubleSellCount > mCanPlaceOrderNum){
-                    ToastUtils.showToast("可用量不足");
-                    mCanFly = false;
-                }else{
-                    mCanFly = true;
+                if (doubleSellCount!=0 && doubleSellPrice!=0){
+                    CalCanPlaceOrderNum(doubleSellPrice);
+                    if (doubleSellCount > mCanPlaceOrderNum) {
+                        ToastUtils.showToast("可用量不足");
+                        mCanFly = false;
+                    } else {
+                        mCanFly = true;
+                    }
+
+                    if (type.equals(GlobalConstant.LIMIT_PRICE)) {
+                        tvSellTradeCount.setText(getTradeNum(doubleSellPrice, doubleSellCount) + "USDT");
+                    } else {
+                        tvSellTradeCount.setText(getString(R.string.text_entrust) + " " + String.valueOf("--"));
+                    }
                 }
 
-                if (type.equals(GlobalConstant.LIMIT_PRICE)) {
-                    tvSellTradeCount.setText(getTradeNum(doubleSellPrice,doubleSellCount) + currency.getSymbol());
-                    //新家的
-                    if (sellCountBalance == 0) sellCountBalance = 1;
-                    if (doubleSellPrice == 0) doubleSellPrice = 1;
-//                    double progress = doubleSellPrice * doubleSellCount / sellCountBalance;
-//                    double progress = doubleSellCount / sellCountBalance;
-//                    sellSeekBar.setProgress(progress * 1000 >= 1000 ? 1000 : (float) progress * 1000);
-                } else {
-                    tvSellTradeCount.setText(getString(R.string.text_entrust) + " " + String.valueOf("--"));
-//                    新家的
-                    if (sellCountBalance == 0) sellCountBalance = 1;
-//                    double progress = doubleSellPrice * doubleSellCount;//
-//                    sellSeekBar.setProgress(progress * 1000 >= 1000 ? 1000 : (float) progress * 1000);//
-//                    double progress = doubleSellCount / sellCountBalance;
-//                    sellSeekBar.setProgress(progress * 1000 >= 1000 ? 1000 : (float) progress * 1000);
-                }
+//                if (type.equals(GlobalConstant.LIMIT_PRICE)) {
+//                    tvSellRMB.setText(String.valueOf("≈" + MathUtils.getRundNumber(doubleSellPrice * 1 * MainActivity.rate * currency.getBaseUsdRate(),
+//                            2, null) + "CNY"));
+//
+//                    if (StringUtils.isNotEmpty(etSellCount.getText().toString().trim())) {
+//                        tvSellTradeCount.setText(getTradeNum(doubleSellPrice, MathUtils.getDoubleTransferString(etSellCount.getText().toString().trim())) + currency.getSymbol());
+//                    }
+//                }
+            }
 
-                // 卖出的量变化的时候，下面的Bar也要跟着变化
-//                if (sellCountBalance == 0) sellCountBalance = 1;
-//                double progress = doubleSellCount / sellCountBalance;
-//                sellSeekBar.setProgress(progress * 1000 >= 1000 ? 1000 : (float) progress * 1000);
-                int posDot = strSellCount.indexOf(".");
-                if (posDot <= 0) return;
-                if (strSellCount.length() - (posDot + 1) > coinScale) {
-                    editable.delete(posDot + 1 + coinScale, posDot + 2 + coinScale);
-                }
-            }
-            if (intType == 0 || intType == 1) {
-                String temp = editable.toString();
-                int posDot = temp.indexOf(".");
-                if (posDot <= 0) return;
-                if (temp.length() - (posDot + 1) > baseCoinScale) {
-                    editable.delete(posDot + 1 + baseCoinScale, posDot + 2 + baseCoinScale);
-                }
-            } else {
-                String temp = editable.toString();
-                int posDot = temp.indexOf(".");
-                if (posDot <= 0) return;
-                if (temp.length() - (posDot + 1) > coinScale) {
-                    editable.delete(posDot + 1 + coinScale, posDot + 2 + coinScale);
-                }
-            }
+//            else if (intType == 2) { // 买入数量
+//                String strBuyCount = etBuyCount.getText().toString().trim();
+//                if (StringUtils.isNotEmpty(strBuyCount)) {
+//                    doubleBuyCount = MathUtils.getDoubleTransferString(strBuyCount);
+//                } else {
+//                    doubleBuyCount = 0.0;
+//                }
+//
+//                CalCanPlaceOrderNum(doubleBuyPrice);
+//                if (doubleBuyCount > mCanPlaceOrderNum) {
+//                    ToastUtils.showToast("可用量不足");
+//                    mCanFly = false;
+//                } else {
+//                    mCanFly = true;
+//                }
+//
+//                if (type.equals(GlobalConstant.LIMIT_PRICE)) { // 限价
+//                    tvBuyTradeCount.setText(getTradeNum(doubleBuyPrice, doubleBuyCount) + currency.getSymbol());
+//                } else {
+//                    tvBuyTradeCount.setText(getString(R.string.text_entrust) + " --");
+//                }
+//            } else if (intType == 3) { // 做空数量
+//                String strSellCount = etSellCount.getText().toString().trim();
+//                if (StringUtils.isNotEmpty(strSellCount)) {
+//                    doubleSellCount = MathUtils.getDoubleTransferString(strSellCount);
+//                } else {
+//                    doubleSellCount = 0.0;
+//                }
+//
+//                CalCanPlaceOrderNum(doubleSellPrice);
+//                if (doubleSellCount > mCanPlaceOrderNum) {
+//                    ToastUtils.showToast("可用量不足");
+//                    mCanFly = false;
+//                } else {
+//                    mCanFly = true;
+//                }
+//
+//                if (type.equals(GlobalConstant.LIMIT_PRICE)) {
+//                    tvSellTradeCount.setText(getTradeNum(doubleSellPrice, doubleSellCount) + currency.getSymbol());
+//                } else {
+//                    tvSellTradeCount.setText(getString(R.string.text_entrust) + " " + String.valueOf("--"));
+//                }
+//            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
         }
     }
 
@@ -1005,7 +1010,8 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         mCanPlaceOrderNum = bUsable.divide( bPrice.multiply(new BigDecimal(currency.getType())).divide(bHiddenL,5),5).intValue();
     }
 
-    //交易额=挂单价格*挂单手数*杠杆(60/120/200)/隐藏杠杆   可挂单手数 = 合约余额/交易额后取整
+    //保证金=挂单价格*挂单手数*杠杆(60/120/200)/隐藏杠杆   可挂单手数 = 合约余额/交易额后取整
+    //      价格✖数量✖倍数(60/120/200)/隐藏杠杆
     private double getTradeNum(double orderprice,double ordernum){
         BigDecimal m = new BigDecimal(orderprice * ordernum * Integer.parseInt(currency.getType()));
         return m.divide(new BigDecimal(mContartInfo.getHidden_leverage()),6,BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -1028,17 +1034,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         });
         sellAdapter.setOnItemClickListener(onItemClickListener);
         buyAdapter.setOnItemClickListener(onItemClickListener);
-        trustAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                Entrust entrust = (Entrust) adapter.getItem(position);
-                orderId = entrust.getOrderId();
-                if (entrust != null) {
-                    dialog.setEntrust(entrust);
-                    dialog.show();
-                }
-            }
-        });
+
         limitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -1051,13 +1047,18 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
             }
         });
 
-        etBuyPrice.addTextChangedListener(new MyTextWatcher(0));
-        etSellPrice.addTextChangedListener(new MyTextWatcher(1));
+        etBuyPrice.addTextChangedListener(new PriceTextWatcher(etBuyPrice).addTextChangedListener(new MyTextWatcher(0)));
+        etSellPrice.addTextChangedListener(new PriceTextWatcher(etSellPrice).addTextChangedListener(new MyTextWatcher(1)));
         etBuyCount.addTextChangedListener(new MyTextWatcher(2));
         etSellCount.addTextChangedListener(new MyTextWatcher(3));
 
-        buySeekBar.setOnProgressChangedListener(new MyProgressChangedListener(0));
-        sellSeekBar.setOnProgressChangedListener(new MyProgressChangedListener(1));
+        edBuyTakeProfit.addTextChangedListener(new PriceTextWatcher(edBuyTakeProfit));
+        edBuyStopLoss.addTextChangedListener(new PriceTextWatcher(edBuyStopLoss));
+        edSellTakeProfit.addTextChangedListener(new PriceTextWatcher(edSellTakeProfit));
+        edSellStopLoss.addTextChangedListener(new PriceTextWatcher(edSellStopLoss));
+
+//        buySeekBar.setOnProgressChangedListener(new MyProgressChangedListener(0));
+//        sellSeekBar.setOnProgressChangedListener(new MyProgressChangedListener(1));
 
 
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -1145,11 +1146,11 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         tvBestPriceBuy.setVisibility(intType == 0 ? View.GONE : View.VISIBLE);
         llBuyTradeCount.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
         llSellTradeCount.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
-        if (currency != null) {
+//        if (currency != null) {
             //String symbol = (intType == 0 ? currency.getSymbol().substring(0, currency.getSymbol().indexOf("/")) : currency.getSymbol().substring(currency.getSymbol().indexOf("/") + 1, currency.getSymbol().length()));
-            tvBuySymbol.setText(currency.getSymbol());
-            tvSellSymbol.setText(currency.getSymbol());
-        }
+//            tvBuySymbol.setText(currency.getSymbol());
+//            tvSellSymbol.setText(currency.getSymbol());
+//        }
         etBuyCount.setHint(intType == 0 ? getString(R.string.text_number) : getString(R.string.text_entrust));
         tvBuyRMB.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
         tvSellRMB.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
@@ -1284,7 +1285,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         HashMap map = new HashMap<>();
         map.put("mark", currency.getSymbol());
         map.put("price", Double.parseDouble(price));
-        map.put("num", Integer.parseInt(amout));
+        map.put("num", Double.parseDouble(amout));
         int type = rbBuy.isChecked() ? 0 : 1;
         map.put("type", type);
         map.put("leverage", currency.getType());
@@ -1300,7 +1301,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     private void commitMarketOrder(int num_type) {
         HashMap map = new HashMap<>();
         map.put("mark", currency.getSymbol());
-        map.put("num", Integer.parseInt(amout));
+        map.put("num", Double.parseDouble(amout));
         int type = rbBuy.isChecked() ? 0 : 1;
         map.put("type", type);
         map.put("leverage", currency.getType());
@@ -1405,8 +1406,10 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     @Override
     public void getWalletSuccess(AssetsInfo assetsInfo) {
         mAssetsInfo = assetsInfo;
-        tvBuyBalance.setText(assetsInfo.getUsable() + " USDT");
-        tvSellBalance.setText(assetsInfo.getUsable() + " USDT");
+        String balance = new BigDecimal(new Double(assetsInfo.getUsable())).setScale(2,BigDecimal.ROUND_HALF_UP)
+                + " USDT";
+        tvBuyBalance.setText(balance);
+        tvSellBalance.setText(balance);
 
     }
 
@@ -1492,8 +1495,8 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         if (currency != null) {
             try {
                 if (GlobalConstant.LIMIT_PRICE.equals(type))
-                    tvBuySymbol.setText(symbol);
-                tvSellSymbol.setText(symbol);
+//                    tvBuySymbol.setText(symbol);
+//                tvSellSymbol.setText(symbol);
                 btnBuy.setText(String.valueOf(getString(R.string.text_buy_in) + symbol));
                 btnSale.setText(String.valueOf(getString(R.string.text_sale_out) + symbol));
 //                getExchangeAndSymbolInfo();
@@ -1513,7 +1516,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 
         sellExchangeList.clear();
         buyExchangeList.clear();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 6; i++) {
             sellExchangeList.add(new Exchange(5 - i, "--", "--"));
             buyExchangeList.add(new Exchange(i, "--", "--"));
         }
@@ -1524,7 +1527,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         startTCP(currency.getSymbol(), currency.getType());
         this.currency = currency;
 
-        getPreInfo();
+//        getPreInfo();
         setViewText();
         checkLogin();
     }
@@ -1640,6 +1643,9 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         }else if (cmd == NEWCMD.SUBSCRIBE_SYMBOL_DETAIL){
             SymbolBean symbolBean = gson.fromJson(response.getResponse(), SymbolBean.class);
             setCurrentcy(symbolBean);
+
+            dqccFragment.refresh();
+            dqwtFragment.refresh();
         }else if (cmd == NEWCMD.SUBSCRIBE_SIDE_TRADE){
             try {
                 List<NewCurrency> newDatas = gson.fromJson(response.getResponse(), new TypeToken<List<NewCurrency>>() {}.getType());
@@ -1687,18 +1693,18 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 
         Double max = 0.0d;
         this.sellExchangeList.clear();
-        for (int i = 0; i < 7; i++) {
-            sellExchangeList.add(new Exchange(7 - i, "--", "--"));
+        for (int i = 0; i < 6; i++) {
+            sellExchangeList.add(new Exchange(6 - i, "--", "--"));
         }
 
         List<List<Double>> sells = items.getAsks();
-        if (sells.size() >= 7) {
-            for (int i = 0; i < 7; i++) {
+        if (sells.size() >= 6) {
+            for (int i = 0; i < 6; i++) {
                 Double amount = sells.get(i).get(1);
                 if (amount > max){
                     max = amount;
                 }
-                sellExchangeList.set(6 - i, new Exchange(i + 1, sells.get(i).get(0), amount));
+                sellExchangeList.set(5 - i, new Exchange(i + 1, sells.get(i).get(0), amount));
             }
         } else {
             for (int i = 0; i < sells.size(); i++) {
@@ -1706,19 +1712,19 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                 if (amount > max){
                     max = amount;
                 }
-                sellExchangeList.set(6 - i, new Exchange(i + 1, sells.get(i).get(0), amount));
+                sellExchangeList.set(5 - i, new Exchange(i + 1, sells.get(i).get(0), amount));
             }
         }
 
 
 
         this.buyExchangeList.clear();
-        for (int i = 0; i < 7; i++) {
-            buyExchangeList.add(new Exchange(7 - i, "--", "--"));
+        for (int i = 0; i < 6; i++) {
+            buyExchangeList.add(new Exchange(6 - i, "--", "--"));
         }
         List<List<Double>> buys = items.getBids();
-        if (buys.size() >= 7) {
-            for (int i = 0; i < 7; i++) {
+        if (buys.size() >= 6) {
+            for (int i = 0; i < 6; i++) {
                 Double amount = buys.get(i).get(1);
                 if (amount > max){
                     max = amount;
@@ -1741,12 +1747,6 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 
         buyAdapter.setTag(1/max);
         buyAdapter.notifyDataSetChanged();
-
-//        if (GlobalConstant.SELL.equals(items.getSells())) { // 卖
-//
-//        } else { // 买
-//
-//        }
 
     }
 

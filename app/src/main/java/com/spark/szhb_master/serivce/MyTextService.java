@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.factory.socket.ISocket;
 import com.spark.szhb_master.factory.socket.JWebSocketClient;
 import com.spark.szhb_master.factory.socket.NEWCMD;
@@ -116,6 +117,7 @@ public class MyTextService extends Service {
             public void onOpen(ServerHandshake handshakedata) {
                 super.onOpen(handshakedata);
                 Log.e("JWebSocketClientService", "websocket连接成功");
+                MyApplication.getApp().resumeTcp();
             }
 
             @Override

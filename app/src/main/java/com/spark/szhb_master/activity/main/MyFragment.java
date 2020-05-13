@@ -434,10 +434,10 @@ public class MyFragment extends BaseTransFragment implements MainContract.MyView
         tvTotalAssets.setText(String.format(getString(R.string.mytotalassets),assetsInfo.getSum()));
 //        tvTotalAssetsConverts.setVisibility(View.VISIBLE);
 //        tvTotalAssetsConverts.setText(String.format(getString(R.string.mytotalassetsconverts),assetsInfo.getSum_convert()));
-        tvZjzhBtc.setText(String.format(getString(R.string.mytotalassets),assetsInfo.getUsable()));
+        tvZjzhBtc.setText(String.format(getString(R.string.mytotalassets),assetsInfo.getFrost()));
 //        tvZjzhUsdt.setVisibility(View.VISIBLE);
 //        tvZjzhUsdt.setText(String.format(getString(R.string.mytotalassetsconverts),assetsInfo.getUsable_convert()));
-        tvHyqczhBtc.setText(String.format(getString(R.string.mytotalassets),assetsInfo.getFrost()));
+        tvHyqczhBtc.setText(String.format(getString(R.string.mytotalassets),assetsInfo.getUsable()));
 //        tvHyqczhUsdt.setVisibility(View.VISIBLE);
 //        tvHyqczhUsdt.setText(String.format(getString(R.string.mytotalassetsconverts),assetsInfo.getFrost_convert()));
 

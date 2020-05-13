@@ -136,7 +136,7 @@ public class CurrentTrustActivity extends BaseActivity implements ITrustContract
         mAdapter.notifyDataSetChanged();
     }
 
-    private int type = -1;
+    private int type = 2;
     @Override
     protected void initData() {
         super.initData();

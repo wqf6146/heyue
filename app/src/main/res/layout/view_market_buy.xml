@@ -5,8 +5,7 @@
     android:id="@+id/llMarketBuy"
     android:background="@color/main_bg"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
-    android:gravity="center_vertical"
+    android:layout_height="280dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -39,11 +38,12 @@
                 android:layout_marginLeft="1dp"
                 android:layout_weight="1"
                 android:background="@color/main_bg_dark_2"
-                android:digits="1234567890."
-                android:textCursorDrawable="@null"
+
                 android:gravity="center_vertical"
                 android:hint="@string/text_price"
                 android:inputType="number"
+                android:digits="1234567890."
+                android:textCursorDrawable="@null"
                 android:maxLines="1"
                 android:padding="10dp"
                 android:textColor="@color/tab_font"
@@ -84,11 +84,13 @@
         android:padding="8dp"
         android:text="0.0CNY"
         android:textColor="#838f9d"
-        android:textSize="@dimen/font_mini" />
+        android:textSize="@dimen/font_mini"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/bg_market_editext"
         android:orientation="horizontal">
 
@@ -98,7 +100,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/transparent"
-            android:digits="1234567890."
+            android:digits="1234567890"
             android:textCursorDrawable="@null"
             android:ellipsize="end"
             android:gravity="center_vertical"
@@ -130,20 +132,23 @@
         android:textColor="@color/tab_font"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_marginTop="5dp"
-        android:layout_height="wrap_content">
+        android:layout_height="35dp">
 
         <EditText
             android:id="@+id/edBuyTakeProfit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:background="@drawable/bg_market_editext"
+            android:textCursorDrawable="@null"
             android:hint="止盈价"
             android:inputType="number"
+            android:digits="1234567890."
             android:minWidth="60dp"
-            android:padding="5dp"
+            android:padding="10dp"
             android:textColor="@color/tab_font"
             android:textColorHint="@color/tab_font"
             android:textSize="@dimen/font_mini" />
@@ -157,14 +162,17 @@
 
         <EditText
             android:id="@+id/edBuyStopLoss"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:background="@drawable/bg_market_editext"
+            android:textCursorDrawable="@null"
             android:hint="止损价"
             android:minWidth="60dp"
-            android:padding="5dp"
+            android:padding="10dp"
             android:inputType="number"
+            android:digits="1234567890."
             android:textColor="@color/tab_font"
             android:textColorHint="@color/tab_font"
             android:textSize="@dimen/font_mini" />
@@ -220,7 +228,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:textSize="@dimen/font_small"
+            android:textSize="@dimen/font_mini"
             android:textColor="@color/tab_font"
             android:id="@+id/tvBuyBalance"
             android:layout_marginLeft="5dp"
@@ -233,7 +241,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -241,17 +250,17 @@
             android:gravity="center_vertical"
             android:text="@string/text_turnover"
             android:textColor="@color/sec_font_grey"
-            android:textSize="@dimen/font_small" />
+            android:textSize="@dimen/font_mini" />
 
         <TextView
             android:id="@+id/tvBuyTradeCount"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
             android:gravity="center_vertical"
             android:text="--"
             android:textColor="@color/tab_font"
-            android:layout_marginLeft="5dp"
-            android:textSize="@dimen/font_small" />
+            android:textSize="@dimen/font_mini" />
     </LinearLayout>
 
     <LinearLayout

@@ -97,8 +97,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="1111"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_normal" />
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -121,8 +121,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="1111"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_normal" />
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -145,8 +145,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="1111"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_normal" />
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -169,8 +169,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="1111"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_normal" />
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -193,8 +193,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="1111"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_normal" />
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
     </RelativeLayout>
 
 
