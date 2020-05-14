@@ -139,14 +139,14 @@ public class TradeFragment extends BaseTransFragment implements TradeContract.Vi
     TextView tvBuyCanUse;
 //    @BindView(R.id.tvCanSell)
 //    TextView tvCanSell;
-    @BindView(R.id.tvBuyRMB)
-    TextView tvBuyRMB;
+//    @BindView(R.id.tvBuyRMB)
+//    TextView tvBuyRMB;
     @BindView(R.id.etCount)
     EditText etBuyCount;
     @BindView(R.id.etSellCount)
     EditText etSellCount;
-    @BindView(R.id.tvSellRMB)
-    TextView tvSellRMB;
+//    @BindView(R.id.tvSellRMB)
+//    TextView tvSellRMB;
     @BindView(R.id.btnBuy)
     Button btnBuy;
     @BindView(R.id.btnSell)
@@ -682,8 +682,6 @@ public class TradeFragment extends BaseTransFragment implements TradeContract.Vi
                     doubleBuyPrice = 0.0;
                 }
                 if (type.equals(GlobalConstant.LIMIT_PRICE)) { // 限价
-                    tvBuyRMB.setText(String.valueOf("≈" + MathUtils.getRundNumber(doubleBuyPrice * 1 * MainActivity.rate * currency.getBaseUsdRate(),
-                            2, null) + GlobalConstant.CNY));
                     if (StringUtils.isNotEmpty(etBuyCount.getText().toString().trim())) {
                         tvBuyTradeCount.setText(getString(R.string.text_entrust) + " " + String.valueOf(MathUtils.getRundNumber(MathUtils.mul(doubleBuyPrice * doubleBuyCount, 1), 5, null)
                                 + currency.getSymbol().substring(currency.getSymbol().indexOf("/") + 1, currency.getSymbol().length())));
@@ -698,8 +696,8 @@ public class TradeFragment extends BaseTransFragment implements TradeContract.Vi
                 if (type.equals(GlobalConstant.LIMIT_PRICE)) {
 //                    tvSellRMB.setText(String.valueOf("≈" + MathUtils.getRundNumber(doubleSellPrice * exchangeRate,
 //                            2, null) + GlobalConstant.CNY));
-                    tvSellRMB.setText(String.valueOf("≈" + MathUtils.getRundNumber(doubleSellPrice * 1 * MainActivity.rate * currency.getBaseUsdRate(),
-                            2, null) + "CNY"));
+//                    tvSellRMB.setText(String.valueOf("≈" + MathUtils.getRundNumber(doubleSellPrice * 1 * MainActivity.rate * currency.getBaseUsdRate(),
+//                            2, null) + "CNY"));
 
                     if (StringUtils.isNotEmpty(etSellCount.getText().toString().trim())) {
                         tvSellTradeCount.setText(getString(R.string.text_entrust) + " " + String.valueOf(MathUtils.getRundNumber(MathUtils.mul(doubleSellCount * doubleSellPrice, 1), 5, null) +
@@ -936,8 +934,8 @@ public class TradeFragment extends BaseTransFragment implements TradeContract.Vi
             tvSellSymbol.setText(symbol);
         }
         etBuyCount.setHint(intType == 0 ? getString(R.string.text_number) : getString(R.string.text_entrust));
-        tvBuyRMB.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
-        tvSellRMB.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
+//        tvBuyRMB.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
+//        tvSellRMB.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
     }
 
     /**

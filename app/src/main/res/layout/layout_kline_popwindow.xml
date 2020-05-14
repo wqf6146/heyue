@@ -10,18 +10,142 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_weight="1"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:visibility="gone" />
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvPopFen"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="分时"
+            android:textColor="@color/font_index_pop_selector"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/color_font_kline" />
+
+        <TextView
+            android:id="@+id/tvPop1Fen"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="1分"
+            android:textColor="@color/font_index_pop_selector"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/color_font_kline" />
+
+        <TextView
+            android:id="@+id/tvPop5Fen"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="5分"
+            android:textColor="@color/font_index_pop_selector"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/color_font_kline" />
+
+        <TextView
+            android:id="@+id/tvPop30Fen"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="30分"
+            android:textColor="@color/font_index_pop_selector"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/color_font_kline" />
+
+        <TextView
+            android:id="@+id/tvPop4Hour"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="4小时"
+            android:textColor="@color/font_index_pop_selector"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/color_font_kline" />
+
+        <TextView
+            android:id="@+id/tvPopDay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="日线"
+            android:textColor="@color/font_index_pop_selector"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/color_font_kline" />
+
+        <TextView
+            android:id="@+id/tvPopMonth"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="月线"
+            android:textColor="@color/font_index_pop_selector"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/llIndex"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="15dp"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp"
         android:paddingTop="15dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="15dp"
         android:visibility="gone">
 
         <LinearLayout
@@ -76,7 +200,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"

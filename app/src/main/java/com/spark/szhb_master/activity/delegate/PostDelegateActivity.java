@@ -3,6 +3,8 @@ package com.spark.szhb_master.activity.delegate;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.spark.szhb_master.R;
@@ -26,6 +28,9 @@ public class PostDelegateActivity extends BaseActivity {
     @BindView(R.id.rlhead)
     RelativeLayout rlhead;
 
+    @BindView(R.id.ar_iv_close)
+    ImageView ivClose;
+
     private List<Fragment> mTabFragments = new ArrayList<>();
     private List<String> mTabTitlis = new ArrayList<>();
     private PostDelegateFragment mBuyFragment,mSellFragment;
@@ -38,9 +43,14 @@ public class PostDelegateActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         setImmersionBar(rlhead);
-
-
         initTabViewpager();
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 

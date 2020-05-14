@@ -117,7 +117,6 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
 //    private TradeFragment tradeFragment;
     private C2CFragment c2cFragment;
     private MyFragment myFragment;
-    private TreasureFragment treasureFragment;
 
 
     private MainContract.Presenter presenter;
@@ -638,7 +637,6 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
         c2cFragment = (C2CFragment) getSupportFragmentManager().findFragmentByTag(C2CFragment.TAG);
         myFragment = (MyFragment) getSupportFragmentManager().findFragmentByTag(MyFragment.TAG);
 
-        treasureFragment = (TreasureFragment) getSupportFragmentManager().findFragmentByTag(TreasureFragment.TAG);
         if (homeFragment == null) fragments.add(homeFragment = new HomeFragment());
         else fragments.add(homeFragment);
         if (heyueFragment == null) fragments.add(heyueFragment = new HeyueFragment());
@@ -876,7 +874,6 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
 
     @Override
     public void onArticleSelected(int position) {
-        treasureFragment.referfragment(position);
     }
 
     @Override
@@ -898,15 +895,4 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
             dlRoot.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         else dlRoot.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
-
-    //10.19更改
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (currentPage == 1){
-//            TradeFragment.onKeyDown(keyCode, event);
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
-
-
 }

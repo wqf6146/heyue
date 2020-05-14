@@ -75,16 +75,6 @@
             android:visibility="visible" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvSellRMB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="0.0CNY"
-        android:textColor="#838f9d"
-        android:textSize="@dimen/font_mini"
-        android:visibility="gone" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"

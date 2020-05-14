@@ -158,16 +158,11 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     TextView tvMoney;
     @BindView(R.id.tvBuyCanUse)
     TextView tvBuyCanUse;
-    //    @BindView(R.id.tvCanSell)
-//    TextView tvCanSell;
-    @BindView(R.id.tvBuyRMB)
-    TextView tvBuyRMB;
+
     @BindView(R.id.etCount)
     EditText etBuyCount;
     @BindView(R.id.etSellCount)
     EditText etSellCount;
-    @BindView(R.id.tvSellRMB)
-    TextView tvSellRMB;
     @BindView(R.id.btnBuy)
     Button btnBuy;
 
@@ -937,60 +932,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                         tvSellTradeCount.setText(getString(R.string.text_entrust) + " " + String.valueOf("--"));
                     }
                 }
-
-//                if (type.equals(GlobalConstant.LIMIT_PRICE)) {
-//                    tvSellRMB.setText(String.valueOf("≈" + MathUtils.getRundNumber(doubleSellPrice * 1 * MainActivity.rate * currency.getBaseUsdRate(),
-//                            2, null) + "CNY"));
-//
-//                    if (StringUtils.isNotEmpty(etSellCount.getText().toString().trim())) {
-//                        tvSellTradeCount.setText(getTradeNum(doubleSellPrice, MathUtils.getDoubleTransferString(etSellCount.getText().toString().trim())) + currency.getSymbol());
-//                    }
-//                }
             }
-
-//            else if (intType == 2) { // 买入数量
-//                String strBuyCount = etBuyCount.getText().toString().trim();
-//                if (StringUtils.isNotEmpty(strBuyCount)) {
-//                    doubleBuyCount = MathUtils.getDoubleTransferString(strBuyCount);
-//                } else {
-//                    doubleBuyCount = 0.0;
-//                }
-//
-//                CalCanPlaceOrderNum(doubleBuyPrice);
-//                if (doubleBuyCount > mCanPlaceOrderNum) {
-//                    ToastUtils.showToast("可用量不足");
-//                    mCanFly = false;
-//                } else {
-//                    mCanFly = true;
-//                }
-//
-//                if (type.equals(GlobalConstant.LIMIT_PRICE)) { // 限价
-//                    tvBuyTradeCount.setText(getTradeNum(doubleBuyPrice, doubleBuyCount) + currency.getSymbol());
-//                } else {
-//                    tvBuyTradeCount.setText(getString(R.string.text_entrust) + " --");
-//                }
-//            } else if (intType == 3) { // 做空数量
-//                String strSellCount = etSellCount.getText().toString().trim();
-//                if (StringUtils.isNotEmpty(strSellCount)) {
-//                    doubleSellCount = MathUtils.getDoubleTransferString(strSellCount);
-//                } else {
-//                    doubleSellCount = 0.0;
-//                }
-//
-//                CalCanPlaceOrderNum(doubleSellPrice);
-//                if (doubleSellCount > mCanPlaceOrderNum) {
-//                    ToastUtils.showToast("可用量不足");
-//                    mCanFly = false;
-//                } else {
-//                    mCanFly = true;
-//                }
-//
-//                if (type.equals(GlobalConstant.LIMIT_PRICE)) {
-//                    tvSellTradeCount.setText(getTradeNum(doubleSellPrice, doubleSellCount) + currency.getSymbol());
-//                } else {
-//                    tvSellTradeCount.setText(getString(R.string.text_entrust) + " " + String.valueOf("--"));
-//                }
-//            }
         }
 
         @Override
@@ -1152,8 +1094,6 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 //            tvSellSymbol.setText(currency.getSymbol());
 //        }
         etBuyCount.setHint(intType == 0 ? getString(R.string.text_number) : getString(R.string.text_entrust));
-        tvBuyRMB.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
-        tvSellRMB.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
     }
 
     /**

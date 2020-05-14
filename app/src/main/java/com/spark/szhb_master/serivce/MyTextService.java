@@ -88,7 +88,7 @@ public class MyTextService extends Service {
                                     e.printStackTrace();
                                 }
                             }else if (ch.indexOf("depth.step") != -1){
-                                Log.e("JWebSocketClientService", "收到的消息：" + message);
+//                                Log.e("JWebSocketClientService", "收到的消息：" + message);
                                 cmd = NEWCMD.SUBSCRIBE_SYMBOL_DEPTH;
                                 try {
                                     symbol = ch.split("_")[0].split("\\.")[1];
