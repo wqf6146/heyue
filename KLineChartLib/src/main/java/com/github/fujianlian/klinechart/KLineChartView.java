@@ -3,6 +3,7 @@ package com.github.fujianlian.klinechart;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.v4.content.ContextCompat;
@@ -59,6 +60,7 @@ public class KLineChartView extends BaseKLineChartView {
         LayoutParams layoutParams = new LayoutParams(dp2px(50), dp2px(50));
         layoutParams.addRule(CENTER_IN_PARENT);
         addView(mProgressBar, layoutParams);
+        mProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.chart_white), PorterDuff.Mode.SRC_IN);
         mProgressBar.setVisibility(GONE);
         mVolumeDraw = new VolumeDraw(this);
         mMACDDraw = new MACDDraw(this);
