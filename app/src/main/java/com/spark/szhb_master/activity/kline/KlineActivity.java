@@ -162,7 +162,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     private ArrayList<View> klineViews;
     private TextView selectedTextView;
     private KLineChartAdapter kChartAdapter;
-    private int type = 4;
+    private int type = 3;
     private String symbol = "";
     private String resolution;
     private KlineContract.Presenter presenter;
