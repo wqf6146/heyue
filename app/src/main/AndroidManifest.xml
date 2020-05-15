@@ -142,9 +142,6 @@
         <activity android:name=".activity.forgot_pwd.ForgotPwdStepTwoActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.forgot_pwd.ForgotPwdStepThreeActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.account_pwd.ResetPwdActivity"/>
-        <activity android:name="com.spark.szhb_master.activity.Trade.TradeActivity"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="stateHidden|stateUnchanged"  />
 
         <activity android:name="com.spark.szhb_master.activity.Treasure.PreheatFrdActivity" />
         <activity android:name="com.spark.szhb_master.activity.Treasure.ShowTreaActivity" />

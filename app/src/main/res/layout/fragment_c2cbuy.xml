@@ -29,7 +29,7 @@
              android:text="按金额购买"
              android:textColor="@color/font_blue"
              android:textSize="@dimen/font_small"
-             android:visibility="visible" />
+             android:visibility="gone" />
 
      </RelativeLayout>
 

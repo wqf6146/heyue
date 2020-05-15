@@ -62,7 +62,7 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
-        if (isVisible)
+        if (isVisible && MyApplication.getApp().isLogin())
             mRefreshlayout.beginRefreshing();
     }
 

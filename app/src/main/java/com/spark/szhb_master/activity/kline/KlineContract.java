@@ -4,6 +4,7 @@ package com.spark.szhb_master.activity.kline;
 import com.spark.szhb_master.base.Contract;
 import com.spark.szhb_master.entity.Currency;
 import com.spark.szhb_master.entity.DepthResult;
+import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.VolumeInfo;
 
 import org.json.JSONArray;
@@ -27,6 +28,8 @@ public interface KlineContract {
         void doDeleteOrCollectSuccess(String msg);
 
         void dpPostFail(Integer code, String toastMessage);
+
+        void getCurrcyContractSuccess(SymbolListBean symbolListBean);
     }
 
     interface Presenter extends Contract.BasePresenter {
@@ -38,6 +41,8 @@ public interface KlineContract {
         void doCollect(HashMap<String, String> map);
 
         void doDelete(HashMap<String, String> map);
+
+        void getCurrcyContract();
 
     }
 

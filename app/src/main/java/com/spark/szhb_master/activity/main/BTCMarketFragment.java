@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.spark.szhb_master.R;
-import com.spark.szhb_master.activity.Trade.TradeActivity;
+import com.spark.szhb_master.activity.Trade.NewTradeActivity;
 import com.spark.szhb_master.adapter.MarketAdapter;
 import com.spark.szhb_master.entity.Currency;
 
@@ -70,7 +70,7 @@ public class BTCMarketFragment extends MarketBaseFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 //                ((MarketOperateCallback) getActivity()).itemClick(BTCMarketFragment.this.adapter.getItem(position), type);
                 Currency currency = (Currency) adapter.getItem(position);
-                Intent intent = new Intent(activity, TradeActivity.class);
+                Intent intent = new Intent(activity, NewTradeActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("currency", currency);
                 intent.putExtras(bundle);

@@ -5,32 +5,22 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.WindowManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.R;
-import com.spark.szhb_master.activity.buy_or_sell.C2CBuyOrSellActivity;
-import com.spark.szhb_master.activity.login.LoginActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.presenter.C2CListPresenterImpl;
 import com.spark.szhb_master.adapter.C2CListAdapter;
 import com.spark.szhb_master.adapter.FiatsListAdapter;
 import com.spark.szhb_master.base.BaseLazyFragment;
-import com.spark.szhb_master.dialog.ShiMingDialog;
 import com.spark.szhb_master.entity.C2C;
-import com.spark.szhb_master.entity.CoinInfo;
 import com.spark.szhb_master.entity.Fiats;
-import com.spark.szhb_master.entity.SafeSetting;
-import com.spark.szhb_master.ui.AvatarImageView;
 import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.NetCodeUtils;
 import com.spark.szhb_master.utils.StringUtils;
 import com.spark.szhb_master.utils.ToastUtils;
 import com.spark.szhb_master.widget.pwdview.BuyOrSellView;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,6 +70,24 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     }
 
     @Override
+    protected void onFragmentVisibleChange(boolean isVisible) {
+        super.onFragmentVisibleChange(isVisible);
+        if (isVisible){
+            if (type == 2){
+                if (MyApplication.getApp().isLogin()){
+                    getFaitsList(false,pageNo);
+                }else{
+                    ToastUtils.showToast("请先登录");
+                    showActivity(LoginStepOneActivity.class,null);
+                }
+
+            }else{
+                getC2cList(false,pageNo);
+            }
+        }
+    }
+
+    @Override
     protected void initData() {
         presenter = new C2CListPresenterImpl(Injection.provideTasksRepository(getActivity().getApplicationContext()), this);
         Bundle bundle = getArguments();
@@ -88,18 +96,15 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    protected void loadData() {
+        super.loadData();
         if (type == 2){
-            getFaitsList(false,pageNo);
+            if (MyApplication.getApp().isLogin()){
+                getFaitsList(false,pageNo);
+            }
         }else{
             getC2cList(false,pageNo);
         }
-    }
-
-    @Override
-    protected void loadData() {
-        super.loadData();
     }
 
     @Override
@@ -117,7 +122,6 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
         getFaitsList(false,pageNo = 1);
     }
 
-
     private BottomSheetDialog bottomSheetDialog;
 
     @Override
@@ -131,7 +135,6 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                 }else{
                     getC2cList(false,pageNo = 1);
                 }
-
             }
         });
 
@@ -150,7 +153,6 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                     presenter.doCancelFiats(hashMap);
                 }
             });
-
         }else {
             c2CListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
                 @Override
@@ -162,12 +164,10 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
             c2CListAdapter.setCallBackEvent(new C2CListAdapter.CallBackEvent() {
                 @Override
                 public void onClickCallback(C2C.C2CBean item) {
-                    if ( !MyApplication.getApp().isLogin()) {
+                    if (!MyApplication.getApp().isLogin()) {
                         showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
                         return;
                     }
-
-
                     if (bottomSheetDialog == null){
                         bottomSheetDialog = new BottomSheetDialog(getContext(),R.style.dialog_soft_input);
                         bottomSheetDialog.setCanceledOnTouchOutside(true);
@@ -186,7 +186,6 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                                 presenter.doFiatsOrder(hashMap);
                             }
                         }
-
                         @Override
                         public void dismiss() {
                             bottomSheetDialog.dismiss();
@@ -197,12 +196,7 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                 }
             });
         }
-
-
-
-
     }
-
 
     private void initRvContent() {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -214,12 +208,10 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
             fiatsListAdapter.setEnableLoadMore(false);
         }else{
             c2CListAdapter = new C2CListAdapter(getActivity(), R.layout.item_c2c_list,type,c2cs);
-
             c2CListAdapter.bindToRecyclerView(rvContent);
             c2CListAdapter.isFirstOnly(true);
             c2CListAdapter.setEnableLoadMore(false);
         }
-
     }
 
     /**
@@ -269,16 +261,13 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                 } else if (fiatsBeans.size() < GlobalConstant.PageSize){
                     fiatsListAdapter.loadMoreEnd();
                 }
-
                 if (fiatsBeans.size() == GlobalConstant.PageSize){
                     pageNo = fiats.getPage();
                 }
-
                 this.fiats.addAll(fiatsBeans);
                 fiatsListAdapter.notifyDataSetChanged();
             } else {
                 if (fiatsBeans.size() == 1) {
-//                if (pageNo == 1 && obj.getTotalElement() == 0 ) {
                     this.fiats.clear();
                     fiatsListAdapter.setEmptyView(R.layout.empty_no_message);
                     fiatsListAdapter.notifyDataSetChanged();
@@ -305,13 +294,11 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                 } else if (c2cs.size() < GlobalConstant.PageSize){
                     c2CListAdapter.loadMoreEnd();
                 }
-
                 pageNo = c2c.getPage();
                 this.c2cs.addAll(c2cs);
                 c2CListAdapter.notifyDataSetChanged();
             } else {
                 if (c2c.getPage() == 1) {
-//                if (pageNo == 1 && obj.getTotalElement() == 0 ) {
                     this.c2cs.clear();
                     c2CListAdapter.setEmptyView(R.layout.empty_no_message);
                     c2CListAdapter.notifyDataSetChanged();
@@ -336,7 +323,6 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     public void doPostFail(Integer code, String toastMessage) {
         ToastUtils.showToast(toastMessage);
     }
-
 
     @Override
     public void setPresenter(MainContract.C2CListPresenter presenter) {

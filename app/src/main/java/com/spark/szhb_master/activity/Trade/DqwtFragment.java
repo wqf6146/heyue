@@ -102,7 +102,7 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
-        if (isVisible)
+        if (isVisible && MyApplication.getApp().isLogin())
             mRefreshlayout.beginRefreshing();
     }
 

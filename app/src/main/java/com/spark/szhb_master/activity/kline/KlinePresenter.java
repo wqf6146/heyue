@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.spark.szhb_master.data.DataSource;
 import com.spark.szhb_master.entity.Currency;
+import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.factory.UrlFactory;
 
 import org.json.JSONArray;
@@ -30,6 +31,35 @@ public class KlinePresenter implements KlineContract.Presenter {
         view.setPresenter(this);
     }
 
+    @Override
+    public void getCurrcyContract() {
+        dataRepository.doStringGet(UrlFactory.getSymbolListUrl(), new DataSource.DataCallback() {
+            @Override
+            public void onDataLoaded(Object obj) {
+                view.hideLoadingPopup();
+                String response = (String) obj;
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (object.optInt("code") == 1) {
+                        SymbolListBean objs = new Gson().fromJson(object.getString("data").toString(), SymbolListBean.class);
+                        view.getCurrcyContractSuccess(objs);
+                    } else {
+                        view.dpPostFail(object.getInt("code"), object.optString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    view.dpPostFail(JSON_ERROR, null);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable(Integer code, String toastMessage) {
+                view.hideLoadingPopup();
+                view.dpPostFail(code, toastMessage);
+            }
+        });
+    }
 
     @Override
     public void KData(HashMap<String, String> params) {

@@ -25,6 +25,7 @@ import com.spark.szhb_master.base.BaseFragment;
 import com.spark.szhb_master.entity.DepthListInfo;
 import com.spark.szhb_master.entity.DepthResult;
 import com.spark.szhb_master.entity.Exchange;
+import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.SymbolStep;
 import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.factory.socket.ISocket;
@@ -78,6 +79,7 @@ public class DepthFragment extends BaseFragment implements KlineContract.DepthVi
     private Handler mHandler;
     private boolean mRunning = true;
 
+    private SymbolListBean.Symbol mSymbolConfig;
 
     public static DepthFragment getInstance(String symbol,String symbolType,int tcpstatus) {
         DepthFragment depthFragment = new DepthFragment();
@@ -104,6 +106,12 @@ public class DepthFragment extends BaseFragment implements KlineContract.DepthVi
 
 
         startTCP();
+    }
+
+    public void setSymbolConfig(SymbolListBean.Symbol symbolConfig) {
+        this.mSymbolConfig = symbolConfig;
+        if (adapter!=null)
+            adapter.setFloatsize(GlobalConstant.getFloatSize(symbolConfig));
     }
 
     @Override

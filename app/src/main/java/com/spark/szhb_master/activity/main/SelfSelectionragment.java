@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.spark.szhb_master.R;
-import com.spark.szhb_master.activity.Trade.TradeActivity;
+import com.spark.szhb_master.activity.Trade.NewTradeActivity;
 import com.spark.szhb_master.adapter.MarketAdapter;
 import com.spark.szhb_master.entity.Currency;
 
@@ -68,7 +68,7 @@ public class SelfSelectionragment extends MarketBaseFragment {
                 //10.19更改
 //                ((MarketOperateCallback) getActivity()).itemClick(SelfSelectionragment.this.adapter.getItem(position), type);
                 Currency currency = (Currency) adapter.getItem(position);
-                Intent intent = new Intent(activity, TradeActivity.class);
+                Intent intent = new Intent(activity, NewTradeActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("currency", currency);
                 intent.putExtras(bundle);

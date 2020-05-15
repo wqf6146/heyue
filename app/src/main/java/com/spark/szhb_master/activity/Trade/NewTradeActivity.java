@@ -324,9 +324,6 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     @Override
     protected void initView() {
         super.initView();
-//        setSetTitleAndBack(false, true);
-//        ivOpen.setVisibility(View.INVISIBLE)
-//        setImmersionBar(rltitle);
 
         StatusBarUtil.immersive(this);
         StatusBarUtil.setPaddingSmart(this, toolbar);
@@ -544,10 +541,6 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         isLoginStateOld = MyApplication.getApp().isLogin();
     }
 
-    @Override
-    protected void loadData() {
-
-    }
 
     private String strSymbol;
 
@@ -1584,8 +1577,11 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
             SymbolBean symbolBean = gson.fromJson(response.getResponse(), SymbolBean.class);
             setCurrentcy(symbolBean);
 
-            dqccFragment.refresh();
-            dqwtFragment.refresh();
+            if (MyApplication.getApp().isLogin()){
+                dqccFragment.refresh();
+                dqwtFragment.refresh();
+            }
+
         }else if (cmd == NEWCMD.SUBSCRIBE_SIDE_TRADE){
             try {
                 List<NewCurrency> newDatas = gson.fromJson(response.getResponse(), new TypeToken<List<NewCurrency>>() {}.getType());

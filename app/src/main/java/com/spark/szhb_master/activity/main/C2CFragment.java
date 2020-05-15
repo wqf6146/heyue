@@ -1,37 +1,24 @@
 package com.spark.szhb_master.activity.main;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.activity.delegate.PostDelegateActivity;
-import com.spark.szhb_master.activity.login.LoginActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.presenter.C2CPresenterImpl;
-import com.spark.szhb_master.activity.order.MyOrderActivity;
 import com.spark.szhb_master.adapter.PagerAdapter;
-import com.spark.szhb_master.MyApplication;
-import com.spark.szhb_master.base.BaseFragment;
 import com.spark.szhb_master.base.BaseNestingTransFragment;
-import com.spark.szhb_master.dialog.BuyOrSellDialog;
-import com.spark.szhb_master.dialog.ShiMingDialog;
 import com.spark.szhb_master.entity.C2cConfig;
-import com.spark.szhb_master.entity.CoinInfo;
-import com.spark.szhb_master.entity.Country;
-import com.spark.szhb_master.entity.SafeSetting;
-import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.NetCodeUtils;
-import com.spark.szhb_master.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

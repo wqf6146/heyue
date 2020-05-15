@@ -13,6 +13,8 @@ import com.spark.szhb_master.R;
 import com.spark.szhb_master.entity.DepthListInfo;
 import com.spark.szhb_master.utils.LogUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 /**
@@ -29,6 +31,8 @@ public class DepthAdapter extends RecyclerView.Adapter<DepthAdapter.MyViewHolder
     private double alBuyAccount;
     private double alSellccount;
 
+    private int floatsize = 0;
+
     public DepthAdapter(Context context) {
         this.context = context;
     }
@@ -43,6 +47,11 @@ public class DepthAdapter extends RecyclerView.Adapter<DepthAdapter.MyViewHolder
                 }
             }
         }
+    }
+
+    public void setFloatsize(int floatsize) {
+        this.floatsize = floatsize;
+        notifyDataSetChanged();
     }
 
     public void setObjSellList(ArrayList<DepthListInfo> objSellList) {
@@ -75,10 +84,25 @@ public class DepthAdapter extends RecyclerView.Adapter<DepthAdapter.MyViewHolder
         DepthListInfo sellInfo = objSellList.get(position);
         holder.tvBuy.setText((position + 1) + "");
         holder.tvBuyNumber.setText(buyInfo.getAmount() == -1 ? "-- --" : buyInfo.getAmount() + "");
-        holder.tvBuyPrice.setText(buyInfo.getPrice() == -1 ? "-- --" : buyInfo.getPrice() + "");
+
+        if (floatsize != 0){
+            holder.tvBuyPrice.setText(buyInfo.getPrice() == -1 ? "-- --" :
+                    new BigDecimal(buyInfo.getPrice()).setScale(floatsize, RoundingMode.UP).toString());
+
+            holder.tvSellPrice.setText(sellInfo.getPrice() == -1 ? "-- --" :
+                    new BigDecimal(sellInfo.getPrice()).setScale(floatsize, RoundingMode.UP).toString());
+
+        }else{
+            holder.tvBuyPrice.setText(buyInfo.getPrice() == -1 ? "-- --" : buyInfo.getPrice() + "");
+            holder.tvSellPrice.setText(sellInfo.getPrice() == -1 ? "-- --" : sellInfo.getPrice() + "");
+        }
+
+
         holder.tvSell.setText((position + 1) + "");
         holder.tvSellNumber.setText(sellInfo.getAmount() == -1 ? "-- --" : sellInfo.getAmount() + "");
-        holder.tvSellPrice.setText(sellInfo.getPrice() == -1 ? "-- --" : sellInfo.getPrice() + "");
+
+
+
         if (buyInfo.getAmount() != -1) {
             buyAccount = 0;
             for (int i = 0; i <= position; i++) {

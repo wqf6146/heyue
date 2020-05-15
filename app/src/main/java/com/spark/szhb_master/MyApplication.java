@@ -340,7 +340,7 @@ public class MyApplication extends Application {
         if (StringUtils.isNotEmpty(activity.getClass().toString()) && activity.getClass().toString().equals(MainActivity.class.toString())) {
             return;
         }
-        activity.finish();
+//        activity.finish();
     }
 
     /**
@@ -357,7 +357,7 @@ public class MyApplication extends Application {
         if (StringUtils.isNotEmpty(activity.getClass().toString()) && activity.getClass().toString().equals(MainActivity.class.toString())) {
             return;
         }
-        activity.finish();
+//        activity.finish();
     }
 
 

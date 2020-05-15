@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -35,7 +34,6 @@ import com.google.gson.reflect.TypeToken;
 import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.activity.Trade.NewTradeActivity;
-import com.spark.szhb_master.activity.Trade.TradeActivity;
 import com.spark.szhb_master.activity.main.MainActivity;
 import com.spark.szhb_master.activity.mychart.DataParse;
 import com.spark.szhb_master.activity.mychart.KLineBean;
@@ -47,14 +45,15 @@ import com.spark.szhb_master.entity.Currency;
 import com.spark.szhb_master.entity.Favorite;
 import com.spark.szhb_master.entity.NewCurrency;
 import com.spark.szhb_master.entity.SymbolBean;
+import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.factory.socket.NEWCMD;
 import com.spark.szhb_master.serivce.SocketResponse;
 import com.spark.szhb_master.ui.CustomViewPager;
 import com.spark.szhb_master.ui.MyViewPager;
 import com.spark.szhb_master.ui.intercept.MyScrollView;
-import com.spark.szhb_master.utils.DpPxUtils;
 import com.spark.szhb_master.utils.GlobalConstant;
+import com.spark.szhb_master.utils.StatusBarUtil;
 import com.spark.szhb_master.utils.ToastUtils;
 import com.spark.szhb_master.widget.SymbolDropDownDialog;
 
@@ -62,7 +61,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -311,8 +309,9 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     @Override
     protected void initView() {
         super.initView();
-//        setSetTitleAndBack(false, true);
-        setImmersionBar(rlTitle);
+
+        StatusBarUtil.immersive(this);
+        StatusBarUtil.setPaddingSmart(this, rlTitle);
 
         if (mSymbolDialog == null){
             mSymbolDialog = new SymbolDropDownDialog(this,fldiap,mTvTitleSymbolType);
@@ -353,6 +352,14 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         startKlistTcp(type);
     }
 
+    private SymbolListBean mContractSymbol;
+    @Override
+    public void getCurrcyContractSuccess(SymbolListBean symbolListBean) {
+        mContractSymbol = symbolListBean;
+        setContratToDepth();
+
+    }
+
     @Override
     protected void initData() {
         super.initData();
@@ -383,6 +390,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         super.onResume();
         if (isInit) {
             isInit = false;
+            presenter.getCurrcyContract();
             List<String> titles = Arrays.asList(typeLists);
             if (titles != null) {
                 initPopWindow();
@@ -429,7 +437,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                 } else {
                     bundle.putInt("type", 2);
                 }
-                Intent intent = new Intent(this, TradeActivity.class);
+                Intent intent = new Intent(this, NewTradeActivity.class);
                 intent.putExtras(bundle);
 //                setResult(RESULT_OK, intent);
                 showActivity(NewTradeActivity.class,bundle,0);
@@ -675,7 +683,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                 mDataText.setText("≈ " + mCurrency.getConvert() + " USDT");
                 mDataOne.setTextColor(mCurrency.getScale() < 0 ? getResources().getColor(R.color.main_font_red) : getResources().getColor(R.color.main_font_green));
                 kRange.setBackground(mCurrency.getScale() < 0 ? getResources().getDrawable(R.drawable.bg_kl_corner_red) : getResources().getDrawable(R.drawable.bg_kl_corner_green));
-                kRange.setText((mCurrency.getScale()  < 0 ? "-" : "+") + mCurrency.getScale() +"%");
+                kRange.setText(mCurrency.getScale() +"%");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -712,10 +720,10 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     private void initViewpager(List<String> titles) {
         for (int i = 0; i < titles.size(); i++) {
             View view = LayoutInflater.from(activity).inflate(R.layout.layout_kchartview, null);
-                KLineChartView kChartView = view.findViewById(R.id.kLineChartView);
-                initKchartView(kChartView);
-                kChartView.setVisibility(View.VISIBLE);
-                kChartView.setAdapter(new KLineChartAdapter());
+            KLineChartView kChartView = view.findViewById(R.id.kLineChartView);
+            initKchartView(kChartView);
+            kChartView.setVisibility(View.VISIBLE);
+            kChartView.setAdapter(new KLineChartAdapter());
             klineViews.add(view);
         }
         MyPagerAdapter myPagerAdapter = new MyPagerAdapter(klineViews);
@@ -737,7 +745,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
             }
         });
         viewPager.setCurrentItem(type);
-        setPagerView();
+//        setPagerView();
     }
 
     /**
@@ -981,5 +989,20 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         depthTab.setupWithViewPager(depthPager);
         depthPager.setOffscreenPageLimit(fragments.size() - 1);
         depthPager.setCurrentItem(0);
+
+        setContratToDepth();
+    }
+
+    private void setContratToDepth(){
+        if (mContractSymbol==null || currency==null)
+            return;
+        for (int i=0;i<mContractSymbol.getSymbolList().size();i++){
+            SymbolListBean.Symbol symbol = mContractSymbol.getSymbolList().get(i);
+            if (symbol.getMark().equals(currency.getSymbol())){
+                if (mDepthFragment!=null)
+                    mDepthFragment.setSymbolConfig(symbol);
+                break;
+            }
+        }
     }
 }

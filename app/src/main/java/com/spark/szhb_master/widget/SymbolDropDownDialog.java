@@ -67,6 +67,8 @@ public class SymbolDropDownDialog extends FrameLayout implements View.OnClickLis
 
                 if (item.getSymbol().equals("BTC")){
                     viewHolder.setText(R.id.tvSecSymbol, "/" + item.getType()).setVisible(R.id.tvSecSymbol,true);
+                }else{
+                    viewHolder.setVisible(R.id.tvSecSymbol,false);
                 }
                 viewHolder.setText(R.id.tvPrice,item.getClose());
                 boolean tol = Float.parseFloat(item.getScale()) > 0 ? true : false;

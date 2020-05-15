@@ -73,14 +73,14 @@ public class NetCodeUtils {
                 return;
             case GlobalConstant.TOKEN_DISABLE1:
                 toast = login_invalid;
+                ToastUtils.showToast(toast);
                 MyApplication.getApp().loginAgain(fragment);
                 MyApplication.getApp().deleteCurrentUser();
-                ToastUtils.showToast(toast);
                 return;
             case GlobalConstant.TOKEN_DISABLE2:
                 toast = login_invalid;
-                MyApplication.getApp().loginAgain(fragment);
                 ToastUtils.showToast(toast);
+                MyApplication.getApp().loginAgain(fragment);
                 return;
             case GlobalConstant.JSON_ERROR:
                 toast = parse_error;

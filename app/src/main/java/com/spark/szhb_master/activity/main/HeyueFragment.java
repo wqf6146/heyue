@@ -1,20 +1,16 @@
 package com.spark.szhb_master.activity.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.spark.szhb_master.R;
-import com.spark.szhb_master.activity.Trade.TradeActivity;
 import com.spark.szhb_master.activity.kline.KlineActivity;
 import com.spark.szhb_master.adapter.HeyueAdapter;
 import com.spark.szhb_master.base.BaseTransFragment;
-import com.spark.szhb_master.entity.Currency;
 import com.spark.szhb_master.entity.NewCurrency;
 import com.umeng.analytics.MobclickAgent;
 

@@ -129,8 +129,6 @@ public class VolumeFragment extends BaseFragment implements KlineContract.Volume
     private void stopTcp(){
         tcpStatus = false;
         String tradedetail = "market." + symbol + "_" + symbolType + ".trade.detail";
-//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_TRADEDETAIL,
-//                buildGetBodyJson(tradedetail, "0").toString()));
         MyApplication.getApp().stopTcp(new TcpEntity(tradedetail,NEWCMD.SUBSCRIBE_SYMBOL_TRADEDETAIL));
     }
 
@@ -138,8 +136,6 @@ public class VolumeFragment extends BaseFragment implements KlineContract.Volume
         // 开始订阅
         tcpStatus = true;
         String tradedetail = "market." + symbol + "_" + symbolType + ".trade.detail";
-//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_TRADEDETAIL,
-//                buildGetBodyJson(tradedetail, "1").toString()));
         MyApplication.getApp().startTcp(new TcpEntity(tradedetail,NEWCMD.SUBSCRIBE_SYMBOL_TRADEDETAIL));
     }
 

@@ -77,6 +77,7 @@ public class C2cSellFragment extends Fragment implements MainContract.SellView {
                 String input = edInput.getText().toString();
                 if (TextUtils.isEmpty(input)){
                     ToastUtils.showToast("请输入正确的信息");
+                    return;
                 }
                 Double num = Double.parseDouble(input);
                 if (num >= c2cConfig.getMin_num() && num <= c2cConfig.getMax_num()){

@@ -17,6 +17,24 @@ public class SymbolListBean {
     public class Symbol {
         private String leverage;
         private String mark;
+        private String depth_config;
+        private String depth_default;
+
+        public void setDepth_config(String depth_config) {
+            this.depth_config = depth_config;
+        }
+
+        public void setDepth_default(String depth_default) {
+            this.depth_default = depth_default;
+        }
+
+        public String getDepth_config() {
+            return depth_config;
+        }
+
+        public String getDepth_default() {
+            return depth_default;
+        }
 
         public void setLeverage(String leverage) {
             this.leverage = leverage;

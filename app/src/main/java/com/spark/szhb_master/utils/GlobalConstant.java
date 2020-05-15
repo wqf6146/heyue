@@ -1,5 +1,7 @@
 package com.spark.szhb_master.utils;
 
+import com.spark.szhb_master.entity.SymbolListBean;
+
 /**
  * Created by Administrator on 2017/5/5.
  */
@@ -31,6 +33,27 @@ public class GlobalConstant {
 
     public static final int KEFU = 100;
 
+    public static final int step7 = 5;
+    public static final int step8 = 4;
+    public static final int step9 = 3;
+    public static final int step10 = 2;
+    public static final int step11 = 1;
+
+    public static int getFloatSize(SymbolListBean.Symbol symbol){
+        String dp = symbol.getDepth_default();
+        if (dp.equals("step7")){
+            return step7;
+        }else if (dp.equals("step8")){
+            return step8;
+        }else if (dp.equals("step9")){
+            return step9;
+        }else if (dp.equals("step10")){
+            return step10;
+        }else if (dp.equals("step11")){
+            return step11;
+        }
+        return 0;
+    }
     /**
      * k线图对应tag值
      */

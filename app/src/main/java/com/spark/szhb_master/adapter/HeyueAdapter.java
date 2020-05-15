@@ -62,6 +62,8 @@ public class HeyueAdapter extends BaseQuickAdapter<NewCurrency, BaseViewHolder> 
         helper.setText(R.id.tvBuySymbol, item.getSymbol());
         if (item.getSymbol().equals("BTC")){
             helper.setText(R.id.tvSecSymbol, "/" + item.getType()).setVisible(R.id.tvSecSymbol,true);
+        }else{
+            helper.setVisible(R.id.tvSecSymbol,false);
         }
 
         helper.setText(R.id.tvPrice, item.getClose());

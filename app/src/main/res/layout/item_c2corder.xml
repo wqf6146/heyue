@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:text="单价"
                     android:textColor="@color/tab_font"
-                    android:textSize="@dimen/font_small" />
+                    android:textSize="@dimen/font_mini" />
 
                 <TextView
                     android:id="@+id/tvPrice"
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:text="数量"
                     android:textColor="@color/tab_font"
-                    android:textSize="@dimen/font_small" />
+                    android:textSize="@dimen/font_mini" />
 
                 <TextView
                     android:id="@+id/tvNum"
@@ -150,7 +150,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="总金额"
                 android:textColor="@color/tab_font"
-                android:textSize="@dimen/font_small" />
+                android:textSize="@dimen/font_mini" />
         </LinearLayout>
 
 
@@ -186,6 +186,6 @@
             android:gravity="center"
             android:text="交易完成"
             android:textColor="@color/tab_font"
-            android:textSize="@dimen/font_normal" />
+            android:textSize="@dimen/font_small" />
     </RelativeLayout>
 </LinearLayout>
