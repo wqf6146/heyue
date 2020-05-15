@@ -970,7 +970,6 @@ public abstract class BaseKLineChartView extends ScrollAndScaleView {
 
     /**
      * 二分查找当前值的index
-     *
      * @return
      */
     public int indexOfTranslateX(float translateX, int start, int end) {

@@ -21,15 +21,14 @@ import com.github.fujianlian.klinechart.draw.WRDraw;
 
 /**
  * k线图
- * Created by tian on 2016/5/20.
  */
 public class KLineChartView extends BaseKLineChartView {
 
     ProgressBar mProgressBar;
     private boolean isRefreshing = false;
     private boolean isLoadMoreEnd = false;
-    private boolean mLastScrollEnable;
-    private boolean mLastScaleEnable;
+    private boolean mLastScrollEnable = true;
+    private boolean mLastScaleEnable = true;
 
     private KChartRefreshListener mRefreshListener;
 
@@ -144,8 +143,7 @@ public class KLineChartView extends BaseKLineChartView {
     }
 
     @Override
-    public void onRightSide() {
-    }
+    public void onRightSide() { }
 
     public void showLoading() {
         if (!isLoadMoreEnd && !isRefreshing) {
