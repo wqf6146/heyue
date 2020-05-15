@@ -102,7 +102,11 @@ public class CurrentTrustActivity extends BaseActivity implements ITrustContract
                 public void onitemClick(SymbolListBean.Symbol symbol) {
                     mSymbolDialog.dismiss();
                     mSymbolDialog.dismiss();
-                    mTvSymbol.setText(symbol.getMark() + "/" + symbol.getLeverage());
+                    if (symbol.getMark().equals("BTC")){
+                        mTvSymbol.setText(symbol.getMark() + "/" + symbol.getLeverage());
+                    }else{
+                        mTvSymbol.setText(symbol.getMark());
+                    }
                     mSymbol = symbol.getMark();
                     mType = symbol.getLeverage();
                     refreshText();

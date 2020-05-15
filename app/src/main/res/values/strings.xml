@@ -293,9 +293,10 @@
     <string name="find_new">发现新版本！</string>
 
     <string-array name="text_type">
-        <item>限价</item>
-        <item>市价</item>
+        <item>市价委托</item>
+        <item>限价委托</item>
     </string-array>
+
 
     <string-array name="alltype">
         <item>全部</item>

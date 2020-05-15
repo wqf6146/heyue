@@ -105,11 +105,14 @@ public class DepthFragment extends BaseFragment implements KlineContract.DepthVi
         adapter.notifyDataSetChanged();
 
 
-        startTCP();
+//        startTCP();
     }
 
     public void setSymbolConfig(SymbolListBean.Symbol symbolConfig) {
         this.mSymbolConfig = symbolConfig;
+        symbol = symbolConfig.getMark();
+        symbolType = symbolConfig.getLeverage();
+        startTCP();
         if (adapter!=null)
             adapter.setFloatsize(GlobalConstant.getFloatSize(symbolConfig));
     }
@@ -119,7 +122,6 @@ public class DepthFragment extends BaseFragment implements KlineContract.DepthVi
         super.onStart();
         EventBus.getDefault().register(this);
         mRunning = true;
-        startTCP();
         if (mHandler!=null){
             mHandler.removeCallbacks(mBackgroundRunnable);
             mHandler.post(mBackgroundRunnable);
@@ -151,17 +153,19 @@ public class DepthFragment extends BaseFragment implements KlineContract.DepthVi
 
     private void stopTcp(){
         tcpStatus = false;
-        String depth = "market." + symbol + "_" + symbolType + ".depth.step10";
+        String depth = "market." + symbol + "_" + symbolType + ".depth." + mSymbolConfig.getDepth_default();
 //        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
 //                buildGetBodyJson(depth, "0").toString())); // 需要id
 
         MyApplication.getApp().stopTcp(new TcpEntity(depth,NEWCMD.SUBSCRIBE_SYMBOL_DEPTH));
     }
 
+
+
     private void startTCP() {
         if (!TextUtils.isEmpty(symbol) && !TextUtils.isEmpty(symbolType)){
             tcpStatus = true;
-            String depth = "market." + symbol + "_" + symbolType + ".depth.step10";
+            String depth = "market." + symbol + "_" + symbolType + ".depth." + mSymbolConfig.getDepth_default();
 //            EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
 //                    buildGetBodyJson(depth, "1").toString())); // 需要id
 

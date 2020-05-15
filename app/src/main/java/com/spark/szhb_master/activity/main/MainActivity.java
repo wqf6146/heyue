@@ -34,6 +34,7 @@ import com.spark.szhb_master.dialog.VersionDialogFragment;
 import com.spark.szhb_master.entity.Currency;
 import com.spark.szhb_master.entity.Favorite;
 import com.spark.szhb_master.entity.NewCurrency;
+import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.Vision;
 import com.spark.szhb_master.factory.socket.NEWCMD;
 import com.spark.szhb_master.serivce.MyTextService;
@@ -186,6 +187,7 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
             MyApplication.getApp().setLoginStatusChange(false);
         }
 
+        presenter.getCurrcyContract();
     }
 
     protected void onPause() {
@@ -264,6 +266,15 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
 
     }
 
+    @Override
+    public void getCurrcyContractSuccess(SymbolListBean obj) {
+        MyApplication.getApp().setSymbolListConfig(obj);
+    }
+
+    @Override
+    public void getCurrcyContractFail(Integer code, String toastMessage) {
+        NetCodeUtils.checkedErrorCode(this,code,toastMessage);
+    }
 
     @Override
     protected int getActivityLayoutId() {
@@ -406,6 +417,7 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
 //        presenter.getRate();
 //        presenter.homeCurrency();
 //        presenter.allCurrency();
+//        presenter.getCurrcyContract();
     }
 
     private void tcpNotify() {

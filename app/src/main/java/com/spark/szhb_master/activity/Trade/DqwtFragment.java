@@ -161,7 +161,8 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
     public void reInit(String mark,String leverage){
         mMark = mark;
         mLeverage = leverage;
-        mRefreshlayout.beginRefreshing();
+        if (mRefreshlayout!=null)
+            mRefreshlayout.beginRefreshing();
     }
 
     public void beginRefreshing(){
@@ -192,18 +193,17 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
             if (callBackEvent!=null)
                 callBackEvent.showEmpty(false);
             if (entrustEntity.getPage() == 1) {
-                this.entrustList.clear();
+                trustAdapter.getData().clear();
             } else if (entrustEntity.getList().size() < GlobalConstant.PageSize){
                 mRefreshlayout.endLoadingMore();
             }
 
             mPage = entrustEntity.getPage();
 
-            this.entrustList.addAll(entrustEntity.getList());
-            trustAdapter.notifyDataSetChanged();
+            trustAdapter.addData(entrustEntity.getList());
         } else {
             if (entrustEntity.getPage() == 1) {
-                this.entrustList.clear();
+                trustAdapter.getData().clear();
                 trustAdapter.setEmptyView(R.layout.empty_no_message);
                 trustAdapter.notifyDataSetChanged();
                 if (callBackEvent!=null)

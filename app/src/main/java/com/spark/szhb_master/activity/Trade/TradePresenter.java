@@ -8,6 +8,7 @@ import com.spark.szhb_master.entity.AssetsInfo;
 import com.spark.szhb_master.entity.ContratInfo;
 import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.entity.SymbolInfo;
+import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.TradeCOM;
 import com.spark.szhb_master.factory.UrlFactory;
 
@@ -34,8 +35,6 @@ public class TradePresenter implements TradeContract.Presenter {
         this.dataRepository = dataRepository;
         this.view.setPresenter(this);
     }
-
-
 
     @Override
     public void commitLiquidation() {

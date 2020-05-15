@@ -12,6 +12,8 @@ import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.entity.NewCurrency;
 import com.spark.szhb_master.utils.GlobalConstant;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -28,8 +30,10 @@ public class HomeOneAdapter extends BaseQuickAdapter<NewCurrency, BaseViewHolder
         //helper.setImageResource(R.id.ivCollect, item.isCollect() ? R.mipmap.icon_collect_hover : R.mipmap.icon_collect_normal);
         //helper.addOnClickListener(R.id.ivCollect);
 
+
         helper.setText(R.id.tvCurrencyName1, item.getSymbol())
-                .setText(R.id.tvClose, item.getClose())
+                .setText(R.id.tvClose, new BigDecimal(Double.parseDouble(item.getClose()))
+                        .setScale(MyApplication.getApp().getSymbolSize(item.getSymbol()), RoundingMode.UP).toString())
                 .setText(R.id.tvAddPercent, (Float.parseFloat(item.getScale()) >= 0 ? "+" : "") + item.getScale() + "%")
                 .setText(R.id.tvVol, "≈" + item.getConvert() + GlobalConstant.USD)
                 .setTextColor(R.id.tvAddPercent, Float.parseFloat(item.getScale()) >= 0 ? ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_green) : ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_red))

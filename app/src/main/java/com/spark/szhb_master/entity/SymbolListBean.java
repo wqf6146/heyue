@@ -1,5 +1,6 @@
 package com.spark.szhb_master.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class SymbolListBean {
@@ -14,7 +15,8 @@ public class SymbolListBean {
         return list;
     }
 
-    public class Symbol {
+    public class Symbol implements Serializable {
+        private static final long serialVersionUID = -2083503801433301445L;
         private String leverage;
         private String mark;
         private String depth_config;

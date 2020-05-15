@@ -16,11 +16,11 @@
         <LinearLayout
             android:id="@+id/llBuyPrice"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/tvBuyReduce"
-                android:layout_width="45dp"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:background="@drawable/bg_market_lesstv"
@@ -38,7 +38,6 @@
                 android:layout_marginLeft="1dp"
                 android:layout_weight="1"
                 android:background="@color/main_bg_dark_2"
-
                 android:gravity="center_vertical"
                 android:hint="@string/text_price"
                 android:inputType="number"
@@ -54,7 +53,7 @@
 
             <TextView
                 android:id="@+id/tvBuyAdd"
-                android:layout_width="45dp"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_marginLeft="1dp"
@@ -105,7 +104,7 @@
 
         <TextView
             android:id="@+id/tvBuySymbol"
-            android:layout_width="56dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="手"
@@ -261,26 +260,26 @@
         <Button
             android:id="@+id/btnBuy"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
             android:layout_marginTop="8dp"
             android:background="@drawable/ripple_green"
             android:text="@string/text_domore"
             android:layout_marginRight="3dp"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_normal" />
+            android:textSize="@dimen/font_small" />
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:background="@drawable/ripple_white"
             android:textColor="@color/Blue"
-            android:textSize="@dimen/font_normal"
+            android:textSize="@dimen/font_small"
             android:layout_marginLeft="3dp"
             android:text="全仓做多"
             android:id="@+id/btnBuyQc"
             android:layout_marginTop="8dp"
-            android:layout_height="40dp"/>
+            android:layout_height="30dp"/>
 
     </LinearLayout>
 

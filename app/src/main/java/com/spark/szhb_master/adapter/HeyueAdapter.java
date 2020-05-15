@@ -4,9 +4,12 @@ import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.entity.NewCurrency;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -35,27 +38,6 @@ public class HeyueAdapter extends BaseQuickAdapter<NewCurrency, BaseViewHolder> 
 
     @Override
     protected void convert(BaseViewHolder helper, NewCurrency item) {
-//        if (isLoad) {
-//            helper.setText(R.id.tvConvert, "¥" + String.valueOf(MathUtils.getRundNumber(
-//                    item.getBaseUsdRate() * item.getClose() * MainActivity.rate, 2, null)));
-//        } else {
-//            helper.setText(R.id.tvConvert, "$" + String.valueOf(MathUtils.getRundNumber(
-//                    item.getBaseUsdRate() * item.getClose(), 2, null)));
-//        }
-//        helper.setText(R.id.item_home_chg, (item.getChg() >= 0 ? "+" : "") + MathUtils.getRundNumber(item.getChg() * 100, 2, "########0.") + "%");
-//        helper.getView(R.id.item_home_chg).setEnabled(item.getChg() >= 0);
-//        if (type == 2) {
-//            helper.setText(R.id.tvBuySymbol, item.getSymbol().split("/")[0]);
-//            helper.setText(R.id.tvSecSymbol, "/" + item.getSymbol().split("/")[1]);
-//        } else {
-//            helper.setText(R.id.tvBuySymbol, item.getOtherCoin());
-//            helper.setText(R.id.tvSecSymbol, item.getSymbol().substring(item.getSymbol().indexOf("/"), item.getSymbol().length()));
-//        }
-//        helper.setText(R.id.tvClose, String.valueOf(MathUtils.getRundNumber(item.getClose(),2,null)));
-////        helper.setTextColor(R.id.tvClose, item.getChg() >= 0 ? ContextCompat.getColor(MyApplication.getApp(),
-////                R.color.main_font_green) : ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_red));
-//        helper.setText(R.id.tv24HCount, MyApplication.getApp().getString(R.string.text_24_change) + item.getVolume());
-
 
         boolean tol = Float.parseFloat(item.getScale()) > 0 ? true : false;
 
@@ -66,7 +48,9 @@ public class HeyueAdapter extends BaseQuickAdapter<NewCurrency, BaseViewHolder> 
             helper.setVisible(R.id.tvSecSymbol,false);
         }
 
-        helper.setText(R.id.tvPrice, item.getClose());
+        helper.setText(R.id.tvPrice, new BigDecimal(Double.parseDouble(item.getClose()))
+                .setScale(MyApplication.getApp().getSymbolSize(item.getSymbol()), RoundingMode.UP).toString());
+
         if (tol){
             helper.setText(R.id.item_home_chg, "+"+ item.getScale() + "%");
             helper.getView(R.id.item_home_chg).setEnabled(true);

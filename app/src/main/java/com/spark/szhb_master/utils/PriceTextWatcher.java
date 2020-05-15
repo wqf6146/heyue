@@ -48,6 +48,21 @@ public class PriceTextWatcher implements TextWatcher {
         mPattern = Pattern.compile("(([0]|(0[.]\\d{0,3}))|([1-9]\\d{0,5}(([.]\\d{0,3})?)))");
     }
 
+    public PriceTextWatcher(EditText editText,int floatsize) {
+        this.mEditText = editText;
+        /**
+         * 正则表达式匹配
+         * 条件一:如果以0开始,那么小数点前最多只有1位
+         * 条件二:小数点后面最多只有2位
+         * 条件三:如果不以0开始,小数点前面最多只有5位
+         */
+        mPattern = Pattern.compile(getPattern(floatsize));
+    }
+
+    private String getPattern(int floatsize){
+        return "(([0]|(0[.]\\d{0," + floatsize + "}))|([1-9]\\d{0,5}(([.]\\d{0," + floatsize + "})?)))";
+    }
+
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         Log.i(TAG, "beforeTextChanged:" + charSequence);

@@ -13,6 +13,7 @@ import com.spark.szhb_master.entity.Fiats;
 import com.spark.szhb_master.entity.Message;
 import com.spark.szhb_master.entity.Plate;
 import com.spark.szhb_master.entity.SafeSetting;
+import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.User;
 import com.spark.szhb_master.entity.Vision;
 
@@ -46,6 +47,9 @@ public interface MainContract {
 
         void getRateFail(Integer code, String toastMessage);
 
+        void getCurrcyContractSuccess(SymbolListBean obj);
+
+        void getCurrcyContractFail(Integer code, String toastMessage);
     }
 
     interface Presenter extends Contract.BasePresenter {
@@ -53,6 +57,8 @@ public interface MainContract {
         void allCurrency();
 
         void homeCurrency();
+
+        void getCurrcyContract();
 
         void find();
 

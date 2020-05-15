@@ -52,6 +52,7 @@ import com.spark.szhb_master.entity.Favorite;
 import com.spark.szhb_master.entity.NewCurrency;
 import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.entity.SymbolBean;
+import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.SymbolStep;
 import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.entity.TradeCOM;
@@ -59,6 +60,7 @@ import com.spark.szhb_master.factory.socket.NEWCMD;
 import com.spark.szhb_master.serivce.SocketResponse;
 import com.spark.szhb_master.ui.intercept.JudgeNestedScrollView;
 import com.spark.szhb_master.utils.CommonUtils;
+import com.spark.szhb_master.utils.DpPxUtils;
 import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.LogUtils;
 import com.spark.szhb_master.utils.MathUtils;
@@ -80,6 +82,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -111,6 +114,10 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     RadioGroup mRadioGroup;
     @BindView(R.id.limitSpinner)
     NiceSpinner limitSpinner; // 下拉
+
+    @BindView(R.id.floatSpinner)
+    NiceSpinner floatSpinner; // 下拉
+
     @BindView(R.id.recyclerSell)
     RecyclerView recyclerSell; // 卖出的
     @BindView(R.id.recyclerBuy)
@@ -390,17 +397,30 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         mViewPager.setLayoutParams(params);
     }
 
+    private List<String> mFloatList = new ArrayList<>();
+    private List<String> getFloatList(){
+        if (mSymbolConfig!=null){
+            String config[] = mSymbolConfig.getDepth_config().split(",");
+            mFloatList = GlobalConstant.getFloatSizeList(config);
+        }
+        return mFloatList;
+    }
 
     @Override
     protected void initData() {
         isLoginStateOld = MyApplication.getApp().isLogin();
         limitSpinner.attachDataSource(new LinkedList<>(Arrays.asList(activity.getResources().getStringArray(R.array.text_type))));
+
         dialog = new EntrustDialog(activity);
         tradeBuyOrSellConfirmDialog = new TradeBuyOrSellConfirmDialog(activity);
         new TradePresenter(Injection.provideTasksRepository(activity.getApplicationContext()), this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             currency = (NewCurrency) bundle.getSerializable("currency");
+            mSymbolConfig = MyApplication.getApp().getSymbolConfig(currency);
+            floatSpinner.attachDataSource(new LinkedList<>(getFloatList()));
+            floatSpinner.setPadding(DpPxUtils.dip2px(this,5),DpPxUtils.dip2px(this,3)
+                ,DpPxUtils.dip2px(this,5),DpPxUtils.dip2px(this,3));
             int type = bundle.getInt("type");
             if (type == 1) { // 买入
                 mRadioGroup.check(R.id.rbBuy);
@@ -554,20 +574,25 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
             tvPriceTag.setText(getString(R.string.text_price) + symbol);
             tvCountTag.setText(getString(R.string.text_number) + "(" + CommonUtils.getUnitBySymbol(symbol) + ")");
             isFace = addFace(symbol);
-//            ivCollect.setImageDrawable(isFace ? getResources().getDrawable(R.mipmap.icon_collect_hover) : getResources().getDrawable(R.mipmap.icon_collect_normal));
             String strClose = currency.getClose();
-            etBuyPrice.setText(strClose);
-            etSellPrice.setText(strClose);
-            tvPrice.setText(strClose);
+            if (mSymbolConfig!=null){
+                adjustScale(etBuyPrice,Double.parseDouble(strClose));
+                adjustScale(etSellPrice,Double.parseDouble(strClose));
+                adjustScale(tvPrice,Double.parseDouble(strClose));
+            }else{
+                etBuyPrice.setText(strClose);
+                etSellPrice.setText(strClose);
+                tvPrice.setText(strClose);
+            }
+
             tvPrice.setTextColor(Float.parseFloat(currency.getScale()) >= 0 ? ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_green) :
                     ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_red));
-//            tvLatest.setTextColor(Float.parseFloat(currency.getScale()) >= 0 ? ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_green) :
-//                    ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_red));
+
             strSymbol = symbol;
-//            tvBuySymbol.setText(strSymbol);
-//            tvSellSymbol.setText(strSymbol);
+
             btnBuy.setText(getString(R.string.text_buy_in) + strSymbol);
             btnSale.setText(getString(R.string.text_sale_out) + strSymbol);
+
             if (GlobalConstant.CNY.equals(CommonUtils.getUnitBySymbol(symbol))) {
                 tvMoney.setText("≈" + MathUtils.getRundNumber(Float.parseFloat(currency.getClose()) * 1 * currency.getBaseUsdRate(),
                         2, null) + GlobalConstant.CNY);
@@ -578,6 +603,14 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         }
     }
 
+    private SymbolListBean.Symbol mSymbolConfig;
+    private void adjustScale(TextView tv,Double value){
+        if (mSymbolConfig == null)
+            mSymbolConfig = MyApplication.getApp().getSymbolConfig(currency);
+
+        if (mSymbolConfig != null)
+            tv.setText(new BigDecimal(value).setScale(GlobalConstant.getFloatSize(mSymbolConfig), RoundingMode.UP).toString());
+    }
 
     /**
      * 初始化卖出的盘口信息和买入的盘口信息
@@ -591,11 +624,41 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         }
         recyclerSell.setLayoutManager(new LinearLayoutManager(activity));
         sellAdapter = new SellAdapter(sellExchangeList, 0);
+        sellAdapter.setOnClickEvent(new SellAdapter.OnClickEvent() {
+            @Override
+            public void onClickEvent(String value) {
+                if (type.equals(GlobalConstant.LIMIT_PRICE)) {
+                    if (!"--".equals(value)) {
+                        if (rbBuy.isChecked()) {
+                            etBuyPrice.setText( value );
+                        } else {
+                            etSellPrice.setText(value);
+                        }
+                    }
+                }
+            }
+        });
         recyclerSell.setAdapter(sellAdapter);
+        sellAdapter.setSymbolConfig(mSymbolConfig);
 
         recyclerBuy.setLayoutManager(new LinearLayoutManager(activity));
         buyAdapter = new SellAdapter(buyExchangeList, 1);
+        buyAdapter.setOnClickEvent(new SellAdapter.OnClickEvent() {
+            @Override
+            public void onClickEvent(String value) {
+                if (type.equals(GlobalConstant.LIMIT_PRICE)) {
+                    if (!"--".equals(value)) {
+                        if (rbBuy.isChecked()) {
+                            etBuyPrice.setText( value );
+                        } else {
+                            etSellPrice.setText(value);
+                        }
+                    }
+                }
+            }
+        });
         recyclerBuy.setAdapter(buyAdapter);
+        buyAdapter.setSymbolConfig(mSymbolConfig);
     }
 
     private SymbolDropDownDialog mSymbolDialog;
@@ -642,41 +705,14 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                     etSellPrice.setText(tvPrice.getText());
                 }
                 break;
-//            case R.id.tvDqwt:
-//            case R.id.tvDqcc:
-//                if (MyApplication.getApp().isLogin()) {
-//                    if (wtOrcc){
-//                        wtOrcc = false;
-//                        getCurrentEntrust();
-//                    }else{
-//                        wtOrcc = true;
-//                    }
-//                }else{
-//                    showActivity(LoginStepOneActivity.class, null, LoginActivity.RETURN_LOGIN);
-//                }
-//                break;
-//            case R.id.ivCollect:
-//                if (MyApplication.getApp().isLogin()) {
-//                    MainActivity.isAgain = true;
-//                    HashMap<String, String> map = new HashMap<>();
-//                    map.put("symbol", currency.getSymbol());
-//                    if (isFace) { // 已经收藏 则删除
-//                        mPresenter.deleteCollect(map);
-//                    } else {
-////                    mPresenter.deleteCollect(map);
-//                        mPresenter.addCollect(map);
-//                    }
-//                } else {
-//                    showActivity(LoginStepOneActivity.class, null, LoginActivity.RETURN_LOGIN);
-//                }
-//                break;
             case R.id.ivChart:
-                Bundle bundle = new Bundle();
-                bundle.putString("symbol", currency.getSymbol());
-                bundle.putSerializable("currency", currency);
-                bundle.putInt("tcpstatus", 1);
-                stopTcp();
-                showActivity(KlineActivity.class, bundle, 1);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("symbol", currency.getSymbol());
+//                bundle.putSerializable("currency", currency);
+//                bundle.putInt("tcpstatus", 1);
+//                stopTcp();
+//                showActivity(KlineActivity.class, bundle, 1);
+                finish();
                 break;
 //            case R.id.tvLogin: // 点击登录
 //                showActivity(LoginActivity.class, null, LoginActivity.RETURN_LOGIN);
@@ -722,7 +758,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                 break;
             case R.id.tvAll: // 查看当前委托的全部
                 if (MyApplication.getApp().isLogin() && currency != null) { // 如果登录了就可以进入
-                    bundle = new Bundle();
+                    Bundle bundle = new Bundle();
                     bundle.putString("currency", currency.getSymbol());
                     bundle.putString("type", currency.getType());
                     showActivity(CurrentTrustActivity.class, bundle);
@@ -782,7 +818,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     private void stopTcp() {
         if (tcpStatus) {
             tcpStatus = false;
-            stop(currency.getSymbol(), currency.getType());
+            stop(currency.getSymbol(), currency.getType(),mSymbolConfig.getDepth_default());
         }
     }
 
@@ -808,25 +844,6 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 
         }
     }
-
-    /**
-     * 盘口信息列表item的点击事件
-     */
-    BaseQuickAdapter.OnItemClickListener onItemClickListener = new BaseQuickAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
-            Exchange e = (Exchange) baseQuickAdapter.getData().get(position);
-            if (type.equals(GlobalConstant.LIMIT_PRICE)) {
-                if (!"--".equals(e.getPrice())) {
-                    if (rbBuy.isChecked()) {
-                        etBuyPrice.setText(String.valueOf(MathUtils.getRundNumber(Double.valueOf(e.getPrice()), coinScale, null)));
-                    } else {
-                        etSellPrice.setText(String.valueOf(MathUtils.getRundNumber(Double.valueOf(e.getPrice()), coinScale, null)));
-                    }
-                }
-            }
-        }
-    };
 
     @Override
     public void commitLiquidationSuccess(String msg) {
@@ -920,7 +937,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                     }
 
                     if (type.equals(GlobalConstant.LIMIT_PRICE)) {
-                        tvSellTradeCount.setText(getTradeNum(doubleSellPrice, doubleSellCount) + "USDT");
+                        tvSellTradeCount.setText(getTradeNum(doubleSellPrice, doubleSellCount) + " USDT");
                     } else {
                         tvSellTradeCount.setText(getString(R.string.text_entrust) + " " + String.valueOf("--"));
                     }
@@ -933,6 +950,11 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 
         }
     }
+
+    private PriceTextWatcher etBuyPriceWatcher,etSellPriceWatcher,
+            edBuyTakeProfitWatcher,edBuyStopLossWatcher,
+            edSellTakeProfitWatcher,edSellStopLossWatcher;
+
 
     //合约余额/(挂单价格*杠杆(60/120/200)/隐藏杠杆) 后取整
     private int mCanPlaceOrderNum;
@@ -948,8 +970,8 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     //保证金=挂单价格*挂单手数*杠杆(60/120/200)/隐藏杠杆   可挂单手数 = 合约余额/交易额后取整
     //      价格✖数量✖倍数(60/120/200)/隐藏杠杆
     private double getTradeNum(double orderprice,double ordernum){
-        BigDecimal m = new BigDecimal(orderprice * ordernum * Integer.parseInt(currency.getType()));
-        return m.divide(new BigDecimal(mContartInfo.getHidden_leverage()),6,BigDecimal.ROUND_HALF_UP).doubleValue();
+        BigDecimal m = new BigDecimal(orderprice * ordernum * Integer.parseInt(currency.getType())).setScale(6,RoundingMode.UP);
+        return m.divide(new BigDecimal(mContartInfo.getHidden_leverage()),9,BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     private void setViewListener() {
@@ -960,6 +982,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                 tradeBuyOrSellConfirmDialog.dismiss();
             }
         });
+
         dialog.setOnCancelOrder(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -967,8 +990,6 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                 dialog.dismiss();
             }
         });
-        sellAdapter.setOnItemClickListener(onItemClickListener);
-        buyAdapter.setOnItemClickListener(onItemClickListener);
 
         limitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -981,20 +1002,44 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 
             }
         });
+        setViewByType(0);
 
-        etBuyPrice.addTextChangedListener(new PriceTextWatcher(etBuyPrice).addTextChangedListener(new MyTextWatcher(0)));
-        etSellPrice.addTextChangedListener(new PriceTextWatcher(etSellPrice).addTextChangedListener(new MyTextWatcher(1)));
-        etBuyCount.addTextChangedListener(new MyTextWatcher(2));
-        etSellCount.addTextChangedListener(new MyTextWatcher(3));
+        floatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String buyP = etBuyPrice.getText().toString();
+                String sellP = etSellPrice.getText().toString();
+                etBuyPrice.setText("");
+                etSellPrice.setText("");
+                SymbolListBean.Symbol symbol = sellAdapter.getSymbolConfig();
+                String newdepth = GlobalConstant.getFloatStrName(mFloatList.get(i));
+                changeDepthTcp(currency.getSymbol(),currency.getType(),mSymbolConfig.getDepth_default(),newdepth);
+                symbol.setDepth_default(newdepth);
+                mSymbolConfig = symbol;
 
-        edBuyTakeProfit.addTextChangedListener(new PriceTextWatcher(edBuyTakeProfit));
-        edBuyStopLoss.addTextChangedListener(new PriceTextWatcher(edBuyStopLoss));
-        edSellTakeProfit.addTextChangedListener(new PriceTextWatcher(edSellTakeProfit));
-        edSellStopLoss.addTextChangedListener(new PriceTextWatcher(edSellStopLoss));
+                addTextWatcher();
 
-//        buySeekBar.setOnProgressChangedListener(new MyProgressChangedListener(0));
-//        sellSeekBar.setOnProgressChangedListener(new MyProgressChangedListener(1));
+                if (rbBuy.isChecked()) {
+                    if (StringUtils.isNotEmpty(buyP) && !buyP.equals("--")){
+                        adjustScale(etBuyPrice,Double.parseDouble(buyP));
+                    }
+                } else {
+                    if (StringUtils.isNotEmpty(sellP) && !sellP.equals("--")){
+                        adjustScale(etSellPrice,Double.parseDouble(sellP));
+                    }
+                }
+                sellAdapter.setSymbolConfig(symbol);
+                buyAdapter.setSymbolConfig(symbol);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        addTextWatcher();
 
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -1011,6 +1056,48 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                 }
             }
         });
+    }
+
+    private void addTextWatcher(){
+
+        if (etBuyPriceWatcher!=null)
+            etBuyPrice.removeTextChangedListener(etBuyPriceWatcher);
+        if (etSellPriceWatcher!=null)
+            etSellPrice.removeTextChangedListener(etSellPriceWatcher);
+        if (edBuyTakeProfitWatcher!=null)
+            edBuyTakeProfit.removeTextChangedListener(edBuyTakeProfitWatcher);
+        if (edBuyStopLossWatcher!=null)
+            edBuyStopLoss.removeTextChangedListener(edBuyTakeProfitWatcher);
+        if (edSellTakeProfitWatcher!=null)
+            edSellTakeProfit.removeTextChangedListener(edSellTakeProfitWatcher);
+        if (edSellStopLossWatcher!=null)
+            edSellStopLoss.removeTextChangedListener(edSellStopLossWatcher);
+        if (mSymbolConfig != null){
+            int size = GlobalConstant.getFloatSize(mSymbolConfig);
+            etBuyPriceWatcher = new PriceTextWatcher(etBuyPrice,size).addTextChangedListener(new MyTextWatcher(0));
+            etSellPriceWatcher = new PriceTextWatcher(etSellPrice,size).addTextChangedListener(new MyTextWatcher(1));
+            edBuyTakeProfitWatcher = new PriceTextWatcher(edBuyTakeProfit,size);
+            edBuyStopLossWatcher = new PriceTextWatcher(edBuyStopLoss,size);
+            edSellTakeProfitWatcher = new PriceTextWatcher(edSellTakeProfit,size);
+            edSellStopLossWatcher = new PriceTextWatcher(edSellStopLoss,size);
+        }else{
+            etBuyPriceWatcher = new PriceTextWatcher(etBuyPrice).addTextChangedListener(new MyTextWatcher(0));
+            etSellPriceWatcher = new PriceTextWatcher(etSellPrice).addTextChangedListener(new MyTextWatcher(1));
+            edBuyTakeProfitWatcher = new PriceTextWatcher(edBuyTakeProfit);
+            edBuyStopLossWatcher = new PriceTextWatcher(edBuyStopLoss);
+            edSellTakeProfitWatcher = new PriceTextWatcher(edSellTakeProfit);
+            edSellStopLossWatcher = new PriceTextWatcher(edSellStopLoss);
+        }
+        etBuyPrice.addTextChangedListener(etBuyPriceWatcher);
+        etSellPrice.addTextChangedListener(etSellPriceWatcher);
+        etBuyCount.addTextChangedListener(new MyTextWatcher(2));
+        etSellCount.addTextChangedListener(new MyTextWatcher(3));
+
+
+        edBuyTakeProfit.addTextChangedListener(edBuyTakeProfitWatcher);
+        edBuyStopLoss.addTextChangedListener(edBuyStopLossWatcher);
+        edSellTakeProfit.addTextChangedListener(edSellTakeProfitWatcher);
+        edSellStopLoss.addTextChangedListener(edSellStopLossWatcher);
     }
 
     public class MyProgressChangedListener implements BubbleSeekBar.OnProgressChangedListener {
@@ -1074,19 +1161,23 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
      * 根据市价还是限价显示view
      */
     private void setViewByType(int intType) {
-        type = (intType == 0 ? GlobalConstant.LIMIT_PRICE : GlobalConstant.MARKET_PRICE);
-        llBuyPrice.setVisibility(intType == 0 ? View.VISIBLE : View.GONE);
-        llSellPrice.setVisibility(intType == 0 ? View.VISIBLE : View.GONE);
-        tvBestPriceSell.setVisibility(intType == 0 ? View.GONE : View.VISIBLE);
-        tvBestPriceBuy.setVisibility(intType == 0 ? View.GONE : View.VISIBLE);
-        llBuyTradeCount.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
-        llSellTradeCount.setVisibility(intType == 0 ? View.VISIBLE : View.INVISIBLE);
+        type = (intType == 1 ? GlobalConstant.LIMIT_PRICE : GlobalConstant.MARKET_PRICE);
+        llBuyPrice.setVisibility(intType == 1 ? View.VISIBLE : View.GONE);
+        llSellPrice.setVisibility(intType == 1 ? View.VISIBLE : View.GONE);
+        tvBestPriceSell.setVisibility(intType == 1 ? View.GONE : View.VISIBLE);
+        tvBestPriceBuy.setVisibility(intType == 1 ? View.GONE : View.VISIBLE);
+        llBuyTradeCount.setVisibility(intType == 1 ? View.VISIBLE : View.INVISIBLE);
+        llSellTradeCount.setVisibility(intType == 1 ? View.VISIBLE : View.INVISIBLE);
+
+        String price = tvPrice.getText().toString();
+        if (StringUtils.isNotEmpty(price) && !price.equals("--"))
+            adjustScale(etBuyPrice,Double.parseDouble(price));
 //        if (currency != null) {
             //String symbol = (intType == 0 ? currency.getSymbol().substring(0, currency.getSymbol().indexOf("/")) : currency.getSymbol().substring(currency.getSymbol().indexOf("/") + 1, currency.getSymbol().length()));
 //            tvBuySymbol.setText(currency.getSymbol());
 //            tvSellSymbol.setText(currency.getSymbol());
 //        }
-        etBuyCount.setHint(intType == 0 ? getString(R.string.text_number) : getString(R.string.text_entrust));
+//        etBuyCount.setHint(intType == 0 ? getString(R.string.text_number) : getString(R.string.text_entrust));
     }
 
     /**
@@ -1393,35 +1484,33 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
     /**
      * 这里我开始订阅某个币盘口的信息
      */
-    private void startTCP(String symbol, String type) {
+    private void startTCP(String symbol, String type,String depth) {
         tcpStatus = true;
-        String st = "market." + symbol + "_" + type + ".depth.step10";
-//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
-//                buildGetBodyJson(st, "1").toString())); // 需要id
+        String st = "market." + symbol + "_" + type + ".depth." + depth;
         MyApplication.getApp().startTcp(new TcpEntity(st,NEWCMD.SUBSCRIBE_SYMBOL_DEPTH));
 
         String sthead = "market." + symbol + "_" + type + ".detail";
-//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
-//                buildGetBodyJson(sthead, "1").toString()));
         MyApplication.getApp().startTcp(new TcpEntity(sthead,NEWCMD.SUBSCRIBE_SYMBOL_DETAIL));
+    }
+
+    private void changeDepthTcp(String symbol, String type,String oldDepth,String newDepth){
+        String st = "market." + symbol + "_" + type + ".depth." + oldDepth;
+        MyApplication.getApp().stopTcp(new TcpEntity(st,NEWCMD.SUBSCRIBE_SYMBOL_DEPTH));
+
+        String stnew = "market." + symbol + "_" + type + ".depth." + newDepth;
+        MyApplication.getApp().startTcp(new TcpEntity(stnew,NEWCMD.SUBSCRIBE_SYMBOL_DEPTH));
     }
 
     /**
      * 这里我取消某个币盘口的信息
      */
-    private void stop(String symbol, String type) {
-//        EventBus.getDefault().post(new SocketMessage(0, ISocket.CMD.UNSUBSCRIBE_EXCHANGE_TRADE,
-//                buildGetBodyJson(symbol, id).toString()));
-        String st = "market." + symbol + "_" + type + ".depth.step10";
-//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DEPTH,
-//                buildGetBodyJson(st, "0").toString())); // 需要id
+    private void stop(String symbol, String type,String depth) {
+
+        String st = "market." + symbol + "_" + type + ".depth." + depth;
         MyApplication.getApp().stopTcp(new TcpEntity(st,NEWCMD.SUBSCRIBE_SYMBOL_DEPTH));
 
         String sthead = "market." + symbol + "_" + type + ".detail";
-//        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SYMBOL_DETAIL,
-//                buildGetBodyJson(sthead, "0").toString()));
         MyApplication.getApp().stopTcp(new TcpEntity(sthead,NEWCMD.SUBSCRIBE_SYMBOL_DETAIL));
-
     }
 
     public void showPageFragment(String symbol, int pageNo) {
@@ -1453,14 +1542,22 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
             sellExchangeList.add(new Exchange(5 - i, "--", "--"));
             buyExchangeList.add(new Exchange(i, "--", "--"));
         }
-        sellAdapter.notifyDataSetChanged();
-        buyAdapter.notifyDataSetChanged();
 
-        stop(this.currency.getSymbol(), this.currency.getType());
-        startTCP(currency.getSymbol(), currency.getType());
+        stop(this.currency.getSymbol(), this.currency.getType(),mSymbolConfig.getDepth_default());
+
+        mSymbolConfig = MyApplication.getApp().getSymbolConfig(currency);
+        floatSpinner.attachDataSource(new LinkedList<>(getFloatList()));
+
+        addTextWatcher();
+
+        sellAdapter.setSymbolConfig(mSymbolConfig);
+        buyAdapter.setSymbolConfig(mSymbolConfig);
+
+
+        startTCP(currency.getSymbol(), currency.getType(),mSymbolConfig.getDepth_default());
         this.currency = currency;
 
-//        getPreInfo();
+
         setViewText();
         checkLogin();
     }
@@ -1470,7 +1567,7 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
      * 代表选择了哪个币种，需要重新订阅 应该先取消原来的再订阅现在的
      */
     private void setTCPBySymbol(NewCurrency currency) {
-        startTCP(currency.getSymbol(), currency.getType());
+        startTCP(currency.getSymbol(), currency.getType(),mSymbolConfig.getDepth_default());
     }
 
     /**
@@ -1578,8 +1675,11 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
             setCurrentcy(symbolBean);
 
             if (MyApplication.getApp().isLogin()){
-                dqccFragment.refresh();
-                dqwtFragment.refresh();
+                if (dqccFragment!=null && dqwtFragment!=null){
+                    dqccFragment.refresh();
+                    dqwtFragment.refresh();
+                }
+
             }
 
         }else if (cmd == NEWCMD.SUBSCRIBE_SIDE_TRADE){
@@ -1610,8 +1710,14 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
         }
     }
 
+
     private void setCurrentcy(SymbolBean symbolBean) {
-        tvPrice.setText(String.valueOf(symbolBean.getClose()));
+        if (mSymbolConfig != null){
+            adjustScale(tvPrice,symbolBean.getClose());
+        }else{
+            tvPrice.setText(String.valueOf(symbolBean.getClose()));
+        }
+
         tvPrice.setTextColor( symbolBean.getScale() >= 0 ? ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_green) :
                 ContextCompat.getColor(MyApplication.getApp(), R.color.main_font_red));
         tvMoney.setText(GlobalConstant.CNY + symbolBean.getConvert());
@@ -1629,18 +1735,18 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
 
         Double max = 0.0d;
         this.sellExchangeList.clear();
-        for (int i = 0; i < 6; i++) {
-            sellExchangeList.add(new Exchange(6 - i, "--", "--"));
+        for (int i = 0; i < 5; i++) {
+            sellExchangeList.add(new Exchange(5 - i, "--", "--"));
         }
 
         List<List<Double>> sells = items.getAsks();
-        if (sells.size() >= 6) {
-            for (int i = 0; i < 6; i++) {
+        if (sells.size() >= 5) {
+            for (int i = 0; i < 5; i++) {
                 Double amount = sells.get(i).get(1);
                 if (amount > max){
                     max = amount;
                 }
-                sellExchangeList.set(5 - i, new Exchange(i + 1, sells.get(i).get(0), amount));
+                sellExchangeList.set(4 - i, new Exchange(i + 1, sells.get(i).get(0), amount));
             }
         } else {
             for (int i = 0; i < sells.size(); i++) {
@@ -1648,19 +1754,19 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
                 if (amount > max){
                     max = amount;
                 }
-                sellExchangeList.set(5 - i, new Exchange(i + 1, sells.get(i).get(0), amount));
+                sellExchangeList.set(4 - i, new Exchange(i + 1, sells.get(i).get(0), amount));
             }
         }
 
 
 
         this.buyExchangeList.clear();
-        for (int i = 0; i < 6; i++) {
-            buyExchangeList.add(new Exchange(6 - i, "--", "--"));
+        for (int i = 0; i < 5; i++) {
+            buyExchangeList.add(new Exchange(5 - i, "--", "--"));
         }
         List<List<Double>> buys = items.getBids();
-        if (buys.size() >= 6) {
-            for (int i = 0; i < 6; i++) {
+        if (buys.size() >= 5) {
+            for (int i = 0; i < 5; i++) {
                 Double amount = buys.get(i).get(1);
                 if (amount > max){
                     max = amount;
@@ -1677,13 +1783,13 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
             }
         }
 
+        if (sellAdapter!=null && buyAdapter!=null){
+            sellAdapter.setTag(1/max);
+            sellAdapter.notifyDataSetChanged();
 
-        sellAdapter.setTag(1/max);
-        sellAdapter.notifyDataSetChanged();
-
-        buyAdapter.setTag(1/max);
-        buyAdapter.notifyDataSetChanged();
+            buyAdapter.setTag(1/max);
+            buyAdapter.notifyDataSetChanged();
+        }
 
     }
-
 }

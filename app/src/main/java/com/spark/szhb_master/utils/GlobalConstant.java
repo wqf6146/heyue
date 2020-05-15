@@ -2,6 +2,9 @@ package com.spark.szhb_master.utils;
 
 import com.spark.szhb_master.entity.SymbolListBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/5/5.
  */
@@ -54,6 +57,60 @@ public class GlobalConstant {
         }
         return 0;
     }
+
+    public static int getFloatSize(String symbol){
+        if (symbol.equals("step7")){
+            return step7;
+        }else if (symbol.equals("step8")){
+            return step8;
+        }else if (symbol.equals("step9")){
+            return step9;
+        }else if (symbol.equals("step10")){
+            return step10;
+        }else if (symbol.equals("step11")){
+            return step11;
+        }
+        return 0;
+    }
+
+    public static String getFloatShowStr(String symbol){
+        if (symbol.equals("step7")){
+            return "0.00001";
+        }else if (symbol.equals("step8")){
+            return "0.0001";
+        }else if (symbol.equals("step9")){
+            return "0.001";
+        }else if (symbol.equals("step10")){
+            return "0.01";
+        }else if (symbol.equals("step11")){
+            return "0.1";
+        }
+        return "0.01";
+    }
+
+    public static String getFloatStrName(String symbol){
+        if (symbol.equals("0.00001")){
+            return "step7";
+        }else if (symbol.equals("0.0001")){
+            return "step8";
+        }else if (symbol.equals("0.001")){
+            return "step9";
+        }else if (symbol.equals("0.01")){
+            return "step10";
+        }else if (symbol.equals("0.1")){
+            return "step11";
+        }
+        return "step10";
+    }
+
+    public static List<String> getFloatSizeList(String config[]){
+        List<String> res = new ArrayList<>();
+        for (int i=0 ;i<config.length;i++){
+            res.add(getFloatShowStr(config[i]));
+        }
+        return res;
+    }
+
     /**
      * k线图对应tag值
      */
@@ -80,6 +137,7 @@ public class GlobalConstant {
     public static final String JPY = "JPY";
     public static final int PageSize = 10;
     public static final String UserSaveFileName = "user.info";
+    public static final String SymbolFileName = "symbolconfig.info";
     public static final String WebSocketFileName = "websocket.info";
     public static final String LOGIN_LANGUAGE = "LOGIN_LANGUAGE";
 

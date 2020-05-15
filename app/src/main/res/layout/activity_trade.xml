@@ -63,8 +63,8 @@
                                         android:layout_height="30dp"
                                         android:gravity="center_vertical"
                                         android:orientation="horizontal"
-                                        android:paddingLeft="10dp"
-                                        android:paddingRight="10dp">
+                                        android:paddingLeft="5dp"
+                                        android:paddingRight="5dp">
 
                                         <RadioGroup
                                             android:id="@+id/mRadioGroup"
@@ -105,21 +105,23 @@
                                     <!--                    app:arrowDrawable=""-->
                                     <org.angmarch.views.NiceSpinner
                                         android:id="@+id/limitSpinner"
-                                        android:layout_width="0dp"
-                                        android:layout_weight="1"
-                                        android:layout_height="wrap_content"
-                                        android:textColor="@color/font_hint"
-                                        android:textSize="@dimen/font_small"
-                                        app:arrowDrawable="@color/white"
-                                        app:backgroundSelector="@color/main_bg"
-                                        app:textTint="@color/sec_font_grey" />
+                                        android:layout_width="match_parent"
+                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginRight="5dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:textSize="@dimen/font_mini"
+                                        app:arrowDrawable="@mipmap/ic_dropup"
+                                        app:backgroundSelector="@color/main_bg_dark_2"
+                                        app:textTint="@color/white" />
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:orientation="vertical"
-                                        android:paddingLeft="10dp"
+                                        android:paddingLeft="5dp"
                                         android:paddingRight="5dp">
 
 
@@ -143,9 +145,19 @@
                                     android:layout_weight="1"
                                     android:orientation="vertical">
 
+                                    <org.angmarch.views.NiceSpinner
+                                        android:id="@+id/floatSpinner"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:layout_marginBottom="5dp"
+                                        android:textSize="@dimen/font_mini"
+                                        app:arrowDrawable="@mipmap/ic_dropup"
+                                        app:backgroundSelector="@color/main_bg_dark_2"
+                                        app:textTint="@color/white" />
+
                                     <LinearLayout
                                         android:layout_width="match_parent"
-                                        android:layout_height="30dp"
+                                        android:layout_height="25dp"
                                         android:gravity="center_vertical">
 
                                         <TextView

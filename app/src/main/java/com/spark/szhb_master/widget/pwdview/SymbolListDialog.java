@@ -62,7 +62,12 @@ public class SymbolListDialog extends FrameLayout implements View.OnClickListene
             @Override
             protected void convert(ViewHolder viewHolder, final SymbolListBean.Symbol item, int position) {
                 viewHolder.setText(R.id.tvBuySymbol,item.getMark());
-                viewHolder.setText(R.id.tvSecSymbol,"/"+item.getLeverage());
+                if (item.getMark().equals("BTC")) {
+                    viewHolder.setText(R.id.tvSecSymbol,"/"+item.getLeverage());
+                }else{
+                    viewHolder.setText(R.id.tvSecSymbol,"");
+                }
+
 
                 viewHolder.setOnClickListener(R.id.rlroot, new OnClickListener() {
                     @Override

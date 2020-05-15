@@ -72,8 +72,6 @@ public interface TradeContract {
 
     interface Presenter {
 
-
-
         void commitLiquidation();//一键平仓
 
         void getContratInfo(HashMap params); //获取合约交易对配置

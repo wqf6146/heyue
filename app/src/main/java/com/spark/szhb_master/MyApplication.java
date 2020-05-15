@@ -15,6 +15,8 @@ import com.spark.szhb_master.activity.login.LoginActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.MainActivity;
 import com.spark.szhb_master.base.BaseActivity;
+import com.spark.szhb_master.entity.NewCurrency;
+import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.entity.User;
 import com.spark.szhb_master.factory.socket.NEWCMD;
@@ -85,7 +87,45 @@ public class MyApplication extends Application {
         return mTcpEntity;
     }
 
-    public void addTcpEntityWithStatus(TcpEntity tcpEntity,String status){
+    private SymbolListBean mSymbolListConfig;
+
+    public void setSymbolListConfig(SymbolListBean symbolListConfig) {
+        this.mSymbolListConfig = symbolListConfig;
+        saveSymbolListConfig();
+    }
+
+    public SymbolListBean getSymbolListConfig(){
+        if (mSymbolListConfig == null){
+            getSymBolConfigFromFile();
+        }
+        return mSymbolListConfig;
+    }
+
+    public SymbolListBean.Symbol getSymbolConfig(NewCurrency currency){
+        SymbolListBean symbolListBean = getSymbolListConfig();
+        for (int i=0;i<symbolListBean.getSymbolList().size();i++){
+            SymbolListBean.Symbol symbol = symbolListBean.getSymbolList().get(i);
+            if (symbol.getMark().equals(currency.getSymbol())){
+                return symbol;
+            }
+        }
+        return null;
+    }
+
+    public int getSymbolSize(String symBolName){
+        SymbolListBean symbolListBean = getSymbolListConfig();
+        if (symbolListBean == null)
+            return 2;
+        for (int i=0;i<symbolListBean.getSymbolList().size();i++){
+            SymbolListBean.Symbol symbol = symbolListBean.getSymbolList().get(i);
+            if (symbol.getMark().equals(symBolName)){
+                return GlobalConstant.getFloatSize(symbol);
+            }
+        }
+        return 2;
+    }
+
+    public void addTcpEntityWithStatus(TcpEntity tcpEntity, String status){
         int exit = -1;
         for (int i=0;i<mTcpEntity.size();i++){
             TcpEntity local = mTcpEntity.get(i);
@@ -291,7 +331,6 @@ public class MyApplication extends Application {
     }
 
     public boolean isCurAppTop() {
-
         String curPackageName = getPackageName();
         ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
@@ -340,26 +379,42 @@ public class MyApplication extends Application {
         if (StringUtils.isNotEmpty(activity.getClass().toString()) && activity.getClass().toString().equals(MainActivity.class.toString())) {
             return;
         }
-//        activity.finish();
+        activity.finish();
     }
 
     /**
      * 重新登录
      */
     public void loginAgain(Fragment fragment) {
-        //10.19改动
-//        deleteCurrentUser();
-//        fragment.startActivityForResult(new Intent(fragment.getActivity(), LoginActivity.class), LoginActivity.RETURN_LOGIN);
-
         Activity activity = fragment.getActivity();
         deleteCurrentUser();
         fragment.startActivityForResult(new Intent(fragment.getActivity(), LoginStepOneActivity.class), LoginStepOneActivity.RETURN_LOGIN);
         if (StringUtils.isNotEmpty(activity.getClass().toString()) && activity.getClass().toString().equals(MainActivity.class.toString())) {
             return;
         }
-//        activity.finish();
+        activity.finish();
     }
 
+    public synchronized void saveSymbolListConfig() {
+        try {
+            File file = FileUtils.getLongSaveFile(this, "SymBolConfig", GlobalConstant.SymbolFileName);
+            if (file.exists()) {
+                file.delete();
+            }
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+            oos.writeObject(mSymbolListConfig);
+            oos.flush();
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public synchronized void saveCurrentUser() {
         try {
@@ -427,6 +482,14 @@ public class MyApplication extends Application {
         }
     }
 
+    public void deleteSymbolConfig() {
+        this.currentUser = null;
+        File file = FileUtils.getLongSaveFile(this, "SymBolConfig", GlobalConstant.SymbolFileName);
+        if (file != null && file.exists()) {
+            file.delete();
+        }
+    }
+
     public void getCurrenTcpFromFile() {
         try {
             File file = new File(FileUtils.getLongSaveDir(this, "WebSocket"), GlobalConstant.WebSocketFileName);
@@ -437,6 +500,25 @@ public class MyApplication extends Application {
                 this.mTcpEntity = new ArrayList<>(tcpEntityList);
                 if (this.mTcpEntity == null) {
                     this.mTcpEntity = new ArrayList<>();
+                }
+                ois.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getSymBolConfigFromFile() {
+        try {
+            File file = new File(FileUtils.getLongSaveDir(this, "SymBolConfig"), GlobalConstant.SymbolFileName);
+            if (file != null && file.exists()) {
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+                this.mSymbolListConfig = (SymbolListBean) ois.readObject();
+                if (this.mSymbolListConfig == null) {
+                    this.mSymbolListConfig = new SymbolListBean();
                 }
                 ois.close();
             }

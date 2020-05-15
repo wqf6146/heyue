@@ -62,6 +62,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -187,7 +189,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     private List<Fragment> fragments = new ArrayList<>();
     private DepthFragment mDepthFragment;
     private VolumeFragment mVolumeFragment;
-    private PagerAdapter adapter;
+//    private PagerAdapter adapter;
     private List<String> tabs;
 
 //    private String[] titleArray;
@@ -339,7 +341,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         this.currency = currency;
         symbolType = currency.getType();
         mTvTitleSymbol.setText(symbol);
-        mTvTitleSymbolType.setText(symbolType);
+        mTvTitleSymbolType.setText("/" + symbolType);
 
         tvBuy.setText(getString(R.string.text_buy_in) + symbol);
         tvSell.setText(getString(R.string.text_sale_out) + symbol);
@@ -347,17 +349,18 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         mDepthFragment.reInit(symbol,symbolType);
         mVolumeFragment.reInit(symbol,symbolType);
 
+        presenter.getCurrcyContract();
 
         startDetailTCP();
         startKlistTcp(type);
     }
 
     private SymbolListBean mContractSymbol;
+    private SymbolListBean.Symbol mSymbolConfig;
     @Override
     public void getCurrcyContractSuccess(SymbolListBean symbolListBean) {
         mContractSymbol = symbolListBean;
         setContratToDepth();
-
     }
 
     @Override
@@ -374,7 +377,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
             tcpstatus = bundle.getInt("tcpstatus",0);
             symbolType = currency.getType();
             mTvTitleSymbol.setText(symbol);
-            mTvTitleSymbolType.setText(symbolType);
+            mTvTitleSymbolType.setText("/"+symbolType);
             isFace = addFace(symbol);
             if (symbol != null) {
                 tvBuy.setText(String.valueOf(getString(R.string.text_buy_in) + symbol));
@@ -676,10 +679,20 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                 String strLow = String.valueOf(mCurrency.getLow());
                 String strCount = String.valueOf(mCurrency.getVol());
                 String strDataOne = String.valueOf(mCurrency.getClose());
-                kUp.setText(strUp);
-                kLow.setText(strLow);
+
                 kCount.setText(strCount);
-                mDataOne.setText(strDataOne);
+
+                if (mSymbolConfig!=null){
+                    adjustScale(mDataOne,mCurrency.getClose());
+                    adjustScale(kUp,mCurrency.getHigh());
+                    adjustScale(kLow,mCurrency.getLow());
+                }else{
+                    mDataOne.setText(strDataOne);
+                    kUp.setText(strUp);
+                    kLow.setText(strLow);
+                }
+
+
                 mDataText.setText("≈ " + mCurrency.getConvert() + " USDT");
                 mDataOne.setTextColor(mCurrency.getScale() < 0 ? getResources().getColor(R.color.main_font_red) : getResources().getColor(R.color.main_font_green));
                 kRange.setBackground(mCurrency.getScale() < 0 ? getResources().getDrawable(R.drawable.bg_kl_corner_red) : getResources().getDrawable(R.drawable.bg_kl_corner_green));
@@ -688,6 +701,11 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void adjustScale(TextView tv,Double value){
+        if (mSymbolConfig!=null)
+            tv.setText(new BigDecimal(value).setScale(GlobalConstant.getFloatSize(mSymbolConfig), RoundingMode.UP).toString());
     }
 
     private boolean addFace(String symbol) {
@@ -971,6 +989,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         }
     }
 
+    private PagerAdapter mDepthAdapter;
     /**
      * 初始化深度图数据
      */
@@ -984,7 +1003,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         for (int i = 0; i < tabArray.length; i++) {
             tabs.add(tabArray[i]);
         }
-        depthPager.setAdapter(adapter = new PagerAdapter(getSupportFragmentManager(), fragments, tabs));
+        depthPager.setAdapter(mDepthAdapter = new PagerAdapter(getSupportFragmentManager(), fragments, tabs));
         depthTab.setTabMode(TabLayout.MODE_FIXED);
         depthTab.setupWithViewPager(depthPager);
         depthPager.setOffscreenPageLimit(fragments.size() - 1);
@@ -999,6 +1018,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
         for (int i=0;i<mContractSymbol.getSymbolList().size();i++){
             SymbolListBean.Symbol symbol = mContractSymbol.getSymbolList().get(i);
             if (symbol.getMark().equals(currency.getSymbol())){
+                mSymbolConfig = symbol;
                 if (mDepthFragment!=null)
                     mDepthFragment.setSymbolConfig(symbol);
                 break;
