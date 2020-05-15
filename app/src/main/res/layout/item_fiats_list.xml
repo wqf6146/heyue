@@ -23,9 +23,10 @@
             android:textSize="@dimen/font_mini" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:id="@+id/ivCopy"
+            android:padding="5dp"
             android:layout_marginLeft="10dp"
             android:src="@mipmap/ic_copy"
             android:text="累计成交" />
@@ -37,7 +38,7 @@
         android:layout_height="0.1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:background="@color/black" />
+        android:background="@color/main_font_grey" />
 
 
 
@@ -203,7 +204,7 @@
         android:layout_height="0.1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:background="@color/black" />
+        android:background="@color/main_font_grey" />
 
 
 

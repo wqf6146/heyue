@@ -161,8 +161,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:background="@color/font_hint"
-        android:layout_marginTop="20dp"
+        android:background="@color/main_font_grey"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_height="0.1dp"/>
 
