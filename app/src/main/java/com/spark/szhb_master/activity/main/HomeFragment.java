@@ -107,6 +107,9 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     @BindView(R.id.llyqhy)
     LinearLayout llyqhy;
 
+    @BindView(R.id.rlhy)
+    RelativeLayout rlhy;
+
     @BindView(R.id.cstFullShowListView)
     NestFullListView nestFullListView;
 
@@ -305,7 +308,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         }
     }
 
-    @OnClick({R.id.ivMessage,R.id.llXinshouzhinan})
+    @OnClick({R.id.ivMessage,R.id.llXinshouzhinan,R.id.rlhy})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -317,6 +320,11 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         switch (v.getId()){
             case R.id.llXinshouzhinan:{
 
+            }
+            break;
+            case R.id.rlhy:{
+                if (operateCallback!=null)
+                    operateCallback.toheyue();
             }
             break;
         }
@@ -607,8 +615,16 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
             getivSee();
         }
     }
+
+    private OperateCallback operateCallback;
+
+    public void setOperateCallback(OperateCallback operateCallback) {
+        this.operateCallback = operateCallback;
+    }
+
     public interface OperateCallback {
         void tofabi();
+        void toheyue();
     }
 
     private void getMoney(String token) {

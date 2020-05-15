@@ -129,8 +129,8 @@ public class GlobalConstant {
      */
     public static final String LIMIT_PRICE = "LIMIT_PRICE"; // 限价
     public static final String MARKET_PRICE = "MARKET_PRICE"; // 市价
-    public static final String BUY = "BUY"; // 买
-    public static final String SELL = "SELL"; // 卖
+    public static final String BUY = "buy"; // 买
+    public static final String SELL = "sell"; // 卖
     public static final String CNY = "CNY"; // 人民币
     public static final String HK = "HK";
     public static final String USD = "USD";

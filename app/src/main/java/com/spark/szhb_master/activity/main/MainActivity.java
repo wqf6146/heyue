@@ -68,8 +68,10 @@ import config.Injection;
 
 import static android.os.PowerManager.SCREEN_DIM_WAKE_LOCK;
 
-public class MainActivity extends BaseTransFragmentActivity implements MainContract.View, MarketBaseFragment.MarketOperateCallback,
-        HomeFragment.OperateCallback, PreheatingFragment.OnHeadlineSelectedListener, DiggingFragment.OnHeadlineSelectedListener,
+public class MainActivity extends BaseTransFragmentActivity implements MainContract.View,
+        MarketBaseFragment.MarketOperateCallback,
+        PreheatingFragment.OnHeadlineSelectedListener,
+        DiggingFragment.OnHeadlineSelectedListener,
         TradeFragment.OperateCallback {
     @BindView(R.id.flContainer)
     FrameLayout flContainer;
@@ -631,36 +633,62 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
 
     @Override
     protected void initFragments() {
-        if (homeFragment == null) fragments.add(homeFragment = new HomeFragment());
-        //if (marketFragment == null) fragments.add(marketFragment = new MarketFragment());
-        if (heyueFragment == null) fragments.add(heyueFragment = new HeyueFragment());
-//        if (tradeFragment == null) fragments.add(tradeFragment = new TradeFragment());
-        if (c2cFragment == null) fragments.add(c2cFragment = new C2CFragment());
-        if (myFragment == null) fragments.add(myFragment = new MyFragment());
-//        if (treasureFragment == null) fragments.add(treasureFragment = new TreasureFragment());
+        if (homeFragment == null) {
+            fragments.add(homeFragment = new HomeFragment());
+            homeFragment.setOperateCallback(new HomeFragment.OperateCallback() {
+                @Override
+                public void tofabi() {
+                    currentPage = 2;
+                    llHome.setSelected(false);
+                    llHeyue.setSelected(false);
+                    llC2C.setSelected(true);
+                    llMy.setSelected(false);
+                    showFragment(fragments.get(currentPage));
+                }
+
+                @Override
+                public void toheyue() {
+                    currentPage = 1;
+                    llHome.setSelected(false);
+                    llHeyue.setSelected(true);
+                    llC2C.setSelected(false);
+                    llMy.setSelected(false);
+                    showFragment(fragments.get(currentPage));
+                }
+            });
+        }
+
+        if (heyueFragment == null) {
+            fragments.add(heyueFragment = new HeyueFragment());
+        }
+
+
+        if (c2cFragment == null)
+            fragments.add(c2cFragment = new C2CFragment());
+        if (myFragment == null)
+            fragments.add(myFragment = new MyFragment());
+
     }
 
     @Override
     protected void recoverFragment() {
         homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.TAG);
         heyueFragment = (HeyueFragment) getSupportFragmentManager().findFragmentByTag(HeyueFragment.TAG);
-        //marketFragment = (MarketFragment) getSupportFragmentManager().findFragmentByTag(MarketFragment.TAG);
-//        tradeFragment = (TradeFragment) getSupportFragmentManager().findFragmentByTag(TradeFragment.TAG);
+
         c2cFragment = (C2CFragment) getSupportFragmentManager().findFragmentByTag(C2CFragment.TAG);
         myFragment = (MyFragment) getSupportFragmentManager().findFragmentByTag(MyFragment.TAG);
 
         if (homeFragment == null) fragments.add(homeFragment = new HomeFragment());
         else fragments.add(homeFragment);
-        if (heyueFragment == null) fragments.add(heyueFragment = new HeyueFragment());
-        else fragments.add(heyueFragment);
-//        if (tradeFragment == null) fragments.add(tradeFragment = new TradeFragment());
-//        else fragments.add(tradeFragment);
+        if (heyueFragment == null)
+            fragments.add(heyueFragment = new HeyueFragment());
+        else
+            fragments.add(heyueFragment);
+
         if (c2cFragment == null) fragments.add(c2cFragment = new C2CFragment());
         else fragments.add(c2cFragment);
         if (myFragment == null) fragments.add(myFragment = new MyFragment());
         else fragments.add(myFragment);
-//        if (treasureFragment == null) fragments.add(treasureFragment = new TreasureFragment());
-//        else fragments.add(treasureFragment);
     }
 
     @Override
@@ -869,21 +897,6 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
         }
     }
 
-
-    @Override
-    public void tofabi() {
-        currentPage = 3;
-        llHome.setSelected(false);
-        llHeyue.setSelected(false);
-        llC2C.setSelected(true);
-        llMy.setSelected(false);
-        llTrade.setSelected(false);
-        showFragment(fragments.get(3));
-        if (currentFragment == fragments.get(2))
-            dlRoot.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        else dlRoot.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
-
     @Override
     public void onArticleSelected(int position) {
     }
@@ -903,8 +916,5 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
         llTrade.setSelected(false);
         showFragment(fragments.get(1));
         llTab.setVisibility(View.VISIBLE);
-        if (currentFragment == fragments.get(2))
-            dlRoot.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        else dlRoot.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 }
