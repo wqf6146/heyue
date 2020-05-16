@@ -22,6 +22,7 @@ import com.spark.szhb_master.activity.main.presenter.CommonPresenter;
 import com.spark.szhb_master.activity.main.presenter.CollectView;
 import com.spark.szhb_master.activity.kline.KlineActivity;
 import com.spark.szhb_master.activity.message.WebViewActivity;
+import com.spark.szhb_master.activity.wallet_coin.RechargeActivity;
 import com.spark.szhb_master.adapter.BannerImageLoader;
 import com.spark.szhb_master.adapter.HomeOneAdapter;
 import com.spark.szhb_master.MyApplication;
@@ -308,7 +309,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         }
     }
 
-    @OnClick({R.id.ivMessage,R.id.llXinshouzhinan,R.id.rlhy})
+    @OnClick({R.id.llChongbi,R.id.ivMessage,R.id.llXinshouzhinan,R.id.rlhy})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -318,6 +319,9 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         }
 
         switch (v.getId()){
+            case R.id.llChongbi:
+                showActivity(RechargeActivity.class,null);
+                break;
             case R.id.llXinshouzhinan:{
 
             }

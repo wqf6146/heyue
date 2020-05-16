@@ -494,7 +494,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
     /**
      * 初始化popwindow
      *
-     * @param count
+     * @param
      */
     private void initPopWindow() {
         View contentView = LayoutInflater.from(activity).inflate(R.layout.layout_kline_popwindow, null);
@@ -696,7 +696,7 @@ public class KlineActivity extends BaseActivity implements KlineContract.View, V
                 mDataText.setText("≈ " + mCurrency.getConvert() + " USDT");
                 mDataOne.setTextColor(mCurrency.getScale() < 0 ? getResources().getColor(R.color.main_font_red) : getResources().getColor(R.color.main_font_green));
                 kRange.setBackground(mCurrency.getScale() < 0 ? getResources().getDrawable(R.drawable.bg_kl_corner_red) : getResources().getDrawable(R.drawable.bg_kl_corner_green));
-                kRange.setText(mCurrency.getScale() +"%");
+                kRange.setText(mCurrency.getScale() > 0 ? "+" + mCurrency.getScale() +"%" : mCurrency.getScale() + "%");
             }
         } catch (Exception e) {
             e.printStackTrace();

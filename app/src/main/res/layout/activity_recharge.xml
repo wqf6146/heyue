@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<com.zhy.android.percent.support.PercentLinearLayout android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/main_bg"
+    android:paddingTop="10dp"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/rlhead"
+        android:paddingLeft="10dp"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/icon_back"
+            android:padding="10dp"
+            android:id="@+id/ar_iv_close"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal"
+            android:text="充币"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <com.zhy.android.percent.support.PercentLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
-
-        <!--标题-->
-        <include layout="@layout/view_head" />
 
         <TextView
             android:id="@+id/tvNotice"
@@ -41,11 +64,55 @@
             android:textSize="@dimen/font_xxlager"
             android:visibility="gone" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="币种:USDT"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:textSize="@dimen/font_mini"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="链名称"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:textSize="@dimen/font_mini"
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:id="@+id/rlChain"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/bg_btn_wgray_corner">
+
+            <TextView
+                android:id="@+id/tvChainName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="USDT-ERC20"
+                android:textColor="#1E273D"
+                android:textSize="@dimen/font_normal" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/ic_arrow_right" />
+
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/shape_bg_stroke"
             android:orientation="vertical"
             android:padding="1dp">
@@ -62,28 +129,31 @@
         </LinearLayout>
 
         <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/ripple_white"
+            android:id="@+id/llAlbum"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ripple_blue_corner"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_heightPercent="10%w"
+            app:layout_widthPercent="50%w">
 
             <TextView
-                android:id="@+id/llAlbum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="@string/save_code"
-                android:textColor="#597ac3"
-                android:textSize="@dimen/font_lager" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_normal" />
         </LinearLayout>
 
 
-        <LinearLayout
+        <com.zhy.android.percent.support.PercentLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ripple_white"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -93,151 +163,58 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:paddingTop="10dp"
-                android:textColor="#17304d"
+                android:textColor="@color/tab_font"
                 android:textSize="@dimen/font_small" />
 
             <TextView
-                android:id="@+id/llCopy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/tvCopy"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_widthPercent="50%w"
+                app:layout_heightPercent="10%w"
                 android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/bg_blue_corner_stroke"
                 android:layout_marginTop="10dp"
                 android:text="@string/copy_address"
                 android:textColor="#597ac3"
-                android:textSize="@dimen/font_lager" />
-        </LinearLayout>
+                android:textSize="@dimen/font_normal" />
+        </com.zhy.android.percent.support.PercentLinearLayout>
 
-
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/caymanaddress"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/currency_address"
-                android:textColor="#838f9d"
-                android:textSize="14dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/masteraddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:textColor="#17304d"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/image_name_wx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="复制"
-                    android:textColor="@color/cc" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/caymanremake"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/remake_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Remarks_address"
-                android:textColor="#838f9d"
-                android:textSize="14dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/memberId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#17304d"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/image_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="复制"
-                    android:textColor="@color/cc" />
-            </LinearLayout>
-
-
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:padding="5dp"
-                android:textColor="#838f9d"
-                android:text="1.请勿向上述地址充值任何非币种资产,否则资产将不可找回。"
+                android:textColor="#9D9DA8"
+                android:text="*充币前，请认真核对充币的链名称，充币错误将无法找回资产"
+                android:textSize="@dimen/font_mini"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:padding="5dp"
-                android:textColor="#838f9d"
-                android:text="2.您充值至上述地址后,需要整个网络节点的确认, 2次网络确认后到账, 6次网络确认后可提币。"
+                android:textColor="#9D9DA8"
+                android:text="*使用USDT地址充币需要12个网路确认才能到账"
+                android:textSize="@dimen/font_mini"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:padding="5dp"
-                android:textColor="#838f9d"
-                android:text="3.最小充值金额: 0.001 ,小于最小金额的充值将不会上账。"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:padding="5dp"
-                android:textColor="#838f9d"
-                android:text="4.您的充值地址不会经常改变,可以重复充值;如有更改，我们会尽量通过网站公告或邮件通知您。"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:padding="5dp"
-                android:textColor="#838f9d"
-                android:text="5.请务必确认电脑及浏览器安全,防止信息被篡改或泄露。"
+                android:textColor="#9D9DA8"
+                android:text="*Omni最小累计充值金额为100USDT才可以上帐；ERC20不受最小充值"
+                android:textSize="@dimen/font_mini"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+    </com.zhy.android.percent.support.PercentLinearLayout>
 
 
-    </LinearLayout>
-</ScrollView>
+
+</com.zhy.android.percent.support.PercentLinearLayout>

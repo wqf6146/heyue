@@ -17,20 +17,20 @@ import static com.spark.szhb_master.utils.GlobalConstant.JSON_ERROR;
  * Created by Administrator on 2017/9/25.
  */
 
-public class ExtractPresenter implements CoinContract.extractPresenter {
+public class RechargePresenter implements CoinContract.rechargePresenter {
     private final DataSource dataRepository;
-    private final CoinContract.extractView view;
+    private final CoinContract.rechargeView view;
 
-    public ExtractPresenter(DataSource dataRepository, CoinContract.extractView view) {
+    public RechargePresenter(DataSource dataRepository, CoinContract.rechargeView view) {
         this.dataRepository = dataRepository;
         this.view = view;
         view.setPresenter(this);
     }
 
     @Override
-    public void extract(HashMap params) {
+    public void getRechargeAddress() {
         view.displayLoadingPopup();
-        dataRepository.doStringPostJson(UrlFactory.getExtractUrl(), params, new DataSource.DataCallback() {
+        dataRepository.doStringGet(UrlFactory.getRechargeAddressUrl(), new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
                 view.hideLoadingPopup();
@@ -38,7 +38,8 @@ public class ExtractPresenter implements CoinContract.extractPresenter {
                 try {
                     JSONObject object = new JSONObject(response);
                     if (object.optInt("code") == 1) {
-                        view.extractSuccess(object.optString("msg"));
+                        RechargeAddress objs = new Gson().fromJson(object.get("data").toString(), RechargeAddress.class);
+                        view.getRechargeAddressSuccess(objs);
                     } else {
                         view.doPostFail(object.getInt("code"), object.optString("msg"));
                     }
@@ -57,5 +58,4 @@ public class ExtractPresenter implements CoinContract.extractPresenter {
             }
         });
     }
-
 }

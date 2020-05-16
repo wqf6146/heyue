@@ -1,22 +1,19 @@
 package com.spark.szhb_master.activity.wallet_coin;
 
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -24,12 +21,12 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.base.BaseActivity;
-import com.spark.szhb_master.entity.Coin;
+import com.spark.szhb_master.entity.RechargeAddress;
 import com.spark.szhb_master.utils.BitmapUtils;
 import com.spark.szhb_master.utils.CommonUtils;
 import com.spark.szhb_master.utils.GlobalConstant;
+import com.spark.szhb_master.utils.NetCodeUtils;
 import com.spark.szhb_master.utils.PermissionUtils;
-import com.spark.szhb_master.utils.StringUtils;
 import com.spark.szhb_master.utils.ToastUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
@@ -42,39 +39,43 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import config.Injection;
 
 /**
  * 充币
  */
-public class RechargeActivity extends BaseActivity {
-    @BindView(R.id.tvAddressText)
-    TextView tvAddressText;
+public class RechargeActivity extends BaseActivity implements CoinContract.rechargeView {
+
+    @BindView(R.id.ar_iv_close)
+    ImageView ivClose;
+
+    @BindView(R.id.rlhead)
+    RelativeLayout rlhead;
+
+    @BindView(R.id.rlChain)
+    RelativeLayout rlChain;
+
     @BindView(R.id.ivAddress)
     ImageView ivAddress;
+
+    @BindView(R.id.llAlbum)
+    LinearLayout llAlbum;
+
     @BindView(R.id.tvAddress)
     TextView tvAddress;
-    @BindView(R.id.remake_address)
-    TextView remake_address;
-    @BindView(R.id.tvNotice)
-    TextView tvNotice;
-    @BindView(R.id.llAlbum)
-    TextView llAlbum;
-    @BindView(R.id.llCopy)
-    TextView llCopy;
-    @BindView(R.id.llTitle)
-    LinearLayout llTitle;
-    private Coin coin;
-    private Bitmap saveBitmap;
-    @BindView(R.id.caymanaddress)
-    LinearLayout caymanaddress; @BindView(R.id.caymanremake)
-    LinearLayout caymanremake;
-    @BindView(R.id.memberId)
-    TextView memberId;
-    @BindView(R.id.masteraddress)
-    TextView masteraddress;
-    @BindView(R.id.image_name_wx)
-    TextView image_name_wx;@BindView(R.id.image_name)
-    TextView image_name;
+
+    @BindView(R.id.tvCopy)
+    TextView tvCopy;
+
+    @BindView(R.id.tvChainName)
+    TextView tvChainName;
+
+    private CoinContract.rechargePresenter rechargePresenter;
+
+    @Override
+    public void setPresenter(CoinContract.rechargePresenter presenter) {
+        rechargePresenter = presenter;
+    }
 
     @Override
     protected int getActivityLayoutId() {
@@ -83,82 +84,26 @@ public class RechargeActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        setSetTitleAndBack(false, true);
-        final ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        image_name_wx.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cm.setText(masteraddress.getText());
-                ToastUtils.showToast("复制成功");
-            }
-        });
-        image_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cm.setText(memberId.getText());
-                ToastUtils.showToast("复制成功");
-            }
-        });
+        setImmersionBar(rlhead);
     }
+
+    private Bitmap saveBitmap;
 
     @Override
     protected void initData() {
         super.initData();
-        tvGoto.setVisibility(View.INVISIBLE);
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            coin = (Coin) bundle.getSerializable("coin");
-            if (coin.getCoin().getUnit().equals("GCX")){
-                caymanaddress.setVisibility(View.VISIBLE);
-                caymanremake.setVisibility(View.VISIBLE);
-                tvAddress.setVisibility(View.GONE);
-                llCopy.setVisibility(View.GONE);
-            }else{
-                caymanaddress.setVisibility(View.GONE);
-                caymanremake.setVisibility(View.GONE);
-                tvAddress.setVisibility(View.VISIBLE);
-                llCopy.setVisibility(View.VISIBLE);
-            }
-            if (coin != null) {
-                tvTitle.setText(coin.getCoin().getUnit() + getString(R.string.charge_money));
-                tvNotice.setText(getString(R.string.risk_warning) + coin.getCoin().getUnit() + getString(R.string.assets));
-                tvAddressText.setText(coin.getCoin().getUnit() + " Address");
-                tvAddress.setText(coin.getAddress());
-            } else {
-                tvAddress.setText(getString(R.string.no_address));
-            }
-            masteraddress.setText(coin.getCoin().getMasterAddress());
-            memberId.setText(coin.getMemberId()+"");
-        }
-        ivAddress.post(new Runnable() {
-            @Override
-            public void run() {
-                if (StringUtils.isEmpty(coin.getAddress())) return;
-                String url ;
-                if (coin.getCoin().getUnit().equals("GCX")){
-                    url = coin.getAddress();
-                }else {
-//                    url = coin.getCoin().getName()+"://"+coin.getAddress();
-                    url = coin.getCoin().getName()+":"+coin.getAddress();
-                }
-                saveBitmap = createQRCode(url, Math.min(ivAddress.getWidth(), ivAddress.getHeight()));
-                ivAddress.setImageBitmap(saveBitmap);
-            }
-        });
-
-        SpannableStringBuilder builder = new SpannableStringBuilder(remake_address.getText().toString());
-        ForegroundColorSpan span = new ForegroundColorSpan(Color.RED);
-        builder.setSpan(span,8,18, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        remake_address.setText(builder);
+        new RechargePresenter(Injection.provideTasksRepository(getApplicationContext()), this);
     }
 
-    @OnClick({R.id.llCopy, R.id.llAlbum})
+    @OnClick({R.id.ar_iv_close,R.id.tvCopy, R.id.llAlbum,R.id.rlChain})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
         switch (v.getId()) {
-            case R.id.llCopy:
+            case R.id.ar_iv_close:
+                finish();
+                break;
+            case R.id.tvCopy:
                 copy();
                 break;
             case R.id.llAlbum:
@@ -169,10 +114,82 @@ public class RechargeActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                break;
+            case R.id.rlChain:
+                actionSheetDialogNoTitle();
                 break;
         }
     }
+
+    private int chainType = 0;
+    private RechargeAddress rechargeAddress;
+    @Override
+    public void getRechargeAddressSuccess(RechargeAddress rechargeAddress) {
+        this.rechargeAddress = rechargeAddress;
+
+        ivAddress.post(new Runnable() {
+            @Override
+            public void run() {
+                if (rechargeAddress == null)
+                    return;
+
+                saveBitmap = createQRCode(getUrl(), Math.min(ivAddress.getWidth(), ivAddress.getHeight()));
+                ivAddress.setImageBitmap(saveBitmap);
+            }
+        });
+
+        tvAddress.setText(getUrl());
+    }
+
+    @Override
+    public void doPostFail(Integer code, String toastMessage) {
+        NetCodeUtils.checkedErrorCode(this,code,toastMessage);
+    }
+
+    private String getUrl(){
+        if (chainType == 0)
+            return rechargeAddress.getErc_address();
+        else
+            return rechargeAddress.getOmni_address();
+    }
+
+    /**
+     */
+    private void actionSheetDialogNoTitle() {
+        final String[] stringItems = {"USDT-ERC20", "USDT-Omni"};
+        final ActionSheetDialog dialog = new ActionSheetDialog(activity, stringItems, null);
+        dialog.isTitleShow(false).show();
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        chainType = 0;
+                        tvChainName.setText("USDT-ERC20");
+
+                        if (rechargeAddress != null){
+                            saveBitmap = createQRCode(getUrl(), Math.min(ivAddress.getWidth(), ivAddress.getHeight()));
+                            ivAddress.setImageBitmap(saveBitmap);
+                            tvAddress.setText(getUrl());
+                        }
+
+                        break;
+                    case 1:
+                        chainType = 1;
+                        tvChainName.setText("USDT-Omni");
+
+                        if (rechargeAddress != null){
+                            saveBitmap = createQRCode(getUrl(), Math.min(ivAddress.getWidth(), ivAddress.getHeight()));
+                            ivAddress.setImageBitmap(saveBitmap);
+                            tvAddress.setText(getUrl());
+                        }
+                        break;
+                }
+                dialog.dismiss();
+            }
+        });
+    }
+
 
     private void checkPermission(int requestCode, String[] permissions) {
         AndPermission.with(activity).requestCode(requestCode).permission(permissions).callback(permissionListener).start();
@@ -240,7 +257,7 @@ public class RechargeActivity extends BaseActivity {
 
     @Override
     protected void loadData() {
-
+        rechargePresenter.getRechargeAddress();
     }
 
     public static Bitmap createQRCode(String text, int size) {

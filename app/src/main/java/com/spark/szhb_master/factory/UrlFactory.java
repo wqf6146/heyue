@@ -154,8 +154,16 @@ public class UrlFactory {
         return host + "/uc/withdraw/support/coin/info";
     }
 
+
+    public static String getTransferUrl() {
+        return newhost + "/user/transfer";
+    }
+    public static String getRechargeAddressUrl() {
+        return newhost + "/user/deposit";
+    }
+
     public static String getExtractUrl() {
-        return host + "/uc/withdraw/apply";
+        return newhost + "/user/withdraw";
     }
 
     public static String getAllTransactionUrl() {

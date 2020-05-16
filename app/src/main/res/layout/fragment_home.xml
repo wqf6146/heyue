@@ -196,38 +196,40 @@
                 android:padding="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_height="140dp">
+
                 <RelativeLayout
+                    android:id="@+id/rlhy"
                     android:layout_width="0dp"
-                    android:layout_weight="1.5"
+                    android:layout_height="match_parent"
                     android:layout_margin="5dp"
-                    android:background="@color/main_bg_dark_2"
-                    android:layout_height="match_parent">
+                    android:layout_weight="1.5"
+                    android:background="@color/main_bg_dark_2">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font_normal"
                         android:id="@+id/tv_hy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="合约"
-                        android:layout_height="wrap_content"/>
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_normal" />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="买涨买跌都能赚"
-                        android:layout_below ="@+id/tv_hy"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_hy"
                         android:layout_marginLeft="10dp"
+                        android:text="买涨买跌都能赚"
                         android:textColor="@color/font_hint"
-                        android:textSize="@dimen/font_small"
-                        android:layout_height="wrap_content"/>
+                        android:textSize="@dimen/font_small" />
 
                     <ImageView
                         android:layout_width="wrap_content"
-                        android:src="@mipmap/ic_heyuequxian"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentBottom="true"
                         android:layout_margin="10dp"
-                        android:layout_height="wrap_content"/>
+                        android:src="@mipmap/ic_heyuequxian" />
                 </RelativeLayout>
 
                 <LinearLayout

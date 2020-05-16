@@ -299,6 +299,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             loadingPopup = new PopupWindow(loadingView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             loadingPopup.setFocusable(true);
             loadingPopup.setClippingEnabled(false);
+
             loadingPopup.setBackgroundDrawable(new ColorDrawable());
         }
         if (!loadingPopup.isShowing())

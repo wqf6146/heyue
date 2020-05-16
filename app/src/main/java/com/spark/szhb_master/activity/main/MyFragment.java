@@ -37,6 +37,10 @@ import com.spark.szhb_master.activity.myinfo.MyInfoActivity;
 import com.spark.szhb_master.activity.safe.SafeActivity;
 import com.spark.szhb_master.activity.setting.SettingActivity;
 import com.spark.szhb_master.activity.wallet.WalletActivity;
+import com.spark.szhb_master.activity.wallet_coin.ExtractActivity;
+import com.spark.szhb_master.activity.wallet_coin.ExtractPresenter;
+import com.spark.szhb_master.activity.wallet_coin.FundtransferActivity;
+import com.spark.szhb_master.activity.wallet_coin.RechargeActivity;
 import com.spark.szhb_master.dialog.ShiMingDialog;
 import com.spark.szhb_master.entity.AssetsInfo;
 import com.spark.szhb_master.entity.SafeSetting;
@@ -240,6 +244,15 @@ public class MyFragment extends BaseTransFragment implements MainContract.MyView
         }
         Bundle bundle = new Bundle();
         switch (v.getId()) {
+            case R.id.llZhuanr:
+                showActivity(RechargeActivity.class,null);
+                break;
+            case R.id.llZhuanc:
+                showActivity(ExtractActivity.class,null);
+                break;
+            case R.id.llHuaz:
+                showActivity(FundtransferActivity.class,null);
+                break;
             case R.id.llSfrz:
                 showActivity(CreditOneActivity.class,null);
                 break;

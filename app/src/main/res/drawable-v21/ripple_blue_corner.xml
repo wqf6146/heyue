@@ -6,7 +6,7 @@
         <shape>
             <!-- 点击前的背景色-->
             <solid android:color="@color/btn_hover" />
-            <corners android:bottomLeftRadius="8dp" />
+            <corners android:radius="8dp" />
         </shape>
     </item>
 </ripple>

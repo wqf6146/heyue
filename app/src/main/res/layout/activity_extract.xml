@@ -1,203 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.zhy.android.percent.support.PercentLinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/main_bg"
-    android:orientation="vertical"
-    tools:context="com.spark.szhb_master.activity.wallet_coin.ExtractActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:orientation="vertical">
 
-    <!--标题-->
-    <include layout="@layout/view_head" />
-
-    <LinearLayout style="@style/layout_my_info">
-
-        <TextView
-            style="@style/textview_tag"
-            android:minWidth="90dp"
-            android:text="@string/text_can_used"
-            android:textColor="@color/main_font_grey" />
-
-        <TextView
-            android:id="@+id/tvBuyCanUse"
-            style="@style/edittext_normal"
-            android:layout_weight="1"
-            android:textColorHint="@color/font_hint" />
-
-        <TextView
-            android:id="@+id/tvCanUseUnit"
-            style="@style/textview_tag"
-            android:text="USDT" />
-
-    </LinearLayout>
-
-    <View style="@style/line_bg_grey" />
-
-    <LinearLayout
-        style="@style/layout_my_info"
-        android:paddingRight="0dp">
-
-        <TextView
-            style="@style/textview_tag"
-            android:minWidth="90dp"
-            android:text="@string/mention_money_address"
-            android:textColor="@color/main_font_grey" />
-
-        <EditText
-            android:id="@+id/etAddress"
-            style="@style/edittext_normal"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:hint="@string/enter_address_tag"
-            android:maxLines="2"
-            android:textColorHint="@color/font_hint" />
-
-        <TextView
-            android:id="@+id/tvSelectAdress"
-            style="@style/textview_tag"
-            android:layout_height="match_parent"
-            android:background="@drawable/ripple_white"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="@string/select" />
-    </LinearLayout>
-
-    <View style="@style/line_bg_grey" />
-
-    <LinearLayout
-        style="@style/layout_my_info"
-        android:paddingRight="0dp">
-
-        <TextView
-            style="@style/textview_tag"
-            android:minWidth="90dp"
-            android:text="@string/amount"
-            android:textColor="@color/main_font_grey" />
-
-        <EditText
-            android:id="@+id/etCount"
-            style="@style/edittext_normal"
-            android:layout_weight="1"
-            android:hint="最小提币数量200"
-            android:inputType="numberDecimal"
-            android:textColorHint="@color/font_hint" />
-
-        <TextView
-            android:id="@+id/tvGetUnit"
-            style="@style/textview_tag"
-            android:layout_marginLeft="5dp"
-            android:text="USDT" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/third_font_grey" />
-
-        <TextView
-            android:id="@+id/tvAll"
-            style="@style/textview_tag"
-            android:layout_height="match_parent"
-            android:background="@drawable/ripple_white"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="@string/all"
-            android:textColor="@color/btn_normal" />
-    </LinearLayout>
-
-    <View style="@style/line_bg_grey" />
-
-    <LinearLayout style="@style/layout_my_info">
-
-        <TextView
-            style="@style/textview_tag"
-            android:minWidth="90dp"
-            android:text="@string/remarks"
-            android:textColor="@color/main_font_grey" />
-
-        <EditText
-            android:id="@+id/remarks"
-            style="@style/edittext_normal"
-            android:layout_weight="1"
-            android:hint="@string/remarks"
-            android:inputType="numberDecimal"
-            android:textColorHint="@color/font_hint" />
-
-    </LinearLayout>
-
-    <View style="@style/line_bg_grey" />
-
-    <LinearLayout style="@style/layout_my_info">
-
-        <TextView
-            style="@style/textview_tag"
-            android:minWidth="90dp"
-            android:text="@string/poundage"
-            android:textColor="@color/main_font_grey" />
-
-        <EditText
-            android:id="@+id/etServiceFee"
-            style="@style/edittext_normal"
-            android:layout_weight="1"
-            android:hint="@string/poundage"
-            android:inputType="numberDecimal"
-            android:textColorHint="@color/font_hint" />
-
-    </LinearLayout>
-
-    <View style="@style/line_bg_grey" />
-
-    <LinearLayout style="@style/layout_my_info">
-
-        <TextView
-            style="@style/textview_tag"
-            android:minWidth="90dp"
-            android:text="@string/mention_account"
-            android:textColor="@color/main_font_grey" />
-
-        <TextView
-            android:id="@+id/tvFinalCount"
-            style="@style/edittext_normal"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/tvCollectUnit"
-            style="@style/textview_tag"
-            android:text="USDT" />
-    </LinearLayout>
-
-    <View style="@style/line_bg_grey" />
-
-    <LinearLayout style="@style/layout_my_info">
-
-        <TextView
-            style="@style/textview_tag"
-            android:minWidth="90dp"
-            android:text="@string/text_money_pwd" />
-
-        <EditText
-            android:id="@+id/etPassword"
-            style="@style/edittext_normal"
-            android:layout_weight="1"
-            android:hint="@string/text_money_pwd"
-            android:inputType="textPassword"
-            android:textColorHint="@color/font_hint" />
-
-    </LinearLayout>
-
-    <View style="@style/line_bg_grey" />
-
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:id="@+id/rlhead"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/icon_back"
+            android:padding="10dp"
+            android:id="@+id/ar_iv_close"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal"
+            android:text="提币"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/tvExtract"
-        style="@style/btn_option_normal"
-        android:height="50dp"
-        android:text="@string/submit" />
+        android:id="@+id/tvNotice"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/bg_yellow"
+        android:drawableLeft="@mipmap/icon_notice"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:text="风险提示：请勿向该地址充值任何非xxx资产"
+        android:textColor="@color/font_yellow"
+        android:textSize="@dimen/font_small"
+        android:visibility="gone" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tvAddressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:text="xxx Address"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/font_xxlager"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="币种:USDT"
+        android:textColor="@color/white"
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/font_mini"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="链名称"
+        android:textColor="@color/white"
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/font_mini"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:id="@+id/rlChain"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_btn_wgray_corner">
+
+        <TextView
+            android:id="@+id/tvChainName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="USDT-ERC20"
+            android:textColor="#1E273D"
+            android:textSize="@dimen/font_normal" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/ic_arrow_right" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/font_small"
+        android:text="转出地址"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/tab_font"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/etAddress"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:inputType="text"
+        android:background="@drawable/bg_market_editext"
+        android:hint="请输入转出地址"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/font_hint"
+        android:textSize="@dimen/font_normal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/font_small"
+        android:text="转出数量"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/tab_font"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/etNum"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_market_editext"
+        android:inputType="number"
+        android:hint="请输入数量"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/font_hint"
+        android:textSize="@dimen/font_normal" />
+
+    <LinearLayout
+        android:id="@+id/llSubmit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ripple_blue_corner"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_heightPercent="10%w"
+        app:layout_widthPercent="50%w">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal" />
+    </LinearLayout>
+
+
+</com.zhy.android.percent.support.PercentLinearLayout>

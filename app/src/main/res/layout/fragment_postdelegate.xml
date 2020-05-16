@@ -186,6 +186,7 @@
                     android:background="@drawable/bg_market_editext"
                     android:hint="最小交易数量"
                     android:textCursorDrawable="@null"
+                    android:inputType="number"
                     android:maxLength="10"
                     android:paddingLeft="10dp"
                     android:textColor="@color/white"
@@ -206,9 +207,12 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
+                    android:inputType="number"
+                    android:textCursorDrawable="@null"
+                    android:maxLength="10"
                     android:text="最大交易数量"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/font_normal" />
+                    android:textSize="@dimen/font_mini" />
 
                 <EditText
                     android:id="@+id/edMaxNum"
