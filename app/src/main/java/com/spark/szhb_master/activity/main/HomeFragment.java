@@ -313,13 +313,16 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
-        if (v.getId() == R.id.btn_Login ) {
+        if (v.getId() == R.id.btn_Login) {
             showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
             return;
         }
-
         switch (v.getId()){
             case R.id.llChongbi:
+                if (!MyApplication.getApp().isLogin()){
+                    showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
+                    return;
+                }
                 showActivity(RechargeActivity.class,null);
                 break;
             case R.id.llXinshouzhinan:{
