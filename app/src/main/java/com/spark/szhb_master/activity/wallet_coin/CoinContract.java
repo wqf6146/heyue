@@ -3,8 +3,10 @@ package com.spark.szhb_master.activity.wallet_coin;
 
 import com.spark.szhb_master.base.Contract;
 import com.spark.szhb_master.entity.AssetsInfo;
+import com.spark.szhb_master.entity.ContratInfo;
 import com.spark.szhb_master.entity.ExtractInfo;
 import com.spark.szhb_master.entity.RechargeAddress;
+import com.spark.szhb_master.entity.WalletThreeBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +34,11 @@ public interface CoinContract {
         void doPostFail(Integer code, String toastMessage);
     }
 
+    interface recordeListView extends Contract.BaseView<recordeListPresenter>{
+        void getListSuccess(WalletThreeBean walletThreeBean);
+        void doPostFail(Integer code, String toastMessage);
+    }
+
     interface extractPresenter extends Contract.BasePresenter {
         void extract(HashMap params);
     }
@@ -43,5 +50,9 @@ public interface CoinContract {
     interface fundtransferPresenter extends Contract.BasePresenter {
         void fundtransfer(HashMap hashMap);
         void getWallet();
+    }
+
+    interface recordeListPresenter extends Contract.BasePresenter {
+        void getList(String url,HashMap hashMap);
     }
 }

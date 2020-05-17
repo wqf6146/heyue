@@ -1,6 +1,7 @@
 package com.spark.szhb_master.activity.wallet_coin;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -81,7 +82,7 @@ public class FundtransferActivity extends BaseActivity implements CoinContract.f
 
     private int type = 1; //类型0为合约转至资金，1为资金转至合约
 
-    @OnClick({R.id.ar_iv_close,R.id.ivChange, R.id.tvAllChange,R.id.llSubmit})
+    @OnClick({R.id.ar_iv_close,R.id.ivChange, R.id.tvAllChange,R.id.llSubmit,R.id.tvRecord})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -118,6 +119,11 @@ public class FundtransferActivity extends BaseActivity implements CoinContract.f
                 hashMap.put("type",type);
                 hashMap.put("num",num);
                 fundtransferPresenter.fundtransfer(hashMap);
+                break;
+            case R.id.tvRecord:
+                Bundle bundle = new Bundle();
+                bundle.putInt("type",2);
+                showActivity(DetailListActivity.class,bundle);
                 break;
         }
     }

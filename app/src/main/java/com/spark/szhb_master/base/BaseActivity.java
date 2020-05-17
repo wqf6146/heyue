@@ -64,7 +64,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this);
         activity = this;
         initBaseView();
-        if (isImmersionBarEnabled()) initImmersionBar();
+        if (isImmersionBarEnabled())
+            initImmersionBar();
         initView();
         initData();
         ActivityManage.addActivity(this);

@@ -3,6 +3,7 @@ package com.spark.szhb_master.activity.wallet_coin;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -95,7 +96,7 @@ public class RechargeActivity extends BaseActivity implements CoinContract.recha
         new RechargePresenter(Injection.provideTasksRepository(getApplicationContext()), this);
     }
 
-    @OnClick({R.id.ar_iv_close,R.id.tvCopy, R.id.llAlbum,R.id.rlChain})
+    @OnClick({R.id.ar_iv_close,R.id.tvCopy, R.id.llAlbum,R.id.rlChain,R.id.tvRecord})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -117,6 +118,11 @@ public class RechargeActivity extends BaseActivity implements CoinContract.recha
                 break;
             case R.id.rlChain:
                 actionSheetDialogNoTitle();
+                break;
+            case R.id.tvRecord:
+                Bundle bundle = new Bundle();
+                bundle.putInt("type",0);
+                showActivity(DetailListActivity.class,bundle);
                 break;
         }
     }

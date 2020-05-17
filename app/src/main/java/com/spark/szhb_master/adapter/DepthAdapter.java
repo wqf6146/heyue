@@ -111,7 +111,7 @@ public class DepthAdapter extends RecyclerView.Adapter<DepthAdapter.MyViewHolder
             double buyScale = (buyAccount / alBuyAccount);
             RelativeLayout.LayoutParams buyParams = (RelativeLayout.LayoutParams) holder.buyView.getLayoutParams();
             buyParams.width = (int) (countWidth * buyScale);
-            LogUtils.i(" buyParams.width ==" + buyParams.width);
+//            LogUtils.i(" buyParams.width ==" + buyParams.width);
             holder.buyView.setLayoutParams(buyParams);
         }
         if (sellInfo.getAmount() != -1) {

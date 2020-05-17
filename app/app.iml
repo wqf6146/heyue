@@ -155,6 +155,7 @@
     <orderEntry type="library" name="Gradle: org.litepal.android:core:1.6.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.youth.banner:banner:1.4.10@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.scwang.smartrefresh:SmartRefreshLayout:1.1.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.gyf.barlibrary:barlibrary:2.3.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.lcodecorex:tkrefreshlayout:1.0.7@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.kyleduo.switchbutton:library:2.0.0@aar" level="project" />

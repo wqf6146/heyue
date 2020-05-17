@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_marginBottom="5dp"
+    android:background="@color/main_bg_dark_2"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rlExtractDate"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="提币时间"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvExtractDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlExtractAddress"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="提币地址"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvExtractAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlExtractNum"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="提币数量"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvExtractNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlExtractStatus"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="提币状态"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvExtractStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlExtractDoneDate"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="到账时间"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvExtractDoneDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlRechargeDate"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="充币时间"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvRechargeDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlRechargeStartAddress"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="发起地址"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvRechargeStartAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlRechargeEndAddress"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="到账地址"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvRechargeEndAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlRechargeNum"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="充币数量"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvRechargeNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlRechargeStatus"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="充币状态"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvRechargeStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="成功"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlTransferDate"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="转移时间"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvTransferDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlTransferNum"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="转移数量"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvTransferNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlTransferType"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="转移类型"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_small" />
+
+        <TextView
+            android:id="@+id/tvTransferType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/tab_font"
+            android:textSize="@dimen/font_small" />
+
+    </RelativeLayout>
+</LinearLayout>

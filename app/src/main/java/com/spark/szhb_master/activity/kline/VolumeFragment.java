@@ -57,7 +57,7 @@ public class VolumeFragment extends BaseFragment implements KlineContract.Volume
     ProgressBar volumeBar;
     private String symbol;
     private String symbolType;
-    private List<VolumeBean> objList;
+    private List<VolumeBean> mDataList;
     private VolumeAdapter adapter;
     private Activity activity;
 
@@ -86,9 +86,9 @@ public class VolumeFragment extends BaseFragment implements KlineContract.Volume
         this.symbolType = symbolType;
 
         tvNumberV.setText(getResources().getString(R.string.number) + "(" + symbol + ")");
-        objList.clear();
-        objList = initVolumeData(null);
-        adapter.setObjList(objList);
+        mDataList.clear();
+        mDataList = initVolumeData();
+        adapter.setObjList(mDataList);
         adapter.notifyDataSetChanged();
 
         startTCP();
@@ -164,9 +164,8 @@ public class VolumeFragment extends BaseFragment implements KlineContract.Volume
                     List<VolumeBean> volumeBeanList = new Gson().fromJson(response.getResponse(), new TypeToken<List<VolumeBean>>() {}.getType());
                     String strSymbol = response.getRemark();
                     if (strSymbol != null && strSymbol.equals(symbol)) {
-                        objList.addAll(0,volumeBeanList);
-                        objList = initVolumeData(objList);
-                        adapter.setObjList(objList);
+                        addVolumeData(volumeBeanList);
+                        adapter.setObjList(mDataList);
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -193,11 +192,12 @@ public class VolumeFragment extends BaseFragment implements KlineContract.Volume
      */
     private void intLv() {
         activity = getActivity();
-        objList = new ArrayList<>();
+        mDataList = new ArrayList<>();
         LinearLayoutManager manager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
         manager.setStackFromEnd(false);
         recyclerView.setLayoutManager(manager);
-        adapter = new VolumeAdapter(activity, objList);
+        mDataList = initVolumeData();
+        adapter = new VolumeAdapter(activity, mDataList);
         recyclerView.setAdapter(adapter);
     }
 
@@ -262,35 +262,32 @@ public class VolumeFragment extends BaseFragment implements KlineContract.Volume
     }
 
     /**
-     * 填充数据
      */
-    private List<VolumeBean> initVolumeData(List<VolumeBean> objList) {
-        ArrayList<VolumeBean> volumeBeans = new ArrayList<>();
+    private void addVolumeData(List<VolumeBean> objList) {
         if (objList != null) {
-            for (int i = 0; i < 20; i++) {
-                if (objList.size() > i) { // list里有数据
-                    volumeBeans.add(objList.get(i));
-                } else {
-                    VolumeBean volumeBean = new VolumeBean();
-                    volumeBean.setTs(-1);
-                    volumeBean.setDirection(null);
-                    volumeBean.setPrice(-1);
-                    volumeBean.setAmount(-1);
-                    volumeBeans.add(volumeBean);
-                }
+            for (int i = 0; i < objList.size(); i++) {
+                mDataList.add(0,objList.get(i));
             }
-        } else {
-            for (int i = 0; i < 20; i++) {
-                VolumeBean volumeBean = new VolumeBean();
-                volumeBean.setTs(-1);
-                volumeBean.setDirection(null);
-                volumeBean.setPrice(-1);
-                volumeBean.setAmount(-1);
-                volumeBeans.add(volumeBean);
-            }
+        }
+
+        for(int i=20; i < mDataList.size(); i++){
+            mDataList.remove(i);
+        }
+    }
+
+    private List<VolumeBean> initVolumeData() {
+        ArrayList<VolumeBean> volumeBeans = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            VolumeBean volumeBean = new VolumeBean();
+            volumeBean.setTs(-1);
+            volumeBean.setDirection(null);
+            volumeBean.setPrice(-1);
+            volumeBean.setAmount(-1);
+            volumeBeans.add(volumeBean);
         }
         return volumeBeans;
     }
+
 
     @Override
     public void setPresenter(KlineContract.VolumePresenter presenter) {

@@ -311,7 +311,7 @@ public class CurrentTrustActivity extends BaseActivity implements ITrustContract
     }
 
     /**
-     * 下拉
+     * 上拉
      */
     private void loadMoreText() {
         refreshLayout.setEnabled(false);

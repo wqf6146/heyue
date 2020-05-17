@@ -29,6 +29,18 @@
             android:layout_centerInParent="true"
             android:layout_height="wrap_content"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_normal"
+            android:text="记录"
+            android:id="@+id/tvRecord"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:padding="10dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/font_blue"/>
+
     </RelativeLayout>
 
     <com.zhy.android.percent.support.PercentLinearLayout

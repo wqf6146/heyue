@@ -158,6 +158,18 @@ public class UrlFactory {
     public static String getTransferUrl() {
         return newhost + "/user/transfer";
     }
+
+    public static String getRechargeListUrl() {
+        return newhost + "/user/deposit/list";
+    }
+    public static String getWithdrawListUrl() {
+        return newhost + "/user/withdraw";
+    }
+    public static String getTransListUrl() {
+        return newhost + "/user/transfer";
+    }
+
+
     public static String getRechargeAddressUrl() {
         return newhost + "/user/deposit";
     }

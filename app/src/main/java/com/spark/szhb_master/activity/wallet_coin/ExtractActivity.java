@@ -1,5 +1,6 @@
 package com.spark.szhb_master.activity.wallet_coin;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -32,6 +33,9 @@ public class ExtractActivity extends BaseActivity implements CoinContract.extrac
 
     @BindView(R.id.rlhead)
     RelativeLayout rlhead;
+
+    @BindView(R.id.tvRecord)
+    TextView tvRecord;
 
     @BindView(R.id.rlChain)
     RelativeLayout rlChain;
@@ -69,7 +73,7 @@ public class ExtractActivity extends BaseActivity implements CoinContract.extrac
         new ExtractPresenter(Injection.provideTasksRepository(getApplicationContext()), this);
     }
 
-    @OnClick({ R.id.ar_iv_close,R.id.rlChain,R.id.llSubmit})
+    @OnClick({ R.id.ar_iv_close,R.id.rlChain,R.id.llSubmit,R.id.tvRecord})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -97,6 +101,11 @@ public class ExtractActivity extends BaseActivity implements CoinContract.extrac
                 break;
             case R.id.rlChain: // 全部
                 actionSheetDialogNoTitle();
+                break;
+            case R.id.tvRecord:
+                Bundle bundle = new Bundle();
+                bundle.putInt("type",1);
+                showActivity(DetailListActivity.class,bundle);
                 break;
         }
     }
