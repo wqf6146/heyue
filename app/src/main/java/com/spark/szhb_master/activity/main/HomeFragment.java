@@ -22,6 +22,7 @@ import com.spark.szhb_master.activity.main.presenter.CommonPresenter;
 import com.spark.szhb_master.activity.main.presenter.CollectView;
 import com.spark.szhb_master.activity.kline.KlineActivity;
 import com.spark.szhb_master.activity.message.WebViewActivity;
+import com.spark.szhb_master.activity.mycc.MyccActivity;
 import com.spark.szhb_master.activity.wallet_coin.RechargeActivity;
 import com.spark.szhb_master.adapter.BannerImageLoader;
 import com.spark.szhb_master.adapter.HomeOneAdapter;
@@ -309,7 +310,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         }
     }
 
-    @OnClick({R.id.llChongbi,R.id.ivMessage,R.id.llXinshouzhinan,R.id.rlhy})
+    @OnClick({R.id.llChongbi,R.id.ivMessage,R.id.llXinshouzhinan,R.id.rlhy,R.id.llwdcc})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -318,6 +319,13 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
             return;
         }
         switch (v.getId()){
+            case R.id.llwdcc:
+                if (!MyApplication.getApp().isLogin()){
+                    showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
+                    return;
+                }
+                showActivity(MyccActivity.class,null);
+                break;
             case R.id.llChongbi:
                 if (!MyApplication.getApp().isLogin()){
                     showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);

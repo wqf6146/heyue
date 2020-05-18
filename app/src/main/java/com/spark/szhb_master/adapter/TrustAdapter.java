@@ -22,7 +22,7 @@ import java.util.List;
  */
 
 public class TrustAdapter extends BaseQuickAdapter<NewEntrust.ListBean, BaseViewHolder> {
-    private int type = 0; //0-当前持仓 1-当前委托 2历史委托
+    private int type = 0; //0-当前持仓 1-当前委托 2历史委托 3历史持仓
     public TrustAdapter(@Nullable List<NewEntrust.ListBean> data) {
         super(R.layout.item_trust, data);
     }

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlroot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_below="@+id/rltitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 内容控件 -->
+        <com.spark.szhb_master.ui.intercept.JudgeNestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/main_bg"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.CollapsingToolbarLayout
+                        android:id="@+id/collapse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:contentScrim="?attr/colorPrimary"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                        app:titleEnabled="false">
+
+                        <LinearLayout
+                            android:layout_marginBottom="20dp"
+                            android:id="@+id/llAccount"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@mipmap/wallet_img"
+                            android:orientation="vertical"
+                            android:padding="20dp"
+                            android:visibility="visible">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_weight="1"
+                                android:layout_height="0dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:orientation="vertical"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/white"
+                                        android:text="11"
+                                        android:id="@+id/tvJingzhi"
+                                        android:textSize="@dimen/font_normal" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:text="净值(USDT)"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/font_small"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="right"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/white"
+                                        android:text="11"
+                                        android:id="@+id/tvYingkui"
+                                        android:textSize="@dimen/font_normal" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:text="未实现盈亏(USDT)"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/font_small"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+
+                            </RelativeLayout>
+
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_weight="1"
+                                android:layout_height="0dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="bottom"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/white"
+                                        android:text="11"
+                                        android:id="@+id/tvBzj"
+                                        android:textSize="@dimen/font_normal" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:text="可用保证金"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/font_small"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="right|bottom"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/white"
+                                        android:text="11"
+                                        android:id="@+id/tvCcBzj"
+                                        android:textSize="@dimen/font_normal" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:text="持仓保证金"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/font_small"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                    </android.support.design.widget.CollapsingToolbarLayout>
+
+
+                </LinearLayout>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tablayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    app:tabIndicatorColor="@color/white"
+                    app:tabMinWidth="80dp"
+                    app:tabSelectedTextColor="@color/white"
+                    app:tabTextColor="@color/white" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="match_parent">
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/main_bg" />
+
+<!--                    <RelativeLayout-->
+<!--                        android:id="@+id/rlEmptyView"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:background="@color/main_bg"-->
+<!--                        android:visibility="gone">-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_centerHorizontal="true"-->
+<!--                            android:layout_marginTop="50dp"-->
+<!--                            android:orientation="vertical">-->
+
+<!--                            <ImageView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center_horizontal"-->
+<!--                                android:src="@mipmap/no_order" />-->
+
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/tvMessageView"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center_horizontal"-->
+<!--                                android:layout_marginTop="8dp"-->
+<!--                                android:text="@string/no_data"-->
+<!--                                android:textColor="@color/main_font_grey"-->
+<!--                                android:textSize="@dimen/font_normal" />-->
+
+<!--                        </LinearLayout>-->
+
+<!--                        &lt;!&ndash;android:src="@mipmap/icon_no_data" />&ndash;&gt;-->
+
+<!--                    </RelativeLayout>-->
+
+                </FrameLayout>
+
+
+            </LinearLayout>
+
+            <!--</android.support.v4.widget.NestedScrollView>-->
+        </com.spark.szhb_master.ui.intercept.JudgeNestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rltitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/AppTheme.Toolbar"
+            android:fitsSystemWindows="true"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_collapseMode="pin">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/main_bg">
+
+                <ImageView
+                    android:id="@+id/ivBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:src="@mipmap/icon_back" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_normal"
+                    android:text="我的持仓"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -83,6 +83,7 @@
         <activity android:name="com.spark.szhb_master.activity.switch_user.SwitchUserActivity" />
         <activity android:name="com.spark.szhb_master.activity.feed.FeedbackActivity" />
         <activity android:name=".activity.Trade.NewTradeActivity" />
+        <activity android:name=".activity.mycc.MyccActivity"/>
         <activity android:name=".activity.wallet_coin.DetailListActivity"/>
         <activity android:name=".activity.c2corder.C2cOrderActivity"/>
         <activity android:name="com.spark.szhb_master.activity.aboutus.AboutUsActivity" />
