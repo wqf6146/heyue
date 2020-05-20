@@ -35,6 +35,11 @@ public class UrlFactory {
         return newhost+ "/user/wallet";
     }
 
+    public static String getMyhaveUrl() {
+        return newhost+ "/user/market/my";
+    }
+
+
     //获取配对历史
     public static String getMatchHisUrl() {
         return host + "/uc/asset/transaction/all";

@@ -37,7 +37,7 @@ public class MyccPresenter implements MyccContract.Presenter {
 
 
     @Override
-    public void getWallet() {
+    public void getMyHave() {
         dataRepository.doStringGet(UrlFactory.getWalletUrl(), new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
@@ -46,7 +46,7 @@ public class MyccPresenter implements MyccContract.Presenter {
                     JSONObject object = new JSONObject(response);
                     if (object.optInt("code") == 1) {
                         AssetsInfo assetsInfo = new Gson().fromJson(object.getJSONObject("data").toString(), AssetsInfo.class);
-                        view.getWalletSuccess(assetsInfo);
+                        view.getMyHaveSuccess(assetsInfo);
                     } else {
                         view.doPostFail(object.getInt("code"), object.optString("msg"));
                     }

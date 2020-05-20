@@ -221,8 +221,8 @@ public class C2CFragment extends BaseNestingTransFragment implements MainContrac
     private void initFragment(){
         c2cFastFragment = C2cFastFragment.newInstance();
         c2cOptionFragment = C2cOptionFragment.newInstance();
-        fragments.add(c2cFastFragment);
         fragments.add(c2cOptionFragment);
+        fragments.add(c2cFastFragment);
 
         vp.setAdapter(adapter = new PagerAdapter(getChildFragmentManager(), fragments, tabs));
     }

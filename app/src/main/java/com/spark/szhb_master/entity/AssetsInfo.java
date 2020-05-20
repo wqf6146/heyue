@@ -17,6 +17,15 @@ public class AssetsInfo {
     private float sum_convert;
     private float usable; //余额(资金账户)
     private float usable_convert;
+    private float harvest_num;
+
+    public void setHarvest_num(float harvest_num) {
+        this.harvest_num = harvest_num;
+    }
+
+    public float getHarvest_num() {
+        return harvest_num;
+    }
 
     public float getFrost() {
         return frost;

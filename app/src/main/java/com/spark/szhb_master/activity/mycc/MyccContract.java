@@ -18,7 +18,8 @@ import java.util.HashMap;
 public interface MyccContract {
     interface View extends Contract.BaseView<Presenter> {
         void doPostFail(int e, String meg);
-        void getWalletSuccess(AssetsInfo assetsInfo);
+
+        void getMyHaveSuccess(AssetsInfo assetsInfo);
     }
 
     interface DqwtPresenter{
@@ -34,17 +35,19 @@ public interface MyccContract {
 
     interface DqccPresenter{
         void getCurrentHave(HashMap params); // 获取当前的持仓
+        void getSymbolHistroyList(HashMap hashMap);
         void commitUndersellContrat(HashMap params);
     }
 
     interface DqccView extends Contract.BaseView<MyccContract.DqccPresenter> {
         void doPostFail(int e, String meg);
         void getCurrentHaveSuccess(NewEntrust entrustEntity);
+        void getSymbolHistroyListSuccess(NewEntrust newEntrust);
         void undersellContratSuccess(String msg);
 
     }
 
     interface Presenter {
-        void getWallet(); // 获取钱包
+        void getMyHave(); // 获取钱包
     }
 }

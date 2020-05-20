@@ -424,10 +424,14 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
             int type = bundle.getInt("type");
             if (type == 1) { // 买入
                 mRadioGroup.check(R.id.rbBuy);
+                rbBuy.setBackgroundResource(R.color.main_font_green);
+                rbSell.setBackgroundResource(R.color.main_bg_dark_2);
                 llMarketBuy.setVisibility(View.VISIBLE);
                 llMarketSell.setVisibility(View.GONE);
             } else { //卖出
                 mRadioGroup.check(R.id.rbSell);
+                rbBuy.setBackgroundResource(R.color.main_bg_dark_2);
+                rbSell.setBackgroundResource(R.color.main_font_red);
                 llMarketBuy.setVisibility(View.GONE);
                 llMarketSell.setVisibility(View.VISIBLE);
             }
@@ -1046,10 +1050,14 @@ public class NewTradeActivity extends BaseActivity implements TradeContract.View
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (radioGroup.getCheckedRadioButtonId()) {
                     case R.id.rbBuy: // 点击买入
+                        rbBuy.setBackgroundResource(R.color.main_font_green);
+                        rbSell.setBackgroundResource(R.color.main_bg_dark_2);
                         llMarketBuy.setVisibility(View.VISIBLE);
                         llMarketSell.setVisibility(View.GONE);
                         break;
                     case R.id.rbSell: // 点击卖出
+                        rbBuy.setBackgroundResource(R.color.main_bg_dark_2);
+                        rbSell.setBackgroundResource(R.color.main_font_red);
                         llMarketBuy.setVisibility(View.GONE);
                         llMarketSell.setVisibility(View.VISIBLE);
                         break;

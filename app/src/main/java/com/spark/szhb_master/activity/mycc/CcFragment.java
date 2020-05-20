@@ -5,9 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.adapter.PagerAdapter;
@@ -57,6 +60,7 @@ public class CcFragment extends Fragment {
     }
 
     private DqccFragment dqccFragment,lsccFragment;
+    private List<String> tabs = new ArrayList<>();
 
     private void initTabViewpager() {
         mTabFragments = new ArrayList<>();
@@ -76,28 +80,77 @@ public class CcFragment extends Fragment {
         lsccFragment = DqccFragment.getInstance(3);
         mTabFragments.add(lsccFragment);
 
-        List<String> tabs = new ArrayList<>();
+
         tabs.add("持仓中");
         tabs.add("历史");
-
         mViewPager.setAdapter(new PagerAdapter(getChildFragmentManager(), mTabFragments, tabs));
         mViewPager.setOffscreenPageLimit(2);
         mTablayout.setTabMode(TabLayout.MODE_FIXED);
         mTablayout.setupWithViewPager(mViewPager);
+//        mTablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                mViewPager.setCurrentItem(tab.getPosition(),false);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
+        initTabView();
+    }
+
+    private void initTabView() {
+        for (int i = 0; i < tabs.size(); i++) {
+            //获取tab
+            TabLayout.Tab tab = mTablayout.getTabAt(i);
+            //给tab设置自定义布局
+            TextView textView = new TextView(getContext());
+            textView.setGravity(Gravity.CENTER);
+            tab.setCustomView(textView);
+            //填充数据
+            textView.setText(String.valueOf(tabs.get(i)));
+            //默认选择第一项
+            if (i == 0){
+                textView.setSelected(true);
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,18);
+                textView.setTextColor(getResources().getColor(R.color.white));
+            }else{
+                textView.setSelected(false);
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,16);
+                textView.setTextColor(getResources().getColor(R.color.tab_font));
+            }
+        }
+
         mTablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mViewPager.setCurrentItem(tab.getPosition(),false);
+                TextView textView = (TextView)tab.getCustomView();
+                textView.setSelected(true);
+                //设置选中后的字体大小
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,16);
+                textView.setTextColor(getResources().getColor(R.color.white));
+                //关联Viewpager
+                mViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                TextView textView = (TextView)tab.getCustomView();
+                textView.setSelected(false);
+                //恢复默认字体大小
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
+                textView.setTextColor(getResources().getColor(R.color.tab_font));
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }

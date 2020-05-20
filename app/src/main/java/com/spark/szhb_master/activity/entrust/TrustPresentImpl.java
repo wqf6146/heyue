@@ -93,8 +93,6 @@ public class TrustPresentImpl implements ITrustContract.Presenter {
 
     @Override
     public void getSymbolHistroyList(HashMap hashMap) {
-
-
         String url = UrlFactory.getHistroyEntrus() + "?mark=" + hashMap.get("mark") +
                 "&leverage=" + hashMap.get("leverage") + "&page=" + hashMap.get("page") + "&page_size=" + hashMap.get("page_size") +
                 "&type=" + hashMap.get("type");

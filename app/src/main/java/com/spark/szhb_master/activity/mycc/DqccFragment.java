@@ -18,6 +18,7 @@ import com.spark.szhb_master.entity.NewEntrust;
 import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.NetCodeUtils;
 import com.spark.szhb_master.utils.ToastUtils;
+import com.spark.szhb_master.widget.TipDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class DqccFragment extends BaseFragment implements MyccContract.DqccView 
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
         if (isVisible && MyApplication.getApp().isLogin())
-            refreshLayout.autoRefresh();
+            doRefresh();
     }
 
     @Override
@@ -73,6 +74,8 @@ public class DqccFragment extends BaseFragment implements MyccContract.DqccView 
     protected boolean isImmersionBarEnabled() {
         return false;
     }
+
+    private TipDialog liquidationDialog;
 
     @Override
     protected void initView() {
@@ -104,9 +107,24 @@ public class DqccFragment extends BaseFragment implements MyccContract.DqccView 
         trustAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                HashMap hashMap = new HashMap();
-                hashMap.put("market_id",(int)view.getTag());
-                presenter.commitUndersellContrat(hashMap);
+
+                if (liquidationDialog == null) {
+                    liquidationDialog = new TipDialog.Builder(getActivity())
+                            .setPicResources(R.mipmap.woo)
+                            .setMessage("是否平仓?")
+                            .setCanCancelOutside(false)
+                            .setEnsureClickListener(new TipDialog.EnsureClickListener() {
+                                @Override
+                                public void onEnsureClick(TipDialog tipDialog) {
+                                    tipDialog.dismiss();
+                                    HashMap hashMap = new HashMap();
+                                    hashMap.put("market_id",(int)view.getTag());
+                                    presenter.commitUndersellContrat(hashMap);
+                                }
+                            }).build();
+                }
+                liquidationDialog.show();
+
             }
         });
         trustAdapter.bindToRecyclerView(recyclerView);
@@ -115,29 +133,39 @@ public class DqccFragment extends BaseFragment implements MyccContract.DqccView 
     @Override
     public void undersellContratSuccess(String msg) {
         ToastUtils.showToast("平仓成功");
-        refreshLayout.autoRefresh();
+        doRefresh();
         if (onCallBackEvent!=null)
             onCallBackEvent.undersellContratSuccess();
     }
 
 
-    public boolean doLoadMore() {
+    public void doLoadMore() {
         HashMap map = new HashMap<>();
         map.put("page", mPage + 1);
         map.put("page_size", GlobalConstant.PageSize);
-        presenter.getCurrentHave(map);
-        return true;
+
+
+        if (mType == 0){
+            presenter.getCurrentHave(map);
+        }else{
+            presenter.getSymbolHistroyList(map);
+        }
     }
+
 
     public void doRefresh() {
         mPage = 1;
         HashMap map = new HashMap<>();
         map.put("page", mPage);
         map.put("page_size", GlobalConstant.PageSize);
-        presenter.getCurrentHave(map);
+
+        if (mType == 0){
+            presenter.getCurrentHave(map);
+        }else{
+            presenter.getSymbolHistroyList(map);
+        }
     }
 
-    private String mMark,mLeverage;
     private int mPage = 1;
 
     @Override
@@ -148,7 +176,31 @@ public class DqccFragment extends BaseFragment implements MyccContract.DqccView 
         doRefresh();
     }
 
+    @Override
+    public void getSymbolHistroyListSuccess(NewEntrust newEntrust) {
+        if (newEntrust != null && newEntrust.getList().size() > 0) {
+            if (onCallBackEvent!=null)
+                onCallBackEvent.showEmpty(false);
+            if (newEntrust.getPage() == 1) {
+                trustAdapter.getData().clear();
+            }
 
+            if (newEntrust.getList().size() < GlobalConstant.PageSize){
+                refreshLayout.finishLoadMoreWithNoMoreData();
+            }
+
+            mPage = newEntrust.getPage();
+            trustAdapter.addData(newEntrust.getList());
+//            trustAdapter.getData().addAll(newEntrust.getList());
+//            trustAdapter.notifyDataSetChanged();
+        } else {
+            if (newEntrust.getPage() == 1) {
+                trustAdapter.getData().clear();
+                trustAdapter.setEmptyView(R.layout.empty_no_message);
+                trustAdapter.notifyDataSetChanged();
+            }
+        }
+    }
 
     @Override
     public void getCurrentHaveSuccess(NewEntrust entrustEntity) {
@@ -162,14 +214,13 @@ public class DqccFragment extends BaseFragment implements MyccContract.DqccView 
             }
 
             mPage = entrustEntity.getPage();
-            trustAdapter.addData(entrustEntity.getList());
+            trustAdapter.getData().addAll(entrustEntity.getList());
+            trustAdapter.notifyDataSetChanged();
         } else {
             if (entrustEntity.getPage() == 1) {
                 trustAdapter.getData().clear();
                 trustAdapter.setEmptyView(R.layout.empty_no_message);
                 trustAdapter.notifyDataSetChanged();
-                if (onCallBackEvent!=null)
-                    onCallBackEvent.showEmpty(true);
             }
         }
     }

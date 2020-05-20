@@ -1,7 +1,6 @@
 package com.spark.szhb_master.activity.mycc;
 
 import com.google.gson.Gson;
-import com.spark.szhb_master.activity.Trade.TradeContract;
 import com.spark.szhb_master.data.DataSource;
 import com.spark.szhb_master.entity.NewEntrust;
 import com.spark.szhb_master.factory.UrlFactory;
@@ -29,7 +28,42 @@ public class DqccPresenter implements MyccContract.DqccPresenter {
         this.dataRepository = dataRepository;
         this.view.setPresenter(this);
     }
+    @Override
+    public void getSymbolHistroyList(HashMap hashMap) {
 
+
+
+//        String url = UrlFactory.getHistroyEntrus() + "?mark=" + hashMap.get("mark") +
+//                "&leverage=" + hashMap.get("leverage") + "&page=" + hashMap.get("page") + "&page_size=" + hashMap.get("page_size") +
+//                "&type=" + hashMap.get("type");
+
+        dataRepository.doStringGet(UrlFactory.getHistroyEntrus(), hashMap,new DataSource.DataCallback() {
+            @Override
+            public void onDataLoaded(Object obj) {
+                view.hideLoadingPopup();
+                String response = (String) obj;
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (object.optInt("code") == 1) {
+                        NewEntrust objs = new Gson().fromJson(object.getString("data").toString(), NewEntrust.class);
+                        view.getSymbolHistroyListSuccess(objs);
+                    } else {
+                        view.doPostFail(object.getInt("code"), object.optString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    view.doPostFail(JSON_ERROR, null);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable(Integer code, String toastMessage) {
+                view.hideLoadingPopup();
+                view.doPostFail(code, toastMessage);
+            }
+        });
+    }
     @Override
     public void commitUndersellContrat(HashMap hashMap) {
         dataRepository.doStringPut(UrlFactory.getUndersellContratUrl(),hashMap, new DataSource.DataCallback() {

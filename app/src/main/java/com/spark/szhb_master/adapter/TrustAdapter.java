@@ -80,8 +80,5 @@ public class TrustAdapter extends BaseQuickAdapter<NewEntrust.ListBean, BaseView
         }else {
             helper.setVisible(R.id.trust_btn, false);
         }
-
-
-
     }
 }

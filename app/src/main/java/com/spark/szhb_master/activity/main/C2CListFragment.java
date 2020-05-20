@@ -7,6 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
@@ -34,10 +38,11 @@ import config.Injection;
  */
 
 public class C2CListFragment extends BaseLazyFragment implements MainContract.C2CListView {
-    @BindView(R.id.rvContent)
+    @BindView(R.id.recycleview)
     RecyclerView rvContent;
+
     @BindView(R.id.refreshLayout)
-    SwipeRefreshLayout refreshLayout;
+    SmartRefreshLayout refreshLayout;
 
     private C2CListAdapter c2CListAdapter;
     private FiatsListAdapter fiatsListAdapter;
@@ -127,9 +132,11 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     @Override
     protected void setListener() {
         super.setListener();
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(RefreshLayout refreshlayout) {
+//                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+
                 if (type == 2){
                     getFaitsList(false,pageNo = 1);
                 }else{
@@ -138,13 +145,14 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
             }
         });
 
+
         if (fiatsListAdapter != null){
-            fiatsListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                @Override
-                public void onLoadMoreRequested() {
-                    getFaitsList(false,pageNo + 1);
-                }
-            });
+//            fiatsListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+//                @Override
+//                public void onLoadMoreRequested() {
+//
+//                }
+//            });
             fiatsListAdapter.setCallBackEvent(new FiatsListAdapter.CallBackEvent() {
                 @Override
                 public void onClickCallback(Fiats.FiatsBean item) {
@@ -153,14 +161,26 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                     presenter.doCancelFiats(hashMap);
                 }
             });
-        }else {
-            c2CListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+
+            refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
                 @Override
-                public void onLoadMoreRequested() {
+                public void onLoadMore(RefreshLayout refreshlayout) {
+                    getFaitsList(false,pageNo + 1);
+                }
+            });
+        }else {
+//            c2CListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+//                @Override
+//                public void onLoadMoreRequested() {
+//                    getC2cList(false,pageNo + 1);
+//                }
+//            });
+            refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore(RefreshLayout refreshlayout) {
                     getC2cList(false,pageNo + 1);
                 }
             });
-
             c2CListAdapter.setCallBackEvent(new C2CListAdapter.CallBackEvent() {
                 @Override
                 public void onClickCallback(C2C.C2CBean item) {
@@ -239,10 +259,14 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
 
     @Override
     public void getFiatsListFaild(Integer code, String toastMessage) {
-        hideLoadingPopup();
-        fiatsListAdapter.setEnableLoadMore(true);
-        refreshLayout.setEnabled(true);
-        refreshLayout.setRefreshing(false);
+//        hideLoadingPopup();
+//        fiatsListAdapter.setEnableLoadMore(true);
+//        refreshLayout.setEnabled(true);
+//        refreshLayout.setRefreshing(false);
+
+        refreshLayout.finishRefresh();
+        refreshLayout.finishLoadMore();
+
         NetCodeUtils.checkedErrorCode(getmActivity(), code, toastMessage);
     }
 
@@ -250,27 +274,31 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     public void getFiatsListSuccess(Fiats fiats) {
         hideLoadingPopup();
         try {
-            fiatsListAdapter.setEnableLoadMore(true);
-            fiatsListAdapter.loadMoreComplete();
-            refreshLayout.setEnabled(true);
-            refreshLayout.setRefreshing(false);
+            refreshLayout.finishRefresh();
+            refreshLayout.finishLoadMore();
+//            fiatsListAdapter.setEnableLoadMore(true);
+//            fiatsListAdapter.loadMoreComplete();
+//            refreshLayout.setEnabled(true);
+//            refreshLayout.setRefreshing(false);
             List<Fiats.FiatsBean> fiatsBeans = fiats.getList();
             if (fiatsBeans != null && fiatsBeans.size() > 0) {
-                if (pageNo == 1) {
+                if (fiats.getPage() == 1) {
                     this.fiats.clear();
-                } else if (fiatsBeans.size() < GlobalConstant.PageSize){
-                    fiatsListAdapter.loadMoreEnd();
                 }
-                if (fiatsBeans.size() == GlobalConstant.PageSize){
-                    pageNo = fiats.getPage();
+
+                if (fiatsBeans.size() < GlobalConstant.PageSize){
+//                    fiatsListAdapter.loadMoreEnd();
+                    refreshLayout.finishLoadMoreWithNoMoreData();
                 }
+
+                pageNo = fiats.getPage();
                 this.fiats.addAll(fiatsBeans);
                 fiatsListAdapter.notifyDataSetChanged();
             } else {
                 if (fiatsBeans.size() == 1) {
                     this.fiats.clear();
-                    fiatsListAdapter.setEmptyView(R.layout.empty_no_message);
                     fiatsListAdapter.notifyDataSetChanged();
+                    fiatsListAdapter.setEmptyView(R.layout.empty_no_message);
                 }
             }
             fiatsListAdapter.disableLoadMoreIfNotFullPage();
@@ -283,16 +311,21 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
     public void getListSuccess(C2C c2c) {
         hideLoadingPopup();
         try {
-            c2CListAdapter.setEnableLoadMore(true);
-            c2CListAdapter.loadMoreComplete();
-            refreshLayout.setEnabled(true);
-            refreshLayout.setRefreshing(false);
+//            c2CListAdapter.setEnableLoadMore(true);
+//            c2CListAdapter.loadMoreComplete();
+//            refreshLayout.setEnabled(true);
+//            refreshLayout.setRefreshing(false);
+            refreshLayout.finishRefresh();
+            refreshLayout.finishLoadMore();
+
             List<C2C.C2CBean> c2cs = c2c.getList();
             if (c2cs != null && c2cs.size() > 0) {
                 if (c2c.getPage() == 1) {
                     this.c2cs.clear();
-                } else if (c2cs.size() < GlobalConstant.PageSize){
-                    c2CListAdapter.loadMoreEnd();
+                }
+
+                if (c2cs.size() < GlobalConstant.PageSize){
+                    refreshLayout.finishLoadMoreWithNoMoreData();
                 }
                 pageNo = c2c.getPage();
                 this.c2cs.addAll(c2cs);
@@ -312,10 +345,13 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
 
     @Override
     public void getListFaild(Integer code, String toastMessage) {
-        hideLoadingPopup();
-        c2CListAdapter.setEnableLoadMore(true);
-        refreshLayout.setEnabled(true);
-        refreshLayout.setRefreshing(false);
+//        hideLoadingPopup();
+//        c2CListAdapter.setEnableLoadMore(true);
+//        refreshLayout.setEnabled(true);
+//        refreshLayout.setRefreshing(false);
+        refreshLayout.finishRefresh();
+        refreshLayout.finishLoadMore();
+
         NetCodeUtils.checkedErrorCode(getmActivity(), code, toastMessage);
     }
 

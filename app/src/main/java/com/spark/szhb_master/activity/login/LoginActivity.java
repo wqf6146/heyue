@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.geetest.sdk.Bind.GT3GeetestBindListener;
-import com.geetest.sdk.Bind.GT3GeetestUtilsBind;
+//import com.geetest.sdk.Bind.GT3GeetestBindListener;
+//import com.geetest.sdk.Bind.GT3GeetestUtilsBind;
 import com.google.gson.Gson;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.activity.forgot_pwd.ForgotPwdActivity;
@@ -71,7 +71,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @BindView(R.id.ivEye)
     ImageView ivEye;
     private LoginContract.Presenter presenter;
-    private GT3GeetestUtilsBind gt3GeetestUtils;
+//    private GT3GeetestUtilsBind gt3GeetestUtils;
     private Handler handler = new Handler();
 
 
@@ -93,7 +93,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     protected void initData() {
         super.initData();
-        gt3GeetestUtils = new GT3GeetestUtilsBind(activity);
+//        gt3GeetestUtils = new GT3GeetestUtilsBind(activity);
         new LoginPresenter(Injection.provideTasksRepository(getApplicationContext()), this);
     }
 
@@ -183,36 +183,36 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
 
     public void captchSuccess(JSONObject obj) {
-        gt3GeetestUtils.gtSetApi1Json(obj);
-        gt3GeetestUtils.getGeetest(this, null, null, null, new GT3GeetestBindListener() {
-            @Override
-            public boolean gt3SetIsCustom() {
-                return true;
-            }
-
-            @Override
-            public void gt3GetDialogResult(boolean status, String result) {
-                if (status) {
-                    Captcha captcha = new Gson().fromJson(result, Captcha.class);
-                    if (captcha != null) {
-                        HashMap<String, String> map = new HashMap<>();
-                        map.put("password", etPassword.getText().toString().trim());
-                        map.put("username", etUsername.getText().toString().trim());
-                        map.put("geetest_challenge", captcha.getGeetest_challenge());
-                        map.put("geetest_validate", captcha.getGeetest_validate());
-                        map.put("geetest_seccode", captcha.getGeetest_seccode());
-                        map.put("loginEntry", "APP");
-                        presenter.login(map);
-                    }
-                }
-            }
-        });
-        gt3GeetestUtils.setDialogTouch(true);
+//        gt3GeetestUtils.gtSetApi1Json(obj);
+//        gt3GeetestUtils.getGeetest(this, null, null, null, new GT3GeetestBindListener() {
+//            @Override
+//            public boolean gt3SetIsCustom() {
+//                return true;
+//            }
+//
+//            @Override
+//            public void gt3GetDialogResult(boolean status, String result) {
+//                if (status) {
+//                    Captcha captcha = new Gson().fromJson(result, Captcha.class);
+//                    if (captcha != null) {
+//                        HashMap<String, String> map = new HashMap<>();
+//                        map.put("password", etPassword.getText().toString().trim());
+//                        map.put("username", etUsername.getText().toString().trim());
+//                        map.put("geetest_challenge", captcha.getGeetest_challenge());
+//                        map.put("geetest_validate", captcha.getGeetest_validate());
+//                        map.put("geetest_seccode", captcha.getGeetest_seccode());
+//                        map.put("loginEntry", "APP");
+//                        presenter.login(map);
+//                    }
+//                }
+//            }
+//        });
+//        gt3GeetestUtils.setDialogTouch(true);
     }
 
     @Override
     protected void onDestroy() {
-        gt3GeetestUtils.cancelUtils();
+//        gt3GeetestUtils.cancelUtils();
         super.onDestroy();
     }
 
@@ -258,7 +258,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     public void googleLoginSuccess(User obj) {
         ToastUtils.showToast("success");
-        gt3GeetestUtils.gt3TestFinish();
+//        gt3GeetestUtils.gt3TestFinish();
         MainActivity.isAgain = true;
         String md5Key = CommonUtils.getMd5Key(etUsername.getText().toString().trim(), etPassword.getText().toString().trim());
         SharedPreferenceInstance.getInstance().saveToken(EncryUtils.getInstance().encryptString(md5Key, MyApplication.getApp().getPackageName()));

@@ -84,7 +84,7 @@ public class DqwtFragment extends BaseFragment implements MyccContract.DqwtView 
         entrustList = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         trustAdapter = new TrustAdapter(entrustList);
-        trustAdapter.setType(1);
+        trustAdapter.setType(mType);
         trustAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -101,16 +101,22 @@ public class DqwtFragment extends BaseFragment implements MyccContract.DqwtView 
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
         if (isVisible && MyApplication.getApp().isLogin())
-            refreshLayout.autoRefresh();
+            doRefresh();
     }
 
 
-    public boolean doLoadMore() {
+    public void doLoadMore() {
         HashMap map = new HashMap<>();
         map.put("page", mPage + 1);
         map.put("page_size", GlobalConstant.PageSize);
+
+        if (mType == 1){
+            map.put("status",0);
+        }else{
+            map.put("status",1);
+        }
+
         presenter.getCurrentEntrust(map);
-        return true;
     }
 
     public void doRefresh() {
@@ -118,6 +124,12 @@ public class DqwtFragment extends BaseFragment implements MyccContract.DqwtView 
         HashMap map = new HashMap<>();
         map.put("page", mPage);
         map.put("page_size", GlobalConstant.PageSize);
+
+        if (mType == 1){
+            map.put("status",0);
+        }else{
+            map.put("status",1);
+        }
         presenter.getCurrentEntrust(map);
     }
 
@@ -136,7 +148,7 @@ public class DqwtFragment extends BaseFragment implements MyccContract.DqwtView 
     @Override
     public void undoLimitContratSuccess(String msg) {
         ToastUtils.showToast("撤销成功");
-        refreshLayout.autoRefresh();
+        doRefresh();
         if (callBackEvent!=null)
             callBackEvent.undoLimitContratSuccess();
     }
@@ -158,13 +170,14 @@ public class DqwtFragment extends BaseFragment implements MyccContract.DqwtView 
                 callBackEvent.showEmpty(false);
             if (entrustEntity.getPage() == 1) {
                 trustAdapter.getData().clear();
-            } else if (entrustEntity.getList().size() < GlobalConstant.PageSize){
+            }
+            if (entrustEntity.getList().size() < GlobalConstant.PageSize){
                 refreshLayout.finishLoadMoreWithNoMoreData();
             }
 
             mPage = entrustEntity.getPage();
-
-            trustAdapter.addData(entrustEntity.getList());
+            trustAdapter.getData().addAll(entrustEntity.getList());
+            trustAdapter.notifyDataSetChanged();
         } else {
             if (entrustEntity.getPage() == 1) {
                 trustAdapter.getData().clear();

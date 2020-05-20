@@ -264,16 +264,17 @@
             android:textSize="@dimen/font_small" />
 
         <Button
+            android:id="@+id/btnSellQc"
             android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:background="@drawable/ripple_white"
+            android:text="全仓做空"
             android:textColor="@color/Blue"
             android:textSize="@dimen/font_small"
-            android:layout_marginLeft="3dp"
-            android:text="全仓做空"
-            android:id="@+id/btnSellQc"
-            android:layout_marginTop="8dp"
-            android:layout_height="30dp"/>
+            android:visibility="invisible" />
     </LinearLayout>
 
 </LinearLayout>

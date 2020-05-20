@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.geetest.sdk.Bind.GT3GeetestBindListener;
-import com.geetest.sdk.Bind.GT3GeetestUtilsBind;
+//import com.geetest.sdk.Bind.GT3GeetestBindListener;
+//import com.geetest.sdk.Bind.GT3GeetestUtilsBind;
 import com.google.gson.Gson;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.activity.country.CountryActivity;
@@ -85,7 +85,7 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
     private Country country;
     private TimeCount timeCount;
     private SignUpContract.Presenter presenter;
-    private GT3GeetestUtilsBind gt3GeetestUtils;
+//    private GT3GeetestUtilsBind gt3GeetestUtils;
     boolean isEmail = false;
 
 
@@ -103,7 +103,7 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gt3GeetestUtils.cancelUtils();
+//        gt3GeetestUtils.cancelUtils();
     }
 
     @Override
@@ -121,7 +121,7 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
     protected void initData() {
         super.initData();
         //timeCount = new TimeCount(90000, 1000, tvGetCode);
-        gt3GeetestUtils = new GT3GeetestUtilsBind(activity);
+//        gt3GeetestUtils = new GT3GeetestUtilsBind(activity);
         new SignUpPresenter(Injection.provideTasksRepository(getApplicationContext()), this);
     }
 
@@ -265,7 +265,7 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
     public void codeSuccess(String obj) {
         try {
             ToastUtils.showToast(obj);
-            gt3GeetestUtils.gt3TestFinish();
+//            gt3GeetestUtils.gt3TestFinish();
             timeCount.start();
             //tvGetCode.setEnabled(false);
         } catch (Exception e) {
@@ -275,50 +275,50 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
 
     //@Override
     public void codeFail(Integer code, String toastMessage) {
-        gt3GeetestUtils.gt3TestClose();
+//        gt3GeetestUtils.gt3TestClose();
         NetCodeUtils.checkedErrorCode((BaseActivity) activity, code, toastMessage);
     }
 
     //@Override
     public void captchSuccess(JSONObject obj) {
-        gt3GeetestUtils.gtSetApi1Json(obj);
-        gt3GeetestUtils.getGeetest(activity, UrlFactory.getCaptchaUrl(), null, null, new GT3GeetestBindListener() {
-            @Override
-            public boolean gt3SetIsCustom() {
-                return true;
-            }
-
-            @Override
-            public void gt3GetDialogResult(boolean status, String result) {
-                if (status) {
-                    Captcha captcha = new Gson().fromJson(result, Captcha.class);
-                    if (captcha == null) return;
-                    String geetest_challenge = captcha.getGeetest_challenge();
-                    String geetest_validate = captcha.getGeetest_validate();
-                    String geetest_seccode = captcha.getGeetest_seccode();
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("geetest_challenge", geetest_challenge);
-                    map.put("geetest_validate", geetest_validate);
-                    map.put("geetest_seccode", geetest_seccode);
-                    if (isEmail) { // 邮箱登录
-//                        map.put("username", etUsername.getText().toString().trim());
-                        map.put("username", "InitUsername");
-                        map.put("password", etPassword.getText().toString().trim());
-                        //map.put("country", tvCountry.getText().toString());
-                        map.put("promotion", etPromoCode.getText().toString().trim());
-                        map.put("email", etEmail.getText().toString().trim());
-                        presenter.sighUp(UrlFactory.getSignUpByEmail(), map);
-                    } else {
-                        String phone = etPhone.getText().toString().trim();
-                        //String country = tvCountry.getText().toString();
-                        map.put("phone", phone);
-                        //map.put("country", country);
-                        presenter.getCode(map);
-                    }
-                }
-            }
-        });
-        gt3GeetestUtils.setDialogTouch(true);
+//        gt3GeetestUtils.gtSetApi1Json(obj);
+//        gt3GeetestUtils.getGeetest(activity, UrlFactory.getCaptchaUrl(), null, null, new GT3GeetestBindListener() {
+//            @Override
+//            public boolean gt3SetIsCustom() {
+//                return true;
+//            }
+//
+//            @Override
+//            public void gt3GetDialogResult(boolean status, String result) {
+//                if (status) {
+//                    Captcha captcha = new Gson().fromJson(result, Captcha.class);
+//                    if (captcha == null) return;
+//                    String geetest_challenge = captcha.getGeetest_challenge();
+//                    String geetest_validate = captcha.getGeetest_validate();
+//                    String geetest_seccode = captcha.getGeetest_seccode();
+//                    HashMap<String, String> map = new HashMap<>();
+//                    map.put("geetest_challenge", geetest_challenge);
+//                    map.put("geetest_validate", geetest_validate);
+//                    map.put("geetest_seccode", geetest_seccode);
+//                    if (isEmail) { // 邮箱登录
+////                        map.put("username", etUsername.getText().toString().trim());
+//                        map.put("username", "InitUsername");
+//                        map.put("password", etPassword.getText().toString().trim());
+//                        //map.put("country", tvCountry.getText().toString());
+//                        map.put("promotion", etPromoCode.getText().toString().trim());
+//                        map.put("email", etEmail.getText().toString().trim());
+//                        presenter.sighUp(UrlFactory.getSignUpByEmail(), map);
+//                    } else {
+//                        String phone = etPhone.getText().toString().trim();
+//                        //String country = tvCountry.getText().toString();
+//                        map.put("phone", phone);
+//                        //map.put("country", country);
+//                        presenter.getCode(map);
+//                    }
+//                }
+//            }
+//        });
+//        gt3GeetestUtils.setDialogTouch(true);
     }
 
    // @Override
@@ -329,7 +329,7 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
     @Override
     public void sighUpSuccess(String obj) {
         if (isEmail)
-            gt3GeetestUtils.gt3TestFinish();
+//            gt3GeetestUtils.gt3TestFinish();
         MobclickAgent.onEvent(SignUpActivity.this, "register");
         ToastUtils.showToast(obj);
         finish();
@@ -338,7 +338,7 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
     @Override
     public void sighUpFail(Integer code, String toastMessage) {
         if (isEmail)
-            gt3GeetestUtils.gt3TestClose();
+//            gt3GeetestUtils.gt3TestClose();
         NetCodeUtils.checkedErrorCode((BaseActivity) activity, code, toastMessage);
     }
 

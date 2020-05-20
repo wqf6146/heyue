@@ -1,18 +1,21 @@
 package com.spark.szhb_master.activity.mycc;
 
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.spark.szhb_master.R;
-import com.spark.szhb_master.adapter.PagerAdapter;
+import com.spark.szhb_master.adapter.TabFragmentAdapter;
 import com.spark.szhb_master.base.BaseActivity;
 import com.spark.szhb_master.entity.AssetsInfo;
+import com.spark.szhb_master.ui.MyViewPager;
 import com.spark.szhb_master.ui.intercept.JudgeNestedScrollView;
 import com.spark.szhb_master.utils.NetCodeUtils;
 import com.spark.szhb_master.utils.ScreenUtil;
@@ -30,11 +33,11 @@ public class MyccActivity extends BaseActivity implements MyccContract.View {
     public static final String TAG = MyccActivity.class.getSimpleName();
 
 
-    @BindView(R.id.tablayout)
-    TabLayout tabLayout;
+    @BindView(R.id.llTab)
+    LinearLayout llTab;
 
     @BindView(R.id.viewpager)
-    ViewPager mViewPager;
+    MyViewPager mViewPager;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -44,6 +47,24 @@ public class MyccActivity extends BaseActivity implements MyccContract.View {
 
     @BindView(R.id.ivBack)
     ImageView ivBack;
+
+    @BindView(R.id.tvJingzhi)
+    TextView tvJingzhi;
+
+    @BindView(R.id.tvYingkui)
+    TextView tvYingkui;
+
+    @BindView(R.id.tvBzj)
+    TextView tvBzj;
+
+    @BindView(R.id.tvCcBzj)
+    TextView tvCcBzj;
+
+    @BindView(R.id.tvCc)
+    TextView tvCc;
+
+    @BindView(R.id.tvWt)
+    TextView tvWt;
 
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
@@ -76,6 +97,13 @@ public class MyccActivity extends BaseActivity implements MyccContract.View {
         StatusBarUtil.immersive(this);
         StatusBarUtil.setPaddingSmart(this, toolbar);
 
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         toolbar.post(new Runnable() {
             @Override
             public void run() {
@@ -91,7 +119,7 @@ public class MyccActivity extends BaseActivity implements MyccContract.View {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 int[] location = new int[2];
-                tabLayout.getLocationOnScreen(location);
+                llTab.getLocationOnScreen(location);
                 int yPosition = location[1];
                 if (yPosition < toolBarPositionY) {
                     scrollView.setNeedScroll(false);
@@ -106,6 +134,7 @@ public class MyccActivity extends BaseActivity implements MyccContract.View {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                getMyhave();
                 ccFragment.refresh();
                 wtFragment.refresh();
                 refreshLayout.postDelayed(new Runnable() {
@@ -120,10 +149,12 @@ public class MyccActivity extends BaseActivity implements MyccContract.View {
 
     int toolBarPositionY = 0;
 
+
+
     private void dealWithViewPager() {
         toolBarPositionY = toolbar.getHeight();
         ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
-        params.height = ScreenUtil.getScreenHeightPx(getApplicationContext()) - toolBarPositionY - tabLayout.getHeight() + 1;
+        params.height = ScreenUtil.getScreenHeightPx(getApplicationContext()) - toolBarPositionY - llTab.getHeight() + 1;
         mViewPager.setLayoutParams(params);
     }
 
@@ -132,8 +163,14 @@ public class MyccActivity extends BaseActivity implements MyccContract.View {
         new MyccPresenter(Injection.provideTasksRepository(activity.getApplicationContext()), this);
     }
 
-    private List<String> tabs = new ArrayList<>();
+    @Override
+    protected void loadData() {
+        super.loadData();
+        getMyhave();
+    }
 
+    private List<String> tabs = new ArrayList<>();
+    private TabFragmentAdapter mTabFragmentAdapter;
     private void initTabViewpager() {
         mTabFragments = new ArrayList<>();
 
@@ -147,24 +184,40 @@ public class MyccActivity extends BaseActivity implements MyccContract.View {
         tabs.add("持仓");
         tabs.add("计划委托");
 
-        mViewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), mTabFragments, tabs));
+        mViewPager.setAdapter(mTabFragmentAdapter = new TabFragmentAdapter(mTabFragments,tabs,getSupportFragmentManager(),
+                this));
         mViewPager.setOffscreenPageLimit(2);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+//        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+//        tabLayout.setupWithViewPager(mViewPager);
+
+//        for (int i = 0; i < tabLayout.getTabCount(); i++){
+//            TabLayout.Tab tab = tabLayout.getTabAt(i);
+//            if (tab != null) {
+//                tab.setCustomView(mTabFragmentAdapter.getTabView(i));
+//            }
+//        }
+//        View left=tabLayout.getTabAt(0).getCustomView();
+//        left.setBackground(getResources().getDrawable(R.drawable.bg_tabview_blue_left));
+//        View right=tabLayout.getTabAt(1).getCustomView();
+//        right.setBackground(getResources().getDrawable(R.drawable.bg_tabview_gray_right));
+
+        tvCc.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                mViewPager.setCurrentItem(tab.getPosition(),false);
+            public void onClick(View v) {
+                tvCc.setBackground(getResources().getDrawable(R.drawable.bg_tabview_blue_left));
+                tvWt.setBackground(getResources().getDrawable(R.drawable.bg_tabview_gray_right));
+                mViewPager.setCurrentItem(0,true);
             }
+        });
 
+        tvWt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+            public void onClick(View v) {
+                tvCc.setBackground(getResources().getDrawable(R.drawable.bg_tabview_gray_left));
+                tvWt.setBackground(getResources().getDrawable(R.drawable.bg_tabview_blue_right));
 
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
+                mViewPager.setCurrentItem(1,true);
             }
         });
     }
@@ -187,8 +240,8 @@ public class MyccActivity extends BaseActivity implements MyccContract.View {
      *
      * @param
      */
-    private void getWallet() {
-        mPresenter.getWallet();
+    private void getMyhave() {
+        mPresenter.getMyHave();
     }
 
 
@@ -199,9 +252,13 @@ public class MyccActivity extends BaseActivity implements MyccContract.View {
      * 获取钱包成功
      */
     @Override
-    public void getWalletSuccess(AssetsInfo assetsInfo) {
+    public void getMyHaveSuccess(AssetsInfo assetsInfo) {
         mAssetsInfo = assetsInfo;
 
+        tvJingzhi.setText(String.valueOf(assetsInfo.getSum()));
+        tvYingkui.setText(String.valueOf(assetsInfo.getHarvest_num()));
+        tvBzj.setText(String.valueOf(assetsInfo.getUsable()));
+        tvCcBzj.setText(String.valueOf(assetsInfo.getUsable_convert()));
     }
 
     /**

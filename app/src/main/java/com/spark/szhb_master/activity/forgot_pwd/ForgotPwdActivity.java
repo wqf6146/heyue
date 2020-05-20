@@ -7,8 +7,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.geetest.sdk.Bind.GT3GeetestBindListener;
-import com.geetest.sdk.Bind.GT3GeetestUtilsBind;
+
 import com.google.gson.Gson;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.base.BaseActivity;
@@ -53,13 +52,13 @@ public class ForgotPwdActivity extends BaseActivity implements ForgotPwdContract
     ImageView ivBack;
     private TimeCount timeCount;
     private ForgotPwdContract.Presenter presenter;
-    private GT3GeetestUtilsBind gt3GeetestUtils;
+//    private GT3GeetestUtilsBind gt3GeetestUtils;
     boolean isEmail = false;
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gt3GeetestUtils.cancelUtils();
+//        gt3GeetestUtils.cancelUtils();
     }
 
     @Override
@@ -76,7 +75,7 @@ public class ForgotPwdActivity extends BaseActivity implements ForgotPwdContract
     protected void initData() {
         super.initData();
         timeCount = new TimeCount(90000, 1000, tvGetCode);
-        gt3GeetestUtils = new GT3GeetestUtilsBind(activity);
+//        gt3GeetestUtils = new GT3GeetestUtilsBind(activity);
         new PhoneForgotPresenter(Injection.provideTasksRepository(activity), this);
     }
 
@@ -204,7 +203,7 @@ public class ForgotPwdActivity extends BaseActivity implements ForgotPwdContract
     @Override
     public void forgotCodeSuccess(String obj) {
         try {
-            gt3GeetestUtils.gt3TestFinish();
+//            gt3GeetestUtils.gt3TestFinish();
             timeCount.start();
             tvGetCode.setEnabled(false);
             ToastUtils.showToast(obj);
@@ -215,44 +214,44 @@ public class ForgotPwdActivity extends BaseActivity implements ForgotPwdContract
 
     @Override
     public void forgotCodeFail(Integer code, String toastMessage) {
-        gt3GeetestUtils.gt3TestClose();
+//        gt3GeetestUtils.gt3TestClose();
         NetCodeUtils.checkedErrorCode((BaseActivity) activity, code, toastMessage);
     }
 
     @Override
     public void captchSuccess(JSONObject obj) {
-        gt3GeetestUtils.gtSetApi1Json(obj);
-        gt3GeetestUtils.getGeetest(activity, null, null, null, new GT3GeetestBindListener() {
-            @Override
-            public boolean gt3SetIsCustom() {
-                return true;
-            }
-
-            @Override
-            public void gt3GetDialogResult(boolean status, String result) {
-                if (status) {
-                    Captcha captcha = new Gson().fromJson(result, Captcha.class);
-                    if (captcha == null) return;
-                    String geetest_challenge = captcha.getGeetest_challenge();
-                    String geetest_validate = captcha.getGeetest_validate();
-                    String geetest_seccode = captcha.getGeetest_seccode();
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("geetest_challenge", geetest_challenge);
-                    map.put("geetest_validate", geetest_validate);
-                    map.put("geetest_seccode", geetest_seccode);
-                    if (isEmail) {
-                        String email = etEmail.getText().toString().trim();
-                        map.put("account", email);
-                        presenter.forgotCode(UrlFactory.getEmailForgotPwdCodeUrl(), map);
-                    } else {
-                        String phone = etPhone.getText().toString().trim();
-                        map.put("account", phone);
-                        presenter.forgotCode(UrlFactory.getPhoneForgotPwdCodeUrl(), map);
-                    }
-                }
-            }
-        });
-        gt3GeetestUtils.setDialogTouch(true);
+//        gt3GeetestUtils.gtSetApi1Json(obj);
+//        gt3GeetestUtils.getGeetest(activity, null, null, null, new GT3GeetestBindListener() {
+//            @Override
+//            public boolean gt3SetIsCustom() {
+//                return true;
+//            }
+//
+//            @Override
+//            public void gt3GetDialogResult(boolean status, String result) {
+//                if (status) {
+//                    Captcha captcha = new Gson().fromJson(result, Captcha.class);
+//                    if (captcha == null) return;
+//                    String geetest_challenge = captcha.getGeetest_challenge();
+//                    String geetest_validate = captcha.getGeetest_validate();
+//                    String geetest_seccode = captcha.getGeetest_seccode();
+//                    HashMap<String, String> map = new HashMap<>();
+//                    map.put("geetest_challenge", geetest_challenge);
+//                    map.put("geetest_validate", geetest_validate);
+//                    map.put("geetest_seccode", geetest_seccode);
+//                    if (isEmail) {
+//                        String email = etEmail.getText().toString().trim();
+//                        map.put("account", email);
+//                        presenter.forgotCode(UrlFactory.getEmailForgotPwdCodeUrl(), map);
+//                    } else {
+//                        String phone = etPhone.getText().toString().trim();
+//                        map.put("account", phone);
+//                        presenter.forgotCode(UrlFactory.getPhoneForgotPwdCodeUrl(), map);
+//                    }
+//                }
+//            }
+//        });
+//        gt3GeetestUtils.setDialogTouch(true);
     }
 
     @Override

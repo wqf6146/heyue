@@ -27,11 +27,28 @@ public interface SignUpContract {
         void sighUpFail(Integer code, String toastMessage);
     }
 
+    interface CodeView extends Contract.BaseView<SignCodePresenter> {
+        void codeSuccess(String obj);
+
+        void codeFail(Integer code, String toastMessage);
+
+        void captchSuccess(JSONObject obj);
+
+        void captchFail(Integer code, String toastMessage);
+    }
+
     interface Presenter extends Contract.BasePresenter {
 
         void getCode(HashMap<String, String> params);
 
         void sighUp(String url, HashMap<String, String> params);
+
+        void captch();
+    }
+
+    interface SignCodePresenter extends Contract.BasePresenter {
+
+        void getCode(HashMap params);
 
         void captch();
     }

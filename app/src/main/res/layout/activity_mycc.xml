@@ -66,7 +66,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/white"
-                                        android:text="11"
                                         android:id="@+id/tvJingzhi"
                                         android:textSize="@dimen/font_normal" />
 
@@ -89,7 +88,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/white"
-                                        android:text="11"
                                         android:id="@+id/tvYingkui"
                                         android:textSize="@dimen/font_normal" />
 
@@ -119,7 +117,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/white"
-                                        android:text="11"
                                         android:id="@+id/tvBzj"
                                         android:textSize="@dimen/font_normal" />
 
@@ -142,7 +139,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/white"
-                                        android:text="11"
                                         android:id="@+id/tvCcBzj"
                                         android:textSize="@dimen/font_normal" />
 
@@ -162,16 +158,47 @@
 
                 </LinearLayout>
 
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tablayout"
+<!--                <android.support.design.widget.TabLayout-->
+<!--                    android:id="@+id/tablayout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginLeft="15dp"-->
+<!--                    android:layout_marginRight="15dp"-->
+<!--                    app:tabIndicatorHeight="0dp"-->
+<!--                    app:tabMinWidth="80dp"-->
+<!--                    app:tabSelectedTextColor="@color/white" />-->
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    app:tabIndicatorColor="@color/white"
-                    app:tabMinWidth="80dp"
-                    app:tabSelectedTextColor="@color/white"
-                    app:tabTextColor="@color/white" />
+                    android:orientation="horizontal"
+                    android:id="@+id/llTab"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_tabview_blue_left"
+                        android:text="持仓"
+                        android:textSize="@dimen/font_small"
+                        android:gravity="center"
+                        android:id="@+id/tvCc"
+                        android:textColor="@color/white"
+                        android:layout_height="match_parent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:id="@+id/tvWt"
+                        android:text="计划委托"
+                        android:gravity="center"
+                        android:textSize="@dimen/font_small"
+                        android:background="@drawable/bg_tabview_gray_right"
+                        android:textColor="@color/white"
+                        android:layout_height="match_parent"/>
+
+                </LinearLayout>
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -179,7 +206,7 @@
                     android:layout_marginRight="15dp"
                     android:layout_height="match_parent">
 
-                    <android.support.v4.view.ViewPager
+                    <com.spark.szhb_master.ui.MyViewPager
                         android:id="@+id/viewpager"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

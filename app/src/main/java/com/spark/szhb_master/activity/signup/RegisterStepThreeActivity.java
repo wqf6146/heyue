@@ -38,7 +38,7 @@ public class RegisterStepThreeActivity extends BaseActivity implements SignUpCon
 
     private String mAccount;
     private String mPwd;
-
+    private Integer mCode;
     private SignUpContract.Presenter presenter;
 
     @Override
@@ -52,6 +52,7 @@ public class RegisterStepThreeActivity extends BaseActivity implements SignUpCon
         new SignUpPresenter(Injection.provideTasksRepository(getApplicationContext()), this);
         mAccount = getIntent().getStringExtra("account");
         mPwd = getIntent().getStringExtra("pwd");
+        mCode = getIntent().getIntExtra("code",0);
     }
 
     @Override
@@ -82,11 +83,13 @@ public class RegisterStepThreeActivity extends BaseActivity implements SignUpCon
                 break;
             case R.id.ar_rl_nextstep:
                 String code = edInput.getText().toString().trim();
-                if (StringUtils.isNotEmpty(mAccount) && StringUtils.isNotEmpty(mPwd) && StringUtils.isNotEmpty(code)) {
-                    HashMap<String, String> map = new HashMap<>();
+                if (StringUtils.isNotEmpty(mAccount) && StringUtils.isNotEmpty(mPwd)
+                        && StringUtils.isNotEmpty(code)) {
+                    HashMap map = new HashMap<>();
                     map.put("password", mPwd);
                     map.put("invite_code", code);
                     map.put("account", mAccount);
+                    map.put("code",mCode);
                     presenter.sighUp(UrlFactory.getSignUpByPhone(), map);
                 }else{
                     ToastUtils.showToast(getString(R.string.incomplete_information));

@@ -147,7 +147,6 @@ public class ForgotPwdStepTwoActivity extends BaseActivity implements ForgotPwdC
             HashMap map = new HashMap<>();
             map.put("account", mAccount);
             presenter.forgotCode(UrlFactory.getEmailForgotPwdCodeUrl(), map);
-
         }
     }
 

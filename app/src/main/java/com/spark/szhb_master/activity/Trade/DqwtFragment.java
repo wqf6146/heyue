@@ -194,7 +194,9 @@ public class DqwtFragment extends BaseFragment implements TradeContract.DqwtView
                 callBackEvent.showEmpty(false);
             if (entrustEntity.getPage() == 1) {
                 trustAdapter.getData().clear();
-            } else if (entrustEntity.getList().size() < GlobalConstant.PageSize){
+            }
+
+            if (entrustEntity.getList().size() < GlobalConstant.PageSize){
                 mRefreshlayout.endLoadingMore();
             }
 

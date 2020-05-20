@@ -16,6 +16,7 @@ import com.spark.szhb_master.entity.NewEntrust;
 import com.spark.szhb_master.utils.GlobalConstant;
 import com.spark.szhb_master.utils.NetCodeUtils;
 import com.spark.szhb_master.utils.ToastUtils;
+import com.spark.szhb_master.widget.TipDialog;
 
 import org.json.JSONObject;
 
@@ -49,6 +50,7 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
     private TrustAdapter trustAdapter;
     private List<NewEntrust.ListBean> entrustList;
     private OnCallBackEvent onCallBackEvent;
+    private TipDialog liquidationDialog;
 
     public static DqccFragment getInstance(String symbol, String symbolType) {
         DqccFragment dqccFragment = new DqccFragment();
@@ -99,9 +101,23 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
         trustAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                HashMap hashMap = new HashMap();
-                hashMap.put("market_id",(int)view.getTag());
-                presenter.commitUndersellContrat(hashMap);
+
+                if (liquidationDialog == null) {
+                    liquidationDialog = new TipDialog.Builder(getActivity())
+                            .setPicResources(R.mipmap.woo)
+                            .setMessage("是否平仓?")
+                            .setCanCancelOutside(false)
+                            .setEnsureClickListener(new TipDialog.EnsureClickListener() {
+                                @Override
+                                public void onEnsureClick(TipDialog tipDialog) {
+                                    tipDialog.dismiss();
+                                    HashMap hashMap = new HashMap();
+                                    hashMap.put("market_id",(int)view.getTag());
+                                    presenter.commitUndersellContrat(hashMap);
+                                }
+                            }).build();
+                }
+                liquidationDialog.show();
             }
         });
         trustAdapter.bindToRecyclerView(mRecycleView);
@@ -185,7 +201,9 @@ public class DqccFragment extends BaseFragment implements TradeContract.DqccView
                 onCallBackEvent.showEmpty(false);
             if (entrustEntity.getPage() == 1) {
                 trustAdapter.getData().clear();
-            } else if (entrustEntity.getList().size() < GlobalConstant.PageSize){
+            }
+
+            if (entrustEntity.getList().size() < GlobalConstant.PageSize){
                 mRefreshlayout.endLoadingMore();
             }
 
