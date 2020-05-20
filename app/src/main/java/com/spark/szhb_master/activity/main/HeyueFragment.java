@@ -105,15 +105,7 @@ public class HeyueFragment extends BaseTransFragment implements MainContract.Hey
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                ((MarketOperateCallback) getActivity()).itemClick(BTCMarketFragment.this.adapter.getItem(position), type);
                 NewCurrency currency = (NewCurrency) adapter.getItem(position);
-//                Intent intent = new Intent(activity, TradeActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("currency", currency);
-//                bundle.putInt("type", 1);
-//                intent.putExtras(bundle);
-//                activity.startActivityForResult(intent, 1); //  执行父级activity的回调
-
                 Bundle bundle = new Bundle();
                 bundle.putString("symbol", currency.getSymbol());
                 bundle.putSerializable("currency", currency);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="70dp"
     android:background="@color/main_bg_dark_2"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
@@ -38,16 +38,15 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv24HCount"
+            android:id="@+id/tvCHNName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
-            android:visibility="gone"
             android:maxLines="1"
-            android:text="24h量2234234234.234"
             android:textColor="#838f9d"
-            android:textSize="@dimen/font_small" />
+            android:textSize="@dimen/font_small"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout

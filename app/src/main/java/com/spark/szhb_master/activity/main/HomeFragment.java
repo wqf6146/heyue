@@ -55,6 +55,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,6 +117,9 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     @BindView(R.id.cstFullShowListView)
     NestFullListView nestFullListView;
 
+    @BindView(R.id.symblistview)
+    NestFullListView symblistview;
+
     private List<String> imageUrls = new ArrayList<>();
     private List<NewCurrency> currencies = new ArrayList<>();
     private List<NewCurrency> currenciesTwo = new ArrayList<>();
@@ -125,7 +130,6 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     private CommonPresenter commonPresenter;
     private String sysAdvertiseLocation = "0";
     private List<BannerEntity> objList;
-
     private boolean isfirst = false;
 
     @Override
@@ -175,6 +179,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         return R.layout.fragment_home;
     }
 
+    private NestFullListViewAdapter mListAdapter;
     @Override
     protected void initView() {
         super.initView();
@@ -210,6 +215,61 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
             @Override
             public void onBind(int i, String s, NestFullViewHolder nestFullViewHolder) {
                 ((TextView)nestFullViewHolder.getView(R.id.ip_tv)).setText(s);
+            }
+        });
+
+        symblistview.setAdapter(mListAdapter = new NestFullListViewAdapter<NewCurrency>(R.layout.item_market,currencies) {
+            @Override
+            public void onBind(int i, NewCurrency item, NestFullViewHolder helper) {
+                boolean tol = Float.parseFloat(item.getScale()) > 0 ? true : false;
+
+                helper.setText(R.id.tvBuySymbol, item.getSymbol());
+                String symbol = item.getSymbol();
+                if (symbol.equals("BTC")){
+                    helper.setText(R.id.tvSecSymbol, "/" + item.getType()).setVisible(R.id.tvSecSymbol,true);
+                    helper.getView(R.id.tvCHNName).setVisibility(View.GONE);
+                }else{
+                    helper.setVisible(R.id.tvSecSymbol,false);
+
+                    if (symbol.equals("ETH")){
+                        helper.setText(R.id.tvCHNName, "以太坊").setVisible(R.id.tvCHNName,true);
+                    }else if (symbol.equals("EOS")){
+                        helper.setText(R.id.tvCHNName, "莱特币").setVisible(R.id.tvCHNName,true);
+                    }else if (symbol.equals("LTC")){
+                        helper.setText(R.id.tvCHNName, "莱特币").setVisible(R.id.tvCHNName,true);
+                    }else if (symbol.equals("BCH")){
+                        helper.setText(R.id.tvCHNName, "比特币现金").setVisible(R.id.tvCHNName,true);
+                    }else if (symbol.equals("XRP")){
+                        helper.setText(R.id.tvCHNName, "瑞波币").setVisible(R.id.tvCHNName,true);
+                    }else if (symbol.equals("ETC")){
+                        helper.setText(R.id.tvCHNName, "以太经典").setVisible(R.id.tvCHNName,true);
+                    }else if (symbol.equals("TRX")){
+                        helper.setText(R.id.tvCHNName, "波场").setVisible(R.id.tvCHNName,true);
+                    }else if (symbol.equals("BSV")){
+                        helper.setText(R.id.tvCHNName, "比特币SV").setVisible(R.id.tvCHNName,true);
+                    }
+                }
+
+                helper.setText(R.id.tvPrice, new BigDecimal(Double.parseDouble(item.getClose()))
+                        .setScale(MyApplication.getApp().getSymbolSize(item.getSymbol()), RoundingMode.UP).toString());
+
+                if (tol){
+                    helper.setText(R.id.item_home_chg, "+"+ item.getScale() + "%");
+                    helper.getView(R.id.item_home_chg).setEnabled(true);
+                }else{
+                    helper.setText(R.id.item_home_chg, item.getScale() + "%");
+                    helper.getView(R.id.item_home_chg).setEnabled(false);
+                }
+            }
+        });
+        symblistview.setOnItemClickListener(new NestFullListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(NestFullListView nestFullListView, View view, int i) {
+                NewCurrency currency = currencies.get(i);
+                Bundle bundle = new Bundle();
+                bundle.putString("symbol", currency.getSymbol());
+                bundle.putSerializable("currency", currency);
+                showActivity(KlineActivity.class, bundle);
             }
         });
     }
@@ -475,10 +535,8 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         this.commonPresenter = presenter;
     }
 
-    public void dataLoaded(List<NewCurrency> currencies, List<NewCurrency> tow) {
+    public void dataLoadedThree(List<NewCurrency> tow) {
         llHomeContent.setVisibility(View.VISIBLE);
-        this.currencies.clear();
-        this.currencies.addAll(currencies);
         this.currenciesTwo.clear();
         if (tow != null && tow.size() > 3) {
             for (int i = 0; i < 3; i++) {
@@ -489,6 +547,23 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         }
         adapter.notifyDataSetChanged();
     }
+
+    public void dataLoaded(List<NewCurrency> currencies) {
+        this.currencies.clear();
+
+        for (int i=0;i<6;i++){
+            if (i< currencies.size()){
+                this.currencies.add(currencies.get(i));
+            }
+        }
+        if (symblistview != null) {
+//            if (currencies.size() == 0)
+//                symblistview..setEmptyView(R.layout.empty_no_message);
+            symblistview.updateUI();
+        }
+    }
+
+
 
     public void showEmptyView() {
 //        llHomeContent.setVisibility(View.GONE);
@@ -599,7 +674,10 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     }
 
     public void tcpNotify() {
-        if (adapter != null) adapter.notifyDataSetChanged();
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+        if (symblistview!=null)
+            symblistview.updateUI();
     }
 
 

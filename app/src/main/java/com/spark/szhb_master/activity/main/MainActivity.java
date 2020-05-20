@@ -447,7 +447,7 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
                 if (newDatas == null) return;
                 if (mCurrencies.size() == 0){
                     mCurrencies.addAll(newDatas);
-                    homeFragment.dataLoaded(mCurrencies,mCurrencies);
+                    homeFragment.dataLoadedThree(mCurrencies);
                 }else{
                     for (NewCurrency localdata : mCurrencies) {
                         for (NewCurrency newdata : newDatas){
@@ -485,6 +485,7 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
                 if (mCurrencyListAll.size() == 0){
                     mCurrencyListAll.addAll(newDatas);
                     heyueFragment.dataLoaded(mCurrencyListAll);
+                    homeFragment.dataLoaded(mCurrencyListAll);
                 }else{
                     for (NewCurrency localdata : mCurrencyListAll) {
                         for (NewCurrency newdata : newDatas){
