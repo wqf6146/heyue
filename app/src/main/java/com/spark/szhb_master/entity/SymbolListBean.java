@@ -3,7 +3,7 @@ package com.spark.szhb_master.entity;
 import java.io.Serializable;
 import java.util.List;
 
-public class SymbolListBean {
+public class SymbolListBean implements Serializable{
 
     private List<Symbol> list;
 

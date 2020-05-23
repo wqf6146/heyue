@@ -164,16 +164,28 @@ public class MyTextService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        EventBus.getDefault().register(this);
-        initSocketClient();
-        mHandler.postDelayed(heartBeatRunnable, HEART_BEAT_RATE);//开启心跳检测
+
+
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        EventBus.getDefault().register(this);
+        initSocketClient();
+        if (heartBeatRunnable!=null)
+            mHandler.removeCallbacks(heartBeatRunnable);
+        mHandler.postDelayed(heartBeatRunnable, HEART_BEAT_RATE);//开启心跳检测
+
+        return super.onStartCommand(intent, flags, startId);
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         closeConnect();
+        if (heartBeatRunnable!=null)
+            mHandler.removeCallbacks(heartBeatRunnable);
         EventBus.getDefault().unregister(this);
     }
 

@@ -3,6 +3,7 @@ package com.spark.szhb_master.activity.main;
 import com.spark.szhb_master.base.Contract;
 import com.spark.szhb_master.entity.AssetsInfo;
 import com.spark.szhb_master.entity.BannerEntity;
+import com.spark.szhb_master.entity.BannerInfo;
 import com.spark.szhb_master.entity.C2C;
 import com.spark.szhb_master.entity.C2cConfig;
 import com.spark.szhb_master.entity.Coin;
@@ -71,7 +72,7 @@ public interface MainContract {
 
     interface HomeView extends Contract.BaseView<HomePresenter> {
 
-        void bannersSuccess(List<BannerEntity> obj);
+        void bannersSuccess(BannerInfo bannerInfo);
 
         void bannersFail(Integer code, String toastMessage);
 

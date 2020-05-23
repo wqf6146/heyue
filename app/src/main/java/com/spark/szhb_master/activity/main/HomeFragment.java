@@ -31,6 +31,7 @@ import com.spark.szhb_master.base.BaseActivity;
 import com.spark.szhb_master.base.BaseTransFragment;
 import com.spark.szhb_master.dialog.ShiMingDialog;
 import com.spark.szhb_master.entity.BannerEntity;
+import com.spark.szhb_master.entity.BannerInfo;
 import com.spark.szhb_master.entity.Coin;
 import com.spark.szhb_master.entity.Message;
 import com.spark.szhb_master.entity.NewCurrency;
@@ -128,8 +129,6 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     private List<Message> messageList = new ArrayList<>();
     private List<String> info = new ArrayList<>();
     private CommonPresenter commonPresenter;
-    private String sysAdvertiseLocation = "0";
-    private List<BannerEntity> objList;
     private boolean isfirst = false;
 
     @Override
@@ -311,8 +310,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
      */
     private void getImage() {
         if (imageUrls == null || imageUrls.size() == 0) {
-            HashMap<String, String> map = new HashMap<>();
-            map.put("sysAdvertiseLocation", sysAdvertiseLocation);
+            HashMap map = new HashMap<>();
             presenter.banners(map);
         }
     }
@@ -441,11 +439,11 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                BannerEntity bannerEntity = objList.get(position);
-                if (bannerEntity != null) {
+                BannerInfo.PhotoBean photoBean = mBannerInfo.getPhoto().get(position);
+                if (photoBean != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("title", bannerEntity.getName());
-                    bundle.putString("url", bannerEntity.getLinkUrl());
+                    bundle.putString("title", "title");
+                    bundle.putString("url", photoBean.getLink());
                     bundle.putBoolean("isImage", true);
                     showActivity(WebViewActivity.class, bundle);
                 }
@@ -600,12 +598,14 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         if (adapter != null) adapter.notifyDataSetChanged();
     }
 
+
+    private BannerInfo mBannerInfo;
     @Override
-    public void bannersSuccess(final List<BannerEntity> obj) {
-        if (obj == null) return;
-        objList = obj;
-        for (BannerEntity bannerEntity : obj) {
-            String url = bannerEntity.getUrl();
+    public void bannersSuccess(BannerInfo bannerInfo) {
+        MyApplication.getApp().setBaseInfo(bannerInfo);
+        mBannerInfo = bannerInfo;
+        for (BannerInfo.PhotoBean photoBean : bannerInfo.getPhoto()) {
+            String url = photoBean.getUrl();
             if (StringUtils.isNotEmpty(url)) {
                 if (!url.contains("http")) {
                     url = UrlFactory.getHost() + "/" + url;

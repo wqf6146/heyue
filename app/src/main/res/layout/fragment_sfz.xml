@@ -73,7 +73,7 @@
         android:textColor="@color/white"
         android:id="@+id/tv_nextstep"
         android:gravity="center"
-        android:text="下一步"
+        android:text="完成"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:background="@color/Blue"

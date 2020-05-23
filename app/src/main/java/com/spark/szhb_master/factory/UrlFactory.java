@@ -11,7 +11,7 @@ public class UrlFactory {
 //    private static final String host = "http://api.cex.wxmarket.cn";
 
     public static String getHost() {
-        return host;
+        return newhost;
     }
 
     public static String getRateUrl() {
@@ -82,7 +82,11 @@ public class UrlFactory {
         return host + "/uc/upload/oss/base64";
     }
 
-    public static String getCreditUrl() {
+    public static String getCreditFirstUrl() {
+        return newhost + "/user/identity/first";
+    }
+
+    public static String getCreditSecondUrl() {
         return newhost + "/user/identity";
     }
 
@@ -251,6 +255,10 @@ public class UrlFactory {
         return host + "/uc/mobile/reset/code";
     }
 
+    public static String getJYCodeUrl(){
+        return newhost + "/user/slide/config";
+    }
+
     public static String getEmailForgotPwdCodeUrl() {
         return newhost + "/user/sms";
     }
@@ -331,7 +339,7 @@ public class UrlFactory {
     }
 
     public static String getBannersUrl() {
-        return host + "/uc/ancillary/system/advertise";
+        return newhost + "/user/config";
     }
 
     public static String getOrderDetailUrl() {

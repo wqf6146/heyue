@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.spark.szhb_master.activity.main.MainContract;
 import com.spark.szhb_master.data.DataSource;
 import com.spark.szhb_master.entity.BannerEntity;
+import com.spark.szhb_master.entity.BannerInfo;
 import com.spark.szhb_master.entity.Message;
 import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.factory.UrlFactory;
@@ -35,17 +36,16 @@ public class HomePresenterImpl implements MainContract.HomePresenter {
     @Override
     public void banners(HashMap<String, String> map) {
 //        view.displayLoadingPopup();
-        dataRepository.doStringPost(UrlFactory.getBannersUrl(), map, new DataSource.DataCallback() {
+        dataRepository.doStringGet(UrlFactory.getBannersUrl(), map, new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
                 view.hideLoadingPopup();
                 String response = (String) obj;
                 try {
                     JSONObject object = new JSONObject(response);
-                    if (object.optInt("code") == 0) {
-                        List<BannerEntity> objs = new Gson().fromJson(object.getJSONArray("data").toString(), new TypeToken<List<BannerEntity>>() {
-                        }.getType());
-                        view.bannersSuccess(objs);
+                    if (object.optInt("code") == 1) {
+                        BannerInfo bannerInfo = new Gson().fromJson(object.getJSONObject("data").toString(), BannerInfo.class);
+                        view.bannersSuccess(bannerInfo);
                     } else {
                         view.bannersFail(object.getInt("code"), object.optString("message"));
                     }

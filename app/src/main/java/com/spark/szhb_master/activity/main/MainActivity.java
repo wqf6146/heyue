@@ -161,8 +161,6 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
         MobclickAgent.onPageStart(mPageName);
         //EventBus.getDefault().post(new SocketMessage(0, ISocket.CMD.SUBSCRIBE_SYMBOL_THUMB, null));
 
-
-
         MyApplication.getApp().startBaseTcp();
         MyApplication.getApp().delSomeTcp();
 
@@ -172,12 +170,7 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
 //                presenter.find();
             }
         }
-        if (MyApplication.app.isLogin()) {
-//            Intent intent = new Intent(MainActivity.this, MyService.class);
-//            startService(intent);
-            //SocketMessage message = new SocketMessage(1, ISocket.CMD.SUBSCRIBE_GROUP_CHAT, buildGetBodyJson().toString());
-            //EventBus.getDefault().post(message);
-        }
+
         hasNew = SharedPreferenceInstance.getInstance().getHasNew();
 //        homeFragment.setChatTip(hasNew);
         SharedPreferenceInstance.getInstance().saveHasNew(false);
@@ -285,11 +278,11 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
 
     @Override
     protected void initView() {
-        startService(new Intent(activity, MyTextService.class));
+
         //startService(new Intent(activity, GroupService.class));
         initProgressDialog();
         new MainPresenter(Injection.provideTasksRepository(getApplicationContext()), this);
-        startService(new Intent(activity, MyTextService.class)); // 开启服务
+//        startService(new Intent(activity, MyTextService.class)); // 开启服务
         //startService(new Intent(activity, GroupService.class));
         lls = new LinearLayout[]{llHome, llHeyue, llC2C, llMy};
         reCoveryView();

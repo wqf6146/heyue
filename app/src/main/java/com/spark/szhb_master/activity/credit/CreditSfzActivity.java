@@ -182,7 +182,13 @@ public class CreditSfzActivity extends BaseActivity implements CreditContract.Vi
     @Override
     protected void initData() {
         super.initData();
-        setTitle(getString(R.string.my_credit));
+        String title = getIntent().getStringExtra("title");
+        if (StringUtils.isNotEmpty(title)){
+            setTitle(title);
+        }else{
+            setTitle(getString(R.string.my_credit));
+        }
+
         tvGoto.setVisibility(View.INVISIBLE);
         new CreditPresenter(Injection.provideTasksRepository(CreditSfzActivity.this), this);
         imageFile = FileUtils.getCacheSaveFile(this, filename);
@@ -238,13 +244,13 @@ public class CreditSfzActivity extends BaseActivity implements CreditContract.Vi
             ToastUtils.showToast(getString(R.string.incomplete_information));
         } else {
             HashMap map = new HashMap<>();
-            map.put("type", 0);
-            map.put("real_name", mName);
-            map.put("id_card", mIdNum);
+//            map.put("type", 0);
+//            map.put("real_name", mName);
+//            map.put("id_card", mIdNum);
             map.put("card_front", sIvFace);
             map.put("card_obverse", sIvBack);
             map.put("card_hand", sIvHode);
-            presenter.credit(map);
+            presenter.creditTwo(map);
         }
     }
 

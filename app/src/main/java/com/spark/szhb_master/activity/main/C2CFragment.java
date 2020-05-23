@@ -10,13 +10,16 @@ import android.widget.TextView;
 
 import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.R;
+import com.spark.szhb_master.activity.bussiness.BecomeBActivity;
 import com.spark.szhb_master.activity.delegate.PostDelegateActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.presenter.C2CPresenterImpl;
 import com.spark.szhb_master.adapter.PagerAdapter;
 import com.spark.szhb_master.base.BaseNestingTransFragment;
 import com.spark.szhb_master.entity.C2cConfig;
+import com.spark.szhb_master.entity.User;
 import com.spark.szhb_master.utils.NetCodeUtils;
+import com.spark.szhb_master.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -135,7 +138,14 @@ public class C2CFragment extends BaseNestingTransFragment implements MainContrac
                 clickTabSell();
                 break;
             case R.id.ivAdd:
-                showActivity(PostDelegateActivity.class,null);
+                User user = MyApplication.getApp().getCurrentUser();
+                if (user.getShop_type() != 2){
+                    ToastUtils.showToast("请先进行商户验证");
+                    showActivity(BecomeBActivity.class,null);
+                }else{
+                    showActivity(PostDelegateActivity.class,null);
+                }
+
                 break;
         }
 

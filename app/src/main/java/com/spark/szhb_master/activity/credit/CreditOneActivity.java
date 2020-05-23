@@ -39,6 +39,7 @@ public class CreditOneActivity extends BaseActivity{
     protected void initView() {
         super.initView();
         setSetTitleAndBack(false, true);
+//        setTitle(getIntent().getStringExtra("title"));
         tvGoto.setVisibility(View.INVISIBLE);
         fragmentList.add(CreditSfzFragment.getInstance(0));
         fragmentList.add(CreditHzFragment.getInstance(1));
@@ -59,7 +60,7 @@ public class CreditOneActivity extends BaseActivity{
     @Override
     protected void initData() {
         super.initData();
-        setTitle(getString(R.string.my_credit));
+        setTitle("初级身份认证");
 
     }
 

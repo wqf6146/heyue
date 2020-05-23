@@ -101,6 +101,9 @@ public class RegisterStepTwoActivity extends BaseActivity implements SignUpContr
                     bundle.putString("account",mAccount);
                     bundle.putInt("code",Integer.parseInt(etCode.getText().toString().trim()));
                     bundle.putString("pwd",pwd);
+                    bundle.putString("geetest_challenge",geetest_challenge);
+                    bundle.putString("geetest_validate",geetest_validate);
+                    bundle.putString("geetest_seccode",geetest_seccode);
                     showActivity(RegisterStepThreeActivity.class, bundle);
                 }else{
                     ToastUtils.showToast(getString(R.string.incomplete_information));
@@ -161,6 +164,15 @@ public class RegisterStepTwoActivity extends BaseActivity implements SignUpContr
                 Log.e(TAG, "GT3BaseListener-->onDialogResult-->" + result);
                 // 开启api2逻辑
 //                new RequestAPI2().execute(result);
+                try{
+                    JSONObject object = new JSONObject(result);
+                    geetest_challenge = object.getString("geetest_challenge");
+                    geetest_validate = object.getString("geetest_validate");
+                    geetest_seccode = object.getString("geetest_seccode");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 gt3GeetestUtils.showSuccessDialog();
             }
 
@@ -236,10 +248,12 @@ public class RegisterStepTwoActivity extends BaseActivity implements SignUpContr
         NetCodeUtils.checkedErrorCode(this,code,toastMessage);
     }
 
+    private String geetest_challenge,geetest_validate,geetest_seccode;
     @Override
     public void captchSuccess(JSONObject obj) {
         gt3ConfigBean.setApi1Json(obj);
         // 继续api验证
         gt3GeetestUtils.getGeetest();
+
     }
 }

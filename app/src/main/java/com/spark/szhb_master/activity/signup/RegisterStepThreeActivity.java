@@ -40,7 +40,7 @@ public class RegisterStepThreeActivity extends BaseActivity implements SignUpCon
     private String mPwd;
     private Integer mCode;
     private SignUpContract.Presenter presenter;
-
+    private String geetest_challenge,geetest_validate,geetest_seccode;
     @Override
     protected int getActivityLayoutId() {
         return R.layout.activity_register_stepthree;
@@ -53,6 +53,9 @@ public class RegisterStepThreeActivity extends BaseActivity implements SignUpCon
         mAccount = getIntent().getStringExtra("account");
         mPwd = getIntent().getStringExtra("pwd");
         mCode = getIntent().getIntExtra("code",0);
+        geetest_challenge = getIntent().getStringExtra("geetest_challenge");
+        geetest_validate = getIntent().getStringExtra("geetest_validate");
+        geetest_seccode = getIntent().getStringExtra("geetest_seccode");
     }
 
     @Override
@@ -90,6 +93,9 @@ public class RegisterStepThreeActivity extends BaseActivity implements SignUpCon
                     map.put("invite_code", code);
                     map.put("account", mAccount);
                     map.put("code",mCode);
+                    map.put("geetest_challenge",geetest_challenge);
+                    map.put("geetest_validate",geetest_validate);
+                    map.put("geetest_seccode",geetest_seccode);
                     presenter.sighUp(UrlFactory.getSignUpByPhone(), map);
                 }else{
                     ToastUtils.showToast(getString(R.string.incomplete_information));

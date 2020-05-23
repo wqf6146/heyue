@@ -27,9 +27,11 @@ public class SignCodePresenter implements SignUpContract.SignCodePresenter {
 
     @Override
     public void getCode(HashMap params) {
+        view.displayLoadingPopup();
         dataRepository.doStringPostJson(UrlFactory.getEmailForgotPwdCodeUrl(), params, new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
+                view.hideLoadingPopup();
                 String response = (String) obj;
                 try {
                     JSONObject object = new JSONObject(response);
@@ -46,6 +48,7 @@ public class SignCodePresenter implements SignUpContract.SignCodePresenter {
 
             @Override
             public void onDataNotAvailable(Integer code, String toastMessage) {
+                view.hideLoadingPopup();
                 view.codeFail(code, toastMessage);
             }
         });
@@ -55,7 +58,7 @@ public class SignCodePresenter implements SignUpContract.SignCodePresenter {
     @Override
     public void captch() {
         view.displayLoadingPopup();
-        dataRepository.doStringGet("http://www.geetest.com/demo/gt/register-slide", new DataSource.DataCallback() {
+        dataRepository.doStringGet(UrlFactory.getJYCodeUrl(), new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
                 view.hideLoadingPopup();

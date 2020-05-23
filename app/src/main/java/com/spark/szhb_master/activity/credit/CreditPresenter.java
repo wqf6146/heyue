@@ -33,7 +33,36 @@ public class CreditPresenter implements CreditContract.Presenter {
     @Override
     public void credit(HashMap params) {
         view.displayLoadingPopup();
-        dataRepository.doStringPostJson(UrlFactory.getCreditUrl(), params, new DataSource.DataCallback() {
+        dataRepository.doStringPostJson(UrlFactory.getCreditFirstUrl(), params, new DataSource.DataCallback() {
+            @Override
+            public void onDataLoaded(Object obj) {
+                view.hideLoadingPopup();
+                String response = (String) obj;
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.optInt("code") == 1) {
+                        view.doCreditSuccess(object.optString("msg"));
+                    } else {
+                        view.doPostFail(object.getInt("code"), object.optString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    view.doPostFail(JSON_ERROR, null);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable(Integer code, String toastMessage) {
+                view.hideLoadingPopup();
+                view.doPostFail(code, toastMessage);
+            }
+        });
+    }
+
+    @Override
+    public void creditTwo(HashMap params) {
+        view.displayLoadingPopup();
+        dataRepository.doStringPostJson(UrlFactory.getCreditSecondUrl(), params, new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
                 view.hideLoadingPopup();

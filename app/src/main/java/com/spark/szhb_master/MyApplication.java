@@ -23,11 +23,13 @@ import com.spark.szhb_master.activity.login.LoginActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.MainActivity;
 import com.spark.szhb_master.base.BaseActivity;
+import com.spark.szhb_master.entity.BannerInfo;
 import com.spark.szhb_master.entity.NewCurrency;
 import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.TcpEntity;
 import com.spark.szhb_master.entity.User;
 import com.spark.szhb_master.factory.socket.NEWCMD;
+import com.spark.szhb_master.serivce.MyTextService;
 import com.spark.szhb_master.serivce.SocketMessage;
 import com.spark.szhb_master.utils.FileUtils;
 import com.spark.szhb_master.utils.GlobalConstant;
@@ -70,6 +72,7 @@ public class MyApplication extends Application {
     private int mHeight;
 
     private String TAG = MyApplication.class.toString();
+    private BannerInfo mBaseInfo;
 
     // 正常状态
     public static final int STATE_NORMAL = 0;
@@ -118,6 +121,14 @@ public class MyApplication extends Application {
             }
         }
         return null;
+    }
+
+    public void setBaseInfo(BannerInfo mBaseInfo) {
+        this.mBaseInfo = mBaseInfo;
+    }
+
+    public BannerInfo getBaseInfo() {
+        return mBaseInfo;
     }
 
     public int getSymbolSize(String symBolName){
@@ -288,6 +299,7 @@ public class MyApplication extends Application {
                     sAppState = STATE_BACK_TO_FRONT;
                     backToFrontTime = System.currentTimeMillis();
                     Log.e(TAG, "onResume: STATE_BACK_TO_FRONT");
+                    startService(new Intent(activity, MyTextService.class));
                     if (needWakeWebSock()) {
                         getCurrenTcpFromFile();
                         resumeTcp();
@@ -311,6 +323,7 @@ public class MyApplication extends Application {
                     flag = true;
                     Log.e(TAG, "onStop: " + "STATE_FRONT_TO_BACK");
 
+                    stopService(new Intent(activity, MyTextService.class));
                     saveCurrentTcp();
                     stopAllChildTcp();
                 } else {

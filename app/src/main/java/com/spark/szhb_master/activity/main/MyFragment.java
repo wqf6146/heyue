@@ -25,6 +25,7 @@ import com.spark.szhb_master.R;
 import com.spark.szhb_master.activity.aboutus.AboutUsActivity;
 import com.spark.szhb_master.activity.bussiness.BecomeBActivity;
 import com.spark.szhb_master.activity.credit.CreditOneActivity;
+import com.spark.szhb_master.activity.credit.CreditSfzActivity;
 import com.spark.szhb_master.activity.entrust.NowTrustActivity;
 import com.spark.szhb_master.activity.login.LoginActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
@@ -254,7 +255,23 @@ public class MyFragment extends BaseTransFragment implements MainContract.MyView
                 showActivity(FundtransferActivity.class,null);
                 break;
             case R.id.llSfrz:
-                showActivity(CreditOneActivity.class,null);
+                Bundle creditb = new Bundle();
+                User user = MyApplication.getApp().getCurrentUser();
+                if (user.getType() == 0){
+                    creditb.putString("title","初级身份认证");
+                    showActivity(CreditOneActivity.class,creditb);
+                }else if (user.getType() == 4){
+                    creditb.putString("title","高级身份认证");
+                    showActivity(CreditSfzActivity.class,creditb);
+                }else if (user.getType() == 1){
+                    ToastUtils.showToast("认证待审核");
+                }else if (user.getType() == 2){
+                    ToastUtils.showToast("已通过认证");
+                }else if (user.getType() == 3){
+                    ToastUtils.showToast("认证失败，请重新开始认证");
+                    showActivity(CreditOneActivity.class,null);
+                }
+
                 break;
             case R.id.fm_rl_userinfo:
                 showActivity(MyInfoActivity.class, null, 1);

@@ -52,7 +52,8 @@ public class CreditHzFragment extends BaseFragment implements CreditContract.Vie
 
     @Override
     public void doCreditSuccess(String obj) {
-        ToastUtils.showToast(obj);
+        ToastUtils.showToast("初级认证成功");
+        showActivity(CreditSfzActivity.class,null);
         finish();
     }
 
@@ -80,9 +81,8 @@ public class CreditHzFragment extends BaseFragment implements CreditContract.Vie
                 }
 
                 HashMap map = new HashMap<>();
-                map.put("type", 1);
                 map.put("real_name", realName);
-                map.put("passport_id", idCard);
+                map.put("id_card", idCard);
                 presenter.credit(map);
                 break;
         }

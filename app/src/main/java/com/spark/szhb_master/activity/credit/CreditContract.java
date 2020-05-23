@@ -22,6 +22,8 @@ public interface CreditContract {
 
         void credit(HashMap params);
 
+        void creditTwo(HashMap params);
+
         void getCreditInfo();
 
         void uploadImageFile(File file, int type);
