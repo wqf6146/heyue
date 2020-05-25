@@ -53,7 +53,7 @@ public class HeyueAdapter extends BaseQuickAdapter<NewCurrency, BaseViewHolder> 
             if (symbol.equals("ETH")){
                 helper.setText(R.id.tvCHNName, "以太坊").setVisible(R.id.tvCHNName,true);
             }else if (symbol.equals("EOS")){
-                helper.setText(R.id.tvCHNName, "莱特币").setVisible(R.id.tvCHNName,true);
+                helper.setText(R.id.tvCHNName, "柚子币").setVisible(R.id.tvCHNName,true);
             }else if (symbol.equals("LTC")){
                 helper.setText(R.id.tvCHNName, "莱特币").setVisible(R.id.tvCHNName,true);
             }else if (symbol.equals("BCH")){

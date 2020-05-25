@@ -43,6 +43,33 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rlExtAddress"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/ripple_blue_corner">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="提币地址"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_normal" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/ic_arrow_right" />
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tvNotice"
         android:layout_width="match_parent"

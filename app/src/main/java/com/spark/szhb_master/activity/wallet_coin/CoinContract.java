@@ -4,6 +4,7 @@ package com.spark.szhb_master.activity.wallet_coin;
 import com.spark.szhb_master.base.Contract;
 import com.spark.szhb_master.entity.AssetsInfo;
 import com.spark.szhb_master.entity.ContratInfo;
+import com.spark.szhb_master.entity.ExtAddressEntity;
 import com.spark.szhb_master.entity.ExtractInfo;
 import com.spark.szhb_master.entity.RechargeAddress;
 import com.spark.szhb_master.entity.WalletThreeBean;
@@ -24,6 +25,13 @@ public interface CoinContract {
         void doPostFail(Integer code, String toastMessage);
     }
 
+    interface extractListView extends Contract.BaseView<extractListPresenter>{
+        void getExtListSuccess(ExtAddressEntity extAddressEntity);
+        void addExtAddressSuccess(String obj);
+        void removeExtAddressSuccess(String obj);
+        void doPostFail(Integer code, String toastMessage);
+    }
+
     interface extractView extends Contract.BaseView<extractPresenter>{
         void extractSuccess(String obj);
         void doPostFail(Integer code, String toastMessage);
@@ -41,6 +49,12 @@ public interface CoinContract {
 
     interface extractPresenter extends Contract.BasePresenter {
         void extract(HashMap params);
+    }
+
+    interface extractListPresenter extends Contract.BasePresenter {
+        void addExtAddress(HashMap params);
+        void removeExtAddress(HashMap params);
+        void getExtAddress(HashMap params);
     }
 
     interface rechargePresenter extends Contract.BasePresenter {

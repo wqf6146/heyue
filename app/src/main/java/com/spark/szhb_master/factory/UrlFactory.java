@@ -187,6 +187,11 @@ public class UrlFactory {
         return newhost + "/user/deposit";
     }
 
+    public static String getExtAddressUrl() {
+        return newhost + "/user/address";
+    }
+
+
     public static String getExtractUrl() {
         return newhost + "/user/withdraw";
     }

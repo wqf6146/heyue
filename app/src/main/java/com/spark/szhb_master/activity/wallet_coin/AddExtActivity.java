@@ -1,6 +1,5 @@
 package com.spark.szhb_master.activity.wallet_coin;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -13,6 +12,7 @@ import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.spark.szhb_master.R;
 import com.spark.szhb_master.base.BaseActivity;
+import com.spark.szhb_master.entity.ExtAddressEntity;
 import com.spark.szhb_master.utils.NetCodeUtils;
 import com.spark.szhb_master.utils.StringUtils;
 import com.spark.szhb_master.utils.ToastUtils;
@@ -26,7 +26,7 @@ import config.Injection;
 /**
  * 提币
  */
-public class ExtractActivity extends BaseActivity implements CoinContract.extractView {
+public class AddExtActivity extends BaseActivity implements CoinContract.extractListView {
 
     @BindView(R.id.ar_iv_close)
     ImageView ivClose;
@@ -34,32 +34,27 @@ public class ExtractActivity extends BaseActivity implements CoinContract.extrac
     @BindView(R.id.rlhead)
     RelativeLayout rlhead;
 
-    @BindView(R.id.tvRecord)
-    TextView tvRecord;
-
     @BindView(R.id.rlChain)
     RelativeLayout rlChain;
 
-    @BindView(R.id.etAddress)
-    EditText etAddress;
+    @BindView(R.id.tvConfirm)
+    TextView tvConfirm;
 
-    @BindView(R.id.etNum)
-    EditText etNum;
+    @BindView(R.id.etExtAddress)
+    EditText etExtAddress;
 
-    @BindView(R.id.llSubmit)
-    LinearLayout llSubmit;
+    @BindView(R.id.etRemark)
+    EditText etRemark;
 
     @BindView(R.id.tvChainName)
     TextView tvChainName;
 
+    private CoinContract.extractListPresenter presenter;
+
     private int chainType = 0; // 0为Erc20,1为omni
-
-    private CoinContract.extractPresenter presenter;
-
-
     @Override
     protected int getActivityLayoutId() {
-        return R.layout.activity_extract;
+        return R.layout.activity_addextaddress;
     }
 
     @Override
@@ -70,10 +65,10 @@ public class ExtractActivity extends BaseActivity implements CoinContract.extrac
     @Override
     protected void initData() {
         super.initData();
-        new ExtractPresenter(Injection.provideTasksRepository(getApplicationContext()), this);
+        new ExtractListPresenter(Injection.provideTasksRepository(getApplicationContext()), this);
     }
 
-    @OnClick({ R.id.ar_iv_close,R.id.rlChain,R.id.llSubmit,R.id.tvRecord,R.id.rlExtAddress})
+    @OnClick({ R.id.ar_iv_close,R.id.rlChain,R.id.tvConfirm})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -81,34 +76,24 @@ public class ExtractActivity extends BaseActivity implements CoinContract.extrac
             case R.id.ar_iv_close:
                 finish();
                 break;
-            case R.id.rlExtAddress:
-                showActivity(ExtractAddressListActivity.class,null);
-                break;
-            case R.id.llSubmit: // 提币
-                String address = etAddress.getText().toString();
-                String num = etNum.getText().toString();
+            case R.id.tvConfirm: // 提币
+                String extAddress = etExtAddress.getText().toString();
+                String remark = etRemark.getText().toString();
 
-                if (StringUtils.isEmpty(address,num)) {
+                if (StringUtils.isEmpty(extAddress,remark)) {
                     ToastUtils.showToast(R.string.incomplete_information);
                     return;
                 }
-                if (Double.parseDouble(num) <= 0){
-                    ToastUtils.showToast("请输入正确的提币数量");
-                }
+
                 HashMap hashMap = new HashMap();
-                hashMap.put("address",address);
-                hashMap.put("num",Integer.parseInt(num));
+                hashMap.put("name",remark);
+                hashMap.put("address",extAddress);
                 hashMap.put("type",chainType);
-                presenter.extract(hashMap);
+                presenter.addExtAddress(hashMap);
 
                 break;
             case R.id.rlChain: // 全部
                 actionSheetDialogNoTitle();
-                break;
-            case R.id.tvRecord:
-                Bundle bundle = new Bundle();
-                bundle.putInt("type",1);
-                showActivity(DetailListActivity.class,bundle);
                 break;
         }
     }
@@ -138,7 +123,7 @@ public class ExtractActivity extends BaseActivity implements CoinContract.extrac
     }
 
     @Override
-    public void setPresenter(CoinContract.extractPresenter presenter) {
+    public void setPresenter(CoinContract.extractListPresenter presenter) {
         this.presenter = presenter;
     }
 
@@ -149,8 +134,18 @@ public class ExtractActivity extends BaseActivity implements CoinContract.extrac
 
 
     @Override
-    public void extractSuccess(String obj) {
+    public void getExtListSuccess(ExtAddressEntity extAddressEntity) {
+
+    }
+
+    @Override
+    public void addExtAddressSuccess(String obj) {
         ToastUtils.showToast(obj);
         finish();
+    }
+
+    @Override
+    public void removeExtAddressSuccess(String obj) {
+
     }
 }
