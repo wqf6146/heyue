@@ -1,5 +1,6 @@
 package com.spark.szhb_master.activity.c2corder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -120,9 +121,13 @@ public class C2cOrderListFragment extends Fragment implements C2cOrderContract.V
         adapter = new C2cOrderAdapter(getActivity(),listBeanList);
         adapter.setType(type);
         adapter.bindToRecyclerView(recyclerView);
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(getActivity(),C2cOrderDetailActivity.class);
+                intent.putExtra("id",listBeanList.get(position).getId());
+                intent.putExtra("type",type);
+                getActivity().startActivity(intent);
 
             }
         });

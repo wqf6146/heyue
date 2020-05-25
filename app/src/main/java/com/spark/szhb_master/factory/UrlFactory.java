@@ -70,6 +70,10 @@ public class UrlFactory {
         return newhost + "/user/fiats/trade";
     }
 
+    public static String getC2cOrderDetailUrl(){
+        return newhost + "/user/fiats/trade/info";
+    }
+
     public static String getCountryUrl() {
         return host + "/uc/support/country";
     }
