@@ -10,7 +10,7 @@ public enum NEWCMD {
 
     //获取侧边币种信息推送
     SUBSCRIBE_SIDE_TRADE("market.overview"),
-
+    SUBSCRIBE_HOME_PEOPLE("count"),
     SUBSCRIBE_HOME_TRADE("market.overview3");
 
     private String typeName;

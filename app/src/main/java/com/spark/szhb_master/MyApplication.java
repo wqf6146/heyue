@@ -176,6 +176,9 @@ public class MyApplication extends Application {
         //合约推送
         EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SIDE_TRADE,
                 buildGetBodyJson("market.overview", "1").toString())); // 需要id
+
+        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_HOME_PEOPLE,
+                buildGetBodyJson("count", "1").toString())); // 需要id
     }
 
     public void stopBaseTcp(){
@@ -185,6 +188,9 @@ public class MyApplication extends Application {
         //合约推送
         EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_SIDE_TRADE,
                 buildGetBodyJson("market.overview", "0").toString())); // 需要id
+
+        EventBus.getDefault().post(new SocketMessage(0, NEWCMD.SUBSCRIBE_HOME_PEOPLE,
+                buildGetBodyJson("count", "0").toString())); // 需要id
     }
 
 

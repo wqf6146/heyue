@@ -494,6 +494,17 @@ public class MainActivity extends BaseTransFragmentActivity implements MainContr
                 e.printStackTrace();
 
             }
+        }else if(cmd == NEWCMD.SUBSCRIBE_HOME_PEOPLE){
+            try {
+                String people = gson.fromJson(response.getResponse(), String.class);
+                if (people == null || StringUtils.isEmpty(people))
+                    return;
+
+                homeFragment.peopleNotify(people);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
         }
     }
 

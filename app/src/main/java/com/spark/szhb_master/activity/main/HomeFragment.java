@@ -202,20 +202,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
 //        }
 //        isfirst = true;
 
-        String p = "123456";
-        char[] d = p.toCharArray();
 
-        List<String> list = new ArrayList<>();
-        for (int i=0;i<d.length;i++){
-            list.add(String.valueOf(d[i]));
-        }
-
-        nestFullListView.setAdapter(new NestFullListViewAdapter<String>(R.layout.item_people,list) {
-            @Override
-            public void onBind(int i, String s, NestFullViewHolder nestFullViewHolder) {
-                ((TextView)nestFullViewHolder.getView(R.id.ip_tv)).setText(s);
-            }
-        });
 
         symblistview.setAdapter(mListAdapter = new NestFullListViewAdapter<NewCurrency>(R.layout.item_market,currencies) {
             @Override
@@ -678,6 +665,25 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
             adapter.notifyDataSetChanged();
         if (symblistview!=null)
             symblistview.updateUI();
+    }
+
+    public void peopleNotify(String people) {
+//        String p = "123456";
+
+        char[] d = people.toCharArray();
+
+        List<String> list = new ArrayList<>();
+        for (int i=0;i<d.length;i++){
+            list.add(String.valueOf(d[i]));
+        }
+
+
+        nestFullListView.setAdapter(new NestFullListViewAdapter<String>(R.layout.item_people,list) {
+            @Override
+            public void onBind(int i, String s, NestFullViewHolder nestFullViewHolder) {
+                ((TextView)nestFullViewHolder.getView(R.id.ip_tv)).setText(s);
+            }
+        });
     }
 
 

@@ -6,6 +6,7 @@
     android:background="@color/main_bg_dark_2"
     android:layout_marginRight="5dp"
     android:layout_marginLeft="5dp"
+    android:padding="5dp"
     android:id="@+id/llroot"
     android:orientation="vertical"
     tools:ignore="UnusedAttribute">
@@ -52,20 +53,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:layout_marginTop="3dp"
         android:text="1.2%"
+        android:layout_marginBottom="5dp"
         android:textColor="@color/main_font_red"
         android:textSize="@dimen/font_normal" />
 
-    <TextView
-        android:id="@+id/tvVol"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:padding="2dp"
-        android:singleLine="true"
-        android:text="256321"
-        android:layout_marginBottom="5dp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/font_mini"
-        android:visibility="visible" />
+<!--    <TextView-->
+<!--        android:id="@+id/tvVol"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:padding="2dp"-->
+<!--        android:singleLine="true"-->
+<!--        android:text="256321"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="@dimen/font_mini"-->
+<!--        android:visibility="visible"-->
+<!--        tools:visibility="gone" />-->
 </LinearLayout>
