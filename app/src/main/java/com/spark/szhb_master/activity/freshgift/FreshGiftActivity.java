@@ -70,8 +70,7 @@ public class FreshGiftActivity extends BaseActivity implements FreshGiftContract
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                mGiftList.clear();
-                adapter.notifyDataSetChanged();
+
                 presenter.getGiftList();
             }
         });
@@ -103,6 +102,7 @@ public class FreshGiftActivity extends BaseActivity implements FreshGiftContract
 
         List<FreshGitBean.Gift> giftList = freshGitBean.getList();
         if (giftList != null && giftList.size() > 0) {
+            mGiftList.clear();
             this.mGiftList.addAll(giftList);
             adapter.notifyDataSetChanged();
         } else {
