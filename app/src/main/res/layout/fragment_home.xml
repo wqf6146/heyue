@@ -4,11 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_bg"
-    android:focusableInTouchMode="true"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <!--标题-->
-    <include layout="@layout/view_head" />
+    <RelativeLayout
+        android:layout_height="?actionBarSize"
+        android:id="@+id/rlTitle"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:text="首页"
+            android:textSize="@dimen/font_normal"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
+        <ImageButton
+            android:id="@+id/ivMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/ripple_black"
+            android:src="@mipmap/icon_add" />
+
+    </RelativeLayout>
+
 
     <com.spark.szhb_master.ui.intercept.MyScrollView
         android:id="@+id/scrollView"

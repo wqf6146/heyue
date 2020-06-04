@@ -295,13 +295,13 @@ public class C2CListFragment extends BaseLazyFragment implements MainContract.C2
                 this.fiats.addAll(fiatsBeans);
                 fiatsListAdapter.notifyDataSetChanged();
             } else {
-                if (fiatsBeans.size() == 1) {
+                if (fiats.getPage() == 1) {
                     this.fiats.clear();
                     fiatsListAdapter.notifyDataSetChanged();
                     fiatsListAdapter.setEmptyView(R.layout.empty_no_message);
                 }
             }
-            fiatsListAdapter.disableLoadMoreIfNotFullPage();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

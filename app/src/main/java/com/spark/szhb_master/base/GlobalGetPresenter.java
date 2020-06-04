@@ -3,7 +3,7 @@ package com.spark.szhb_master.base;
 
 import com.google.gson.Gson;
 import com.spark.szhb_master.data.DataSource;
-import com.spark.szhb_master.entity.Message;
+import com.spark.szhb_master.entity.MessageBean;
 import com.spark.szhb_master.factory.UrlFactory;
 
 import org.json.JSONException;
@@ -36,8 +36,8 @@ public class GlobalGetPresenter implements ContractGet.BasePresenter {
                 try {
                     JSONObject object = new JSONObject(response);
                     if (object.optInt("code") == 0) {
-                        Message message = new Gson().fromJson(object.getJSONObject("data").toString(), Message.class);
-                        view.doGetSuccess(message.getContent());
+                        MessageBean.Message message = new Gson().fromJson(object.getJSONObject("data").toString(), MessageBean.Message.class);
+                        view.doGetSuccess(message.getBody());
                     } else {
                         view.doGetFail(object.getInt("code"), object.optString("message"));
                     }

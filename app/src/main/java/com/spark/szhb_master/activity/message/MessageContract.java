@@ -2,7 +2,7 @@ package com.spark.szhb_master.activity.message;
 
 
 import com.spark.szhb_master.base.Contract;
-import com.spark.szhb_master.entity.Message;
+import com.spark.szhb_master.entity.MessageBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,14 +14,14 @@ import java.util.List;
 public interface MessageContract {
     interface View extends Contract.BaseView<Presenter> {
 
-        void messageSuccess(List<Message> obj);
+        void messageSuccess(MessageBean obj);
 
         void messageFail(Integer code, String toastMessage);
     }
 
     interface Presenter extends Contract.BasePresenter {
 
-        void message(HashMap<String, String> params);
+        void message(HashMap params);
 
     }
 }

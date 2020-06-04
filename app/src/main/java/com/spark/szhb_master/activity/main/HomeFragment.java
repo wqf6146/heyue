@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,10 +18,12 @@ import com.mcxtzhang.nestlistview.NestFullListView;
 import com.mcxtzhang.nestlistview.NestFullListViewAdapter;
 import com.mcxtzhang.nestlistview.NestFullViewHolder;
 import com.spark.szhb_master.R;
+import com.spark.szhb_master.activity.freshgift.FreshGiftActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.presenter.CommonPresenter;
 import com.spark.szhb_master.activity.main.presenter.CollectView;
 import com.spark.szhb_master.activity.kline.KlineActivity;
+import com.spark.szhb_master.activity.message.MessageActivity;
 import com.spark.szhb_master.activity.message.WebViewActivity;
 import com.spark.szhb_master.activity.mycc.MyccActivity;
 import com.spark.szhb_master.activity.wallet_coin.RechargeActivity;
@@ -30,10 +33,9 @@ import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.base.BaseActivity;
 import com.spark.szhb_master.base.BaseTransFragment;
 import com.spark.szhb_master.dialog.ShiMingDialog;
-import com.spark.szhb_master.entity.BannerEntity;
 import com.spark.szhb_master.entity.BannerInfo;
 import com.spark.szhb_master.entity.Coin;
-import com.spark.szhb_master.entity.Message;
+import com.spark.szhb_master.entity.MessageBean;
 import com.spark.szhb_master.entity.NewCurrency;
 import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.entity.User;
@@ -76,22 +78,21 @@ import static com.spark.szhb_master.utils.okhttp.OkhttpUtils.post;
 
 public class HomeFragment extends BaseTransFragment implements MainContract.HomeView, CollectView {
     public static final String TAG = HomeFragment.class.getSimpleName();
-    @BindView(R.id.rvMessageTag)
-    RelativeLayout rvMessageTag;
+    @BindView(R.id.ivMessage)
+    ImageButton ivMessage;
+
     @BindView(R.id.banner)
     Banner banner;
     @BindView(R.id.rvContent)
     RecyclerView rvContent; // 固定三个grid
     @BindView(R.id.marqueeView)
     MarqueeView marqueeView;
-    @BindView(R.id.llTitle)
-    LinearLayout llTitle;
+    @BindView(R.id.rlTitle)
+    RelativeLayout rlTitle;
 
 
     @BindView(R.id.scrollView)
     MyScrollView scrollView;
-    @BindView(R.id.ivchatTip)
-    ImageView ivchatTip;
 
 
     @BindView(R.id.llHomeContent)
@@ -126,7 +127,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     private List<NewCurrency> currenciesTwo = new ArrayList<>();
     private HomeOneAdapter adapter;
     private MainContract.HomePresenter presenter;
-    private List<Message> messageList = new ArrayList<>();
+    private List<MessageBean.Message> messageList = new ArrayList<>();
     private List<String> info = new ArrayList<>();
     private CommonPresenter commonPresenter;
     private boolean isfirst = false;
@@ -182,27 +183,8 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     @Override
     protected void initView() {
         super.initView();
-        rvMessageTag.setVisibility(View.VISIBLE);
+
         scrollView.requestDisallowInterceptTouchEvent(false);
-        tvGoto.setVisibility(View.GONE);
-        //10.19更改
-//        if (!MyApplication.getApp().isLogin()) {
-//            text_balance.setVisibility(View.GONE);
-//            text_balance_cny.setVisibility(View.GONE);
-//            ivSee.setVisibility(View.GONE);
-//            btn_Login.setVisibility(View.VISIBLE);
-//            login_after.setVisibility(View.VISIBLE);
-//        } else {
-//            getMoney(getmActivity().getToken());
-//            text_balance.setVisibility(View.VISIBLE);
-//            text_balance_cny.setVisibility(View.VISIBLE);
-//            ivSee.setVisibility(View.VISIBLE);
-//            btn_Login.setVisibility(View.GONE);
-//            login_after.setVisibility(View.GONE);
-//        }
-//        isfirst = true;
-
-
 
         symblistview.setAdapter(mListAdapter = new NestFullListViewAdapter<NewCurrency>(R.layout.item_market,currencies) {
             @Override
@@ -265,7 +247,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     @Override
     protected void initData() {
         super.initData();
-        setTitle(getString(R.string.home));
+
         new CommonPresenter(Injection.provideTasksRepository(getActivity().getApplicationContext()), this);
         initThreeContent();
 
@@ -326,36 +308,8 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         rvContent.setNestedScrollingEnabled(false);
     }
 
-    /**
-     * 初始化排行榜
-     */
-    private void initSortContent() {
-        //mSortContent.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        sortAdapter = new HomeSortAdapter(currencies,getContext());
-//        sortAdapter.isFirstOnly(true);
-//        sortAdapter.setLoad(true);
-//        mSortContent.setAdapter(sortAdapter);
-//
-//        mSortContent.setHasFixedSize(true);
-//        mSortContent.setNestedScrollingEnabled(false);
 
-        //Test
-
-    }
-
-    private JSONObject buildGetBodyJson(String value, int id) {
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("value", value);
-            if (id != 0) // 不需要id
-                obj.put("type", id);
-            return obj;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    @OnClick({R.id.llChongbi,R.id.ivMessage,R.id.llXinshouzhinan,R.id.rlhy,R.id.llwdcc})
+    @OnClick({R.id.llChongbi,R.id.llXinshouzhinan,R.id.rlhy,R.id.llwdcc,R.id.llXinrenlingj})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -378,15 +332,19 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
                 }
                 showActivity(RechargeActivity.class,null);
                 break;
-            case R.id.llXinshouzhinan:{
-
-            }
-            break;
-            case R.id.rlhy:{
+            case R.id.llXinshouzhinan:
+                break;
+            case R.id.llXinrenlingj:
+                if (!MyApplication.getApp().isLogin()){
+                    showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
+                    return;
+                }
+                showActivity(FreshGiftActivity.class,null);
+                break;
+            case R.id.rlhy:
                 if (operateCallback!=null)
                     operateCallback.toheyue();
-            }
-            break;
+                break;
         }
     }
 
@@ -409,6 +367,16 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     @Override
     protected void setListener() {
         super.setListener();
+        ivMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!MyApplication.getApp().isLogin()){
+                    showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
+                    return;
+                }
+                showActivity(MessageActivity.class,null);
+            }
+        });
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -439,10 +407,10 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
             @Override
             public void onItemClick(int position, TextView textView) {
-                Message message = messageList.get(position);
+                MessageBean.Message message = messageList.get(position);
                 Bundle bundle = new Bundle();
 //                bundle.putString("id", message.getId());
-                bundle.putString("url", message.getContent());
+                bundle.putString("url", message.getBody());
                 showActivity(WebViewActivity.class, bundle);
             }
         });
@@ -499,15 +467,15 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     }
 
 
-    @Override
-    protected void initImmersionBar() {
-        super.initImmersionBar();
-        immersionBar.flymeOSStatusBarFontColor("#FFFFFF").init();
-        if (!isSetTitle) {
-            immersionBar.setTitleBar(getActivity(), llTitle);
-            isSetTitle = true;
-        }
-    }
+//    @Override
+//    protected void initImmersionBar() {
+//        super.initImmersionBar();
+//        immersionBar.flymeOSStatusBarFontColor("#FFFFFF").init();
+//        if (!isSetTitle) {
+//            immersionBar.setTitleBar(getActivity(), rlTitle);
+//            isSetTitle = true;
+//        }
+//    }
 
     @Override
     public void setPresenter(MainContract.HomePresenter presenter) {
@@ -554,10 +522,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
 //        llHomeContent.setVisibility(View.GONE);
     }
 
-    public void setChatTip(boolean hasNew) {
-        if (hasNew) ivchatTip.setVisibility(View.VISIBLE);
-        else ivchatTip.setVisibility(View.INVISIBLE);
-    }
+
 
     @Override
     public void deleteFail(Integer code, String toastMessage) {
@@ -618,7 +583,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     }
 
     @Override
-    public void getMarqueeSuccess(List<Message> messages) {
+    public void getMarqueeSuccess(List<MessageBean.Message> messages) {
         messageList.clear();
         messageList.addAll(messages);
         setMarqueeView(messageList);
@@ -687,9 +652,9 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     }
 
 
-    private void setMarqueeView(List<Message> messageList) {
+    private void setMarqueeView(List<MessageBean.Message> messageList) {
         info.clear();
-        for (Message message : messageList) {
+        for (MessageBean.Message message : messageList) {
             info.add(message.getTitle());
         }
         marqueeView.startWithList(info);

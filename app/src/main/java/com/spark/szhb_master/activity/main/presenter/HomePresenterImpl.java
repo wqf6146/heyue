@@ -4,9 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.spark.szhb_master.activity.main.MainContract;
 import com.spark.szhb_master.data.DataSource;
-import com.spark.szhb_master.entity.BannerEntity;
 import com.spark.szhb_master.entity.BannerInfo;
-import com.spark.szhb_master.entity.Message;
+import com.spark.szhb_master.entity.MessageBean;
 import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.factory.UrlFactory;
 
@@ -74,7 +73,7 @@ public class HomePresenterImpl implements MainContract.HomePresenter {
                 try {
                     JSONObject object = new JSONObject(response);
                     if (object.optInt("code") == 0) {
-                        List<Message> messages = new Gson().fromJson(object.getJSONObject("data").getJSONArray("content").toString(), new TypeToken<List<Message>>() {
+                        List<MessageBean.Message> messages = new Gson().fromJson(object.getJSONObject("data").getJSONArray("content").toString(), new TypeToken<List<MessageBean.Message>>() {
                         }.getType());
                         view.getMarqueeSuccess(messages);
                     } else {

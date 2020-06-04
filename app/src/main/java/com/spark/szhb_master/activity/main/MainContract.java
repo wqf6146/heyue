@@ -2,17 +2,13 @@ package com.spark.szhb_master.activity.main;
 
 import com.spark.szhb_master.base.Contract;
 import com.spark.szhb_master.entity.AssetsInfo;
-import com.spark.szhb_master.entity.BannerEntity;
 import com.spark.szhb_master.entity.BannerInfo;
 import com.spark.szhb_master.entity.C2C;
 import com.spark.szhb_master.entity.C2cConfig;
-import com.spark.szhb_master.entity.Coin;
-import com.spark.szhb_master.entity.CoinInfo;
 import com.spark.szhb_master.entity.Entrust;
 import com.spark.szhb_master.entity.Favorite;
 import com.spark.szhb_master.entity.Fiats;
-import com.spark.szhb_master.entity.Message;
-import com.spark.szhb_master.entity.Plate;
+import com.spark.szhb_master.entity.MessageBean;
 import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.User;
@@ -76,7 +72,7 @@ public interface MainContract {
 
         void bannersFail(Integer code, String toastMessage);
 
-        void getMarqueeSuccess(List<Message> messages);
+        void getMarqueeSuccess(List<MessageBean.Message> messages);
 
         void getMarqueeFail(Integer code, String toastMessage);
 

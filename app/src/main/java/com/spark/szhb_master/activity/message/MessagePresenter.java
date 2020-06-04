@@ -2,16 +2,14 @@ package com.spark.szhb_master.activity.message;
 
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.spark.szhb_master.data.DataSource;
-import com.spark.szhb_master.entity.Message;
+import com.spark.szhb_master.entity.MessageBean;
 import com.spark.szhb_master.factory.UrlFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 
 import static com.spark.szhb_master.utils.GlobalConstant.JSON_ERROR;
 
@@ -30,20 +28,19 @@ public class MessagePresenter implements MessageContract.Presenter {
     }
 
     @Override
-    public void message(HashMap<String, String> params) {
-        dataRepository.doStringPost(UrlFactory.getMessageUrl(), params, new DataSource.DataCallback() {
+    public void message(HashMap params) {
+        dataRepository.doStringGet(UrlFactory.getMessageUrl(), params, new DataSource.DataCallback() {
             @Override
             public void onDataLoaded(Object obj) {
                 view.hideLoadingPopup();
                 String response = (String) obj;
                 try {
                     JSONObject object = new JSONObject(response);
-                    if (object.optInt("code") == 0) {
-                        List<Message> objs = new Gson().fromJson(object.getJSONObject("data").getJSONArray("content").toString(), new TypeToken<List<Message>>() {
-                        }.getType());
-                        view.messageSuccess(objs);
+                    if (object.optInt("code") == 1) {
+                        MessageBean bean = new Gson().fromJson(object.optString("data"), MessageBean.class);
+                        view.messageSuccess(bean);
                     } else {
-                        view.messageFail(object.getInt("code"), object.optString("message"));
+                        view.messageFail(object.getInt("code"), object.optString("msg"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

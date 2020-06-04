@@ -1,19 +1,13 @@
 package com.spark.szhb_master.activity.main.presenter;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.spark.szhb_master.activity.main.MainContract;
 import com.spark.szhb_master.data.DataSource;
 import com.spark.szhb_master.entity.C2cConfig;
-import com.spark.szhb_master.entity.CoinInfo;
-import com.spark.szhb_master.entity.Message;
-import com.spark.szhb_master.entity.SafeSetting;
 import com.spark.szhb_master.factory.UrlFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 import static com.spark.szhb_master.utils.GlobalConstant.JSON_ERROR;
 

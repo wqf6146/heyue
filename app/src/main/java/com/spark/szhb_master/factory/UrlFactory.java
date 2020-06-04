@@ -332,7 +332,7 @@ public class UrlFactory {
 
 
     public static String getMessageUrl() {
-        return host + "/uc/announcement/page";
+        return newhost + "/user/message";
     }
 
     public static String getMessageDetailUrl() {
@@ -341,6 +341,10 @@ public class UrlFactory {
 
     public static String getRemarkUrl() {
         return host + "/uc/feedback";
+    }
+
+    public static String getFreshGiftUrl(){
+        return newhost + "/user/newcomer";
     }
 
     public static String getAppInfoUrl() {

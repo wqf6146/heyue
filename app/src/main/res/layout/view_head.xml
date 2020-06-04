@@ -141,8 +141,8 @@
             android:id="@+id/ivCollect"
             android:layout_width="20dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:src="@mipmap/icon_collect_normal"
             android:visibility="gone" />
 
@@ -210,8 +210,8 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/icon_more_white"
             android:scaleType="center"
+            android:src="@mipmap/icon_more_white"
             android:visibility="gone" />
 
         <RelativeLayout
