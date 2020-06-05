@@ -7,13 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.reflect.TypeToken;
 import com.mcxtzhang.nestlistview.NestFullListView;
 import com.mcxtzhang.nestlistview.NestFullListViewAdapter;
 import com.mcxtzhang.nestlistview.NestFullViewHolder;
@@ -33,7 +31,7 @@ import com.spark.szhb_master.MyApplication;
 import com.spark.szhb_master.base.BaseActivity;
 import com.spark.szhb_master.base.BaseTransFragment;
 import com.spark.szhb_master.dialog.ShiMingDialog;
-import com.spark.szhb_master.entity.BannerInfo;
+import com.spark.szhb_master.entity.BaseInfo;
 import com.spark.szhb_master.entity.Coin;
 import com.spark.szhb_master.entity.MessageBean;
 import com.spark.szhb_master.entity.NewCurrency;
@@ -47,7 +45,6 @@ import com.spark.szhb_master.utils.NetCodeUtils;
 import com.spark.szhb_master.utils.SharedPreferenceInstance;
 import com.spark.szhb_master.utils.StringUtils;
 import com.spark.szhb_master.utils.ToastUtils;
-import com.spark.szhb_master.utils.okhttp.StringCallback;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -55,8 +52,6 @@ import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -67,10 +62,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import config.Injection;
-import okhttp3.Request;
 
 import static android.app.Activity.RESULT_OK;
-import static com.spark.szhb_master.utils.okhttp.OkhttpUtils.post;
 
 /**
  * Created by Administrator on 2018/1/7.
@@ -135,15 +128,10 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     @Override
     public void onResume() {
         super.onResume();
-        if (marqueeView != null) marqueeView.startFlipping();
+        if (marqueeView != null)
+            marqueeView.startFlipping();
         banner.startAutoPlay();
-        //10.19更改
-        User user = MyApplication.getApp().getCurrentUser();
-        if (!MyApplication.getApp().isLogin()) {
 
-        } else if (!StringUtils.isEmpty(user.getNick_name())){
-            getMoney(getmActivity().getToken());
-        }
     }
 
     @Override
@@ -262,36 +250,28 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     protected void loadData() {
         notifyData();
         isNeedLoad = false;
-        getImage();
-        getMarqueeText();
-        //10.19更改
-        if (!MyApplication.getApp().isLogin()) {
 
-        } else {
+    }
 
-            getMoney(getmActivity().getToken());
+    @Override
+    protected void onFragmentVisibleChange(boolean isVisible) {
+        super.onFragmentVisibleChange(isVisible);
+        if (isVisible){
+            getBaseInfo();
         }
     }
 
-
-    /**
-     * 获取滚动图片
-     */
-    private void getImage() {
-        if (imageUrls == null || imageUrls.size() == 0) {
-            HashMap map = new HashMap<>();
-            presenter.banners(map);
-        }
+    @Override
+    protected void onFragmentFirstVisible() {
+        super.onFragmentFirstVisible();
+        getBaseInfo();
     }
 
     /**
-     * 获取滚动text
+     * 获取基本信息
      */
-    private void getMarqueeText() {
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("pageNo", "1");
-        map.put("pageSize", "5");
-        presenter.getMarqueeText(map);
+    private void getBaseInfo() {
+        presenter.getBaseInfo();
     }
 
     /**
@@ -350,19 +330,6 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
 
 
 
-    /**
-     * 盘口信息的返回 和 当前委托的返回
-     *
-     * @param response SocketResponse
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onGetMessage(SocketResponse response) {
-        if (response.getCmd() == null) return;
-        if (response.getCmd() == NEWCMD.SUBSCRIBE_HOME_TRADE){
-
-        }
-    }
-
     private NewCurrency currency;
     @Override
     protected void setListener() {
@@ -394,7 +361,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                BannerInfo.PhotoBean photoBean = mBannerInfo.getPhoto().get(position);
+                BaseInfo.PhotoBean photoBean = mBaseInfo.getPhoto().get(position);
                 if (photoBean != null) {
                     Bundle bundle = new Bundle();
                     bundle.putString("title", "title");
@@ -456,26 +423,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
             ToastUtils.showToast("请先登录再添加收藏！");
             return;
         }
-//        String symbol = currencies.get(position).getSymbol();
-//        HashMap<String, String> map = new HashMap<>();
-//        map.put("symbol", symbol);
-//        if (currencies.get(position).isCollect()) {
-//            commonPresenter.delete(map, position);
-//        } else {
-//            commonPresenter.add(map, position);
-//        }
     }
-
-
-//    @Override
-//    protected void initImmersionBar() {
-//        super.initImmersionBar();
-//        immersionBar.flymeOSStatusBarFontColor("#FFFFFF").init();
-//        if (!isSetTitle) {
-//            immersionBar.setTitleBar(getActivity(), rlTitle);
-//            isSetTitle = true;
-//        }
-//    }
 
     @Override
     public void setPresenter(MainContract.HomePresenter presenter) {
@@ -551,12 +499,12 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     }
 
 
-    private BannerInfo mBannerInfo;
+    private BaseInfo mBaseInfo;
     @Override
-    public void bannersSuccess(BannerInfo bannerInfo) {
-        MyApplication.getApp().setBaseInfo(bannerInfo);
-        mBannerInfo = bannerInfo;
-        for (BannerInfo.PhotoBean photoBean : bannerInfo.getPhoto()) {
+    public void getBaseInfoSuccess(BaseInfo baseInfo) {
+
+        mBaseInfo = baseInfo;
+        for (BaseInfo.PhotoBean photoBean : baseInfo.getPhoto()) {
             String url = photoBean.getUrl();
             if (StringUtils.isNotEmpty(url)) {
                 if (!url.contains("http")) {
@@ -568,31 +516,30 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
         }
 
         if (imageUrls.size() > 0) {
-            banner.setImages(imageUrls); // 设置图片集合
-            banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR).setIndicatorGravity(BannerConfig.CENTER)// 设置样式
-                    .setImageLoader(new BannerImageLoader());
-            banner.setDelayTime(3000); // 设置轮播时间
-
-            banner.start();
+            if (MyApplication.getApp().getBaseInfo() == null){
+                banner.setImages(imageUrls); // 设置图片集合
+                banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR).setIndicatorGravity(BannerConfig.CENTER)// 设置样式
+                        .setImageLoader(new BannerImageLoader());
+                banner.setDelayTime(3000); // 设置轮播时间
+                banner.start();
+            }else{
+                banner.update(imageUrls);
+            }
         }
+
+        List<BaseInfo.NewsBean> newsBeanList = baseInfo.getNews();
+        if (newsBeanList !=null && newsBeanList.size() > 0){
+            setMarqueeView(newsBeanList);
+        }
+
+        MyApplication.getApp().setBaseInfo(baseInfo);
     }
 
     @Override
-    public void bannersFail(Integer code, String toastMessage) {
-
+    public void getBaseInfoFail(Integer code, String toastMessage) {
+        NetCodeUtils.checkedErrorCode(getmActivity(),code,toastMessage);
     }
 
-    @Override
-    public void getMarqueeSuccess(List<MessageBean.Message> messages) {
-        messageList.clear();
-        messageList.addAll(messages);
-        setMarqueeView(messageList);
-    }
-
-    @Override
-    public void getMarqueeFail(Integer code, String toastMessage) {
-
-    }
 
     @Override
     public void safeSettingFiled(Integer code, String toastMessage) {
@@ -652,10 +599,10 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     }
 
 
-    private void setMarqueeView(List<MessageBean.Message> messageList) {
+    private void setMarqueeView(List<BaseInfo.NewsBean> messageList) {
         info.clear();
-        for (MessageBean.Message message : messageList) {
-            info.add(message.getTitle());
+        for (BaseInfo.NewsBean message : messageList) {
+            info.add(message.getSynopsis());
         }
         marqueeView.startWithList(info);
     }
@@ -674,10 +621,6 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
             marqueeView.stopFlipping();
         }
         num = 1;
-        Log.e("TAG", status + "---------" + num);
-        if (isfirst) {
-            getivSee();
-        }
     }
 
     private OperateCallback operateCallback;
@@ -689,50 +632,5 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
     public interface OperateCallback {
         void tofabi();
         void toheyue();
-    }
-
-    private void getMoney(String token) {
-        post().url(UrlFactory.getWalletUrl()).addHeader("x-auth-token", token).build().execute(new StringCallback() {
-            @Override
-            public void onError(Request request, Exception e) {
-            }
-            @Override
-            public boolean onResponse(String response) {
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (object.optInt("code") == 0) {
-                        List<Coin> obj = gson.fromJson(object.getJSONArray("data").toString(), new TypeToken<List<Coin>>() {}.getType());
-                        if (obj == null) return false;
-                        calcuTotal(obj);
-                    } else {
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-
-                }
-                return false;
-            }
-        });
-    }
-    public static double sumUsd = 0;
-    double sumCny = 0;
-    private void calcuTotal(List<Coin> coins) {
-        sumUsd = 0;
-        sumCny = 0;
-        for (Coin coin : coins) {
-//            sumUsd += (coin.getBalance() * coin.getCoin().getUsdRate());
-//            sumCny += (coin.getBalance() * coin.getCoin().getCnyRate());
-            sumUsd += ((coin.getBalance() * coin.getCoin().getUsdRate()) + (coin.getFrozenBalance() * coin.getCoin().getUsdRate()));
-            sumCny += ((coin.getBalance() * coin.getCoin().getCnyRate()) + (coin.getFrozenBalance() * coin.getCoin().getCnyRate()));
-        }
-        getivSee();
-    }
-
-    private void getivSee() {
-        if (SharedPreferenceInstance.getInstance().getMoneyShowType() == 2){
-
-        }else {
-
-        }
     }
 }

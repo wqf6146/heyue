@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:background="@color/main_bg"
+    android:layout_height="110dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/bg_white_corner"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:text="5"
+                android:textColor="@color/Blue"
+                android:textSize="@dimen/font_xxxlager"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="USDT"
+                android:textColor="@color/main_font_grey"
+                android:textSize="@dimen/font_small"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="新人赠金"
+                    android:textColor="@color/main_font_black"
+                    android:textSize="@dimen/font_small"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="最高支持10x杠杆"
+                    android:textColor="@color/main_font_grey"
+                    android:textSize="@dimen/font_smini" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_blue_shape_gradient"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="去使用"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small" />
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_weight="3"
+            android:layout_height="0dp">
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/main_font_grey"
+                android:textSize="@dimen/font_mini" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

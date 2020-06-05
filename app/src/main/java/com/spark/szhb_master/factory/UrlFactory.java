@@ -70,6 +70,10 @@ public class UrlFactory {
         return newhost + "/user/fiats/trade";
     }
 
+    public static String getMyGiftUrl() {
+        return newhost + "/user/bonus";
+    }
+
     public static String getC2cOrderDetailUrl(){
         return newhost + "/user/fiats/trade/info";
     }
@@ -351,7 +355,7 @@ public class UrlFactory {
         return host + "/uc/ancillary/website/info";
     }
 
-    public static String getBannersUrl() {
+    public static String getBaseInfoUrl() {
         return newhost + "/user/config";
     }
 

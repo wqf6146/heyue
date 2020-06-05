@@ -98,7 +98,7 @@ public class FreshGiftActivity extends BaseActivity implements FreshGiftContract
     @Override
     public void getGiftListSuccess(FreshGitBean freshGitBean) {
         refreshLayout.finishRefresh();
-        refreshLayout.finishLoadMore();
+//        refreshLayout.finishLoadMore();
 
         List<FreshGitBean.Gift> giftList = freshGitBean.getList();
         if (giftList != null && giftList.size() > 0) {

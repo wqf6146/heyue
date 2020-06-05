@@ -19,11 +19,10 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.spark.szhb_master.activity.login.LoginActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.MainActivity;
 import com.spark.szhb_master.base.BaseActivity;
-import com.spark.szhb_master.entity.BannerInfo;
+import com.spark.szhb_master.entity.BaseInfo;
 import com.spark.szhb_master.entity.NewCurrency;
 import com.spark.szhb_master.entity.SymbolListBean;
 import com.spark.szhb_master.entity.TcpEntity;
@@ -53,11 +52,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
 
 /**
  * Created by pc on 2017/3/8.
@@ -72,7 +67,7 @@ public class MyApplication extends Application {
     private int mHeight;
 
     private String TAG = MyApplication.class.toString();
-    private BannerInfo mBaseInfo;
+    private BaseInfo mBaseInfo;
 
     // 正常状态
     public static final int STATE_NORMAL = 0;
@@ -123,11 +118,11 @@ public class MyApplication extends Application {
         return null;
     }
 
-    public void setBaseInfo(BannerInfo mBaseInfo) {
+    public void setBaseInfo(BaseInfo mBaseInfo) {
         this.mBaseInfo = mBaseInfo;
     }
 
-    public BannerInfo getBaseInfo() {
+    public BaseInfo getBaseInfo() {
         return mBaseInfo;
     }
 

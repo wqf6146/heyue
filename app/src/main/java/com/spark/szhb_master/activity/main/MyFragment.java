@@ -32,6 +32,7 @@ import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.message.MessageActivity;
 import com.spark.szhb_master.activity.ads.AdsActivity;
 import com.spark.szhb_master.activity.my_match.MatchActivity;
+import com.spark.szhb_master.activity.mygift.MyGiftActivity;
 import com.spark.szhb_master.activity.order.MyOrderActivity;
 import com.spark.szhb_master.activity.my_promotion.PromotionActivity;
 import com.spark.szhb_master.activity.myinfo.MyInfoActivity;
@@ -253,6 +254,9 @@ public class MyFragment extends BaseTransFragment implements MainContract.MyView
                 break;
             case R.id.llHuaz:
                 showActivity(FundtransferActivity.class,null);
+                break;
+            case R.id.llWdzj:
+                showActivity(MyGiftActivity.class,null);
                 break;
             case R.id.llSfrz:
                 Bundle creditb = new Bundle();

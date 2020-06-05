@@ -46,6 +46,24 @@ public class FreshGitBean {
         private String remark;
         private int is_received;
         private int num;
+        private String created_at;
+        private String usage_at;
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
+        public void setUsage_at(String usage_at) {
+            this.usage_at = usage_at;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public String getUsage_at() {
+            return usage_at;
+        }
 
         public int getId() {
             return id;

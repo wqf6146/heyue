@@ -2,7 +2,7 @@ package com.spark.szhb_master.activity.main;
 
 import com.spark.szhb_master.base.Contract;
 import com.spark.szhb_master.entity.AssetsInfo;
-import com.spark.szhb_master.entity.BannerInfo;
+import com.spark.szhb_master.entity.BaseInfo;
 import com.spark.szhb_master.entity.C2C;
 import com.spark.szhb_master.entity.C2cConfig;
 import com.spark.szhb_master.entity.Entrust;
@@ -68,13 +68,9 @@ public interface MainContract {
 
     interface HomeView extends Contract.BaseView<HomePresenter> {
 
-        void bannersSuccess(BannerInfo bannerInfo);
+        void getBaseInfoSuccess(BaseInfo baseInfo);
 
-        void bannersFail(Integer code, String toastMessage);
-
-        void getMarqueeSuccess(List<MessageBean.Message> messages);
-
-        void getMarqueeFail(Integer code, String toastMessage);
+        void getBaseInfoFail(Integer code, String toastMessage);
 
         void safeSettingFiled(Integer code, String toastMessage);
 
@@ -84,9 +80,7 @@ public interface MainContract {
 
     interface HomePresenter extends Contract.BasePresenter {
 
-        void banners(HashMap<String, String> map);
-
-        void getMarqueeText(HashMap<String, String> map);
+        void getBaseInfo();
 
         void safeSetting();
     }

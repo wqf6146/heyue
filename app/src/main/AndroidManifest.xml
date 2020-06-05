@@ -117,6 +117,7 @@
         <activity android:name="com.spark.szhb_master.activity.appeal.AppealActivity" />
         <activity android:name="com.spark.szhb_master.activity.chat.ChatListActivity" />
         <activity android:name="com.spark.szhb_master.activity.chat.ChatActivity" />
+        <activity android:name=".activity.mygift.MyGiftActivity"/>
         <activity android:name="com.spark.szhb_master.activity.entrust.CurrentTrustActivity" />
         <activity android:name="com.spark.szhb_master.activity.entrust.AllTrustActivity" />
         <activity android:name="com.spark.szhb_master.activity.entrust.NowTrustActivity" />
