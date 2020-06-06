@@ -16,6 +16,7 @@ import com.mcxtzhang.nestlistview.NestFullListView;
 import com.mcxtzhang.nestlistview.NestFullListViewAdapter;
 import com.mcxtzhang.nestlistview.NestFullViewHolder;
 import com.spark.szhb_master.R;
+import com.spark.szhb_master.activity.aboutus.FreshTeacherActivity;
 import com.spark.szhb_master.activity.freshgift.FreshGiftActivity;
 import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.activity.main.presenter.CommonPresenter;
@@ -313,6 +314,7 @@ public class HomeFragment extends BaseTransFragment implements MainContract.Home
                 showActivity(RechargeActivity.class,null);
                 break;
             case R.id.llXinshouzhinan:
+                showActivity(FreshTeacherActivity.class,null);
                 break;
             case R.id.llXinrenlingj:
                 if (!MyApplication.getApp().isLogin()){

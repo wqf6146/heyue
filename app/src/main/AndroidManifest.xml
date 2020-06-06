@@ -138,6 +138,7 @@
         <activity android:name="com.spark.szhb_master.activity.Treasure.DiggingDetialActivity" />
         <activity android:name=".activity.Bind_bank.BankListActivity"/>
         <activity android:name=".activity.Bind_bank.BindBankActivity"/>
+        <activity android:name=".activity.aboutus.FreshTeacherActivity"/>
         <activity android:name="com.spark.szhb_master.activity.Treasure.GetTreaActivity" />
         <activity android:name="com.spark.szhb_master.activity.Treasure.PowerUpActivity" />
         <activity android:name="com.spark.szhb_master.activity.Treasure.SuanActivity" />

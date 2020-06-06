@@ -36,8 +36,29 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llVersion"
+        style="@style/layout_my_info"
+        android:visibility="visible">
+
+        <TextView
+            style="@style/edittext_normal"
+            android:layout_weight="1"
+            android:text="@string/my_version" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="v1.1.0"
+            android:textColor="@color/white"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"/>
+        <ImageView style="@style/icon_more" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/llSwitchLanguage"
-        style="@style/layout_my_info">
+        style="@style/layout_my_info"
+        android:visibility="visible">
 
         <TextView
             style="@style/edittext_normal"
@@ -50,10 +71,10 @@
 
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/llFeed"
         style="@style/layout_my_info"
-        android:background="@drawable/ripple_white">
+        android:background="@drawable/ripple_white"
+        android:visibility="gone">
 
         <TextView
             style="@style/edittext_normal"
@@ -65,10 +86,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/llAboutUs"
         style="@style/layout_my_info"
-        android:background="@drawable/ripple_white">
+        android:visibility="visible">
 
         <TextView
             style="@style/edittext_normal"

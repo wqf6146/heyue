@@ -19,6 +19,7 @@ import com.spark.szhb_master.activity.login.LoginStepOneActivity;
 import com.spark.szhb_master.base.BaseActivity;
 import com.spark.szhb_master.dialog.VersionDialogFragment;
 import com.spark.szhb_master.entity.AppInfo;
+import com.spark.szhb_master.entity.BaseInfo;
 import com.spark.szhb_master.entity.Vision;
 import com.spark.szhb_master.utils.FileUtils;
 import com.spark.szhb_master.utils.GlobalConstant;
@@ -43,22 +44,21 @@ import config.Injection;
 import okhttp3.Request;
 
 public class AboutUsActivity extends BaseActivity implements AboutUsContract.View {
-    @BindView(R.id.ivLogo)
-    ImageView ivLogo;
-    @BindView(R.id.tvDesc)
-    TextView tvDesc;
-    @BindView(R.id.tvName)
-    TextView tvName;
-    @BindView(R.id.tvPhone)
-    TextView tvPhone;
-    @BindView(R.id.tvWeb)
-    TextView tvWeb;
-    @BindView(R.id.llFeed)
-    LinearLayout llFeed;
-    @BindView(R.id.llVersion)
-    LinearLayout llVersion;
-    @BindView(R.id.tvVersionNum)
-    TextView tvVersionNum;
+    @BindView(R.id.ivBack)
+    ImageView ivBack;
+    @BindView(R.id.tvTitle1)
+    TextView tvTitle1;
+    @BindView(R.id.tvTitle2)
+    TextView tvTitle2;
+    @BindView(R.id.tvTitle3)
+    TextView tvTitle3;
+    @BindView(R.id.tvOneDesc)
+    TextView tvOneDesc;
+    @BindView(R.id.tvTwoDesc)
+    TextView tvTwoDesc;
+    @BindView(R.id.tvThreeDesc)
+    TextView tvThreeDesc;
+
     private AboutUsContract.Presenter presenter;
     private ProgressDialog progressDialog;
 
@@ -76,7 +76,6 @@ public class AboutUsActivity extends BaseActivity implements AboutUsContract.Vie
     @Override
     protected void initView() {
         super.initView();
-        setSetTitleAndBack(false, true);
         initProgressDialog();
         fragment = new VersionDialogFragment(AboutUsActivity.this);
     }
@@ -84,27 +83,37 @@ public class AboutUsActivity extends BaseActivity implements AboutUsContract.Vie
     @Override
     protected void initData() {
         super.initData();
-        setTitle(getString(R.string.about_us));
-        tvGoto.setVisibility(View.INVISIBLE);
         new AboutUsPresenter(Injection.provideTasksRepository(getApplicationContext()), this);
-        Glide.with(this).load(R.mipmap.ic_launcher).into(ivLogo);
-        tvName.setText(getString(R.string.app_name) + "  " + "V" + CommonUtils.getVersionName(this));
-        tvPhone.setText(getString(R.string.service_tel) + "  " + getString(R.string.phone));
-        tvWeb.setText( getString(R.string.web));
-        tvVersionNum.setText("V" + CommonUtils.getAppVersionNum());
+
+        BaseInfo baseInfo = MyApplication.getApp().getBaseInfo();
+        List<BaseInfo.AboutBean> aboutBeans = baseInfo.getAbout();
+        for (int i=0;i<aboutBeans.size();i++){
+            if (aboutBeans.size() > i && i <= 3){
+                switch (i){
+                    case 0:
+                        tvTitle1.setText(aboutBeans.get(i).getName());
+                        tvOneDesc.setText(aboutBeans.get(i).getSynopsis());
+                        break;
+                    case 1:
+                        tvTitle2.setText(aboutBeans.get(i).getName());
+                        tvTwoDesc.setText(aboutBeans.get(i).getSynopsis());
+                        break;
+                    case 2:
+                        tvTitle3.setText(aboutBeans.get(i).getName());
+                        tvThreeDesc.setText(aboutBeans.get(i).getSynopsis());
+                        break;
+                }
+            }
+        }
     }
 
-    @OnClick({R.id.llFeed,R.id.llVersion})
+    @OnClick({R.id.ivBack,R.id.llVersion})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
         switch (v.getId()) {
-            case R.id.llFeed:
-                if (!MyApplication.getApp().isLogin()){
-                    showActivity(LoginStepOneActivity.class, null, LoginStepOneActivity.RETURN_LOGIN);
-                    return;
-                }
-                showActivity(FeedbackActivity.class, null);
+            case R.id.ivBack:
+                finish();
                 break;
             case R.id.llVersion:
                 if (!PermissionUtils.isCanUseStorage(this))
@@ -134,15 +143,7 @@ public class AboutUsActivity extends BaseActivity implements AboutUsContract.Vie
 
     @Override
     public void appInfoSuccess(AppInfo obj) {
-        if (obj == null) return;
-        if (StringUtils.isEmpty(obj.getLogo()))
-            Glide.with(this).load(R.mipmap.ic_launcher).into(ivLogo);
-        else Glide.with(this).load(obj.getLogo()).into(ivLogo);
-        tvName.setText(obj.getName() + "V" + CommonUtils.getVersionName(this));
-        tvDesc.setText(Html.fromHtml(obj.getDescription()));
-        tvPhone.setText(getString(R.string.service_tel) + obj.getContact());
-//        tvWeb.setText(getString(R.string.webSite) + obj.getUrl());
-        tvWeb.setText( obj.getUrl());
+
     }
 
     @Override
@@ -157,8 +158,6 @@ public class AboutUsActivity extends BaseActivity implements AboutUsContract.Vie
         }else {
             showUpDialog(obj);
         }
-//        if (!CommonUtils.compareVersions(obj.getData().getVersion(), CommonUtils.getAppVersionNum())) {}
-
     }
 
     @Override
@@ -255,6 +254,4 @@ public class AboutUsActivity extends BaseActivity implements AboutUsContract.Vie
         //设置显示的格式
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
     }
-
-
 }

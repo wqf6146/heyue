@@ -14,7 +14,6 @@ public interface AboutUsContract {
     interface View extends Contract.BaseView<Presenter> {
 
         void appInfoFail(Integer code, String toastMessage);
-
         void appInfoSuccess(AppInfo obj);
         void getNewVersionSuccess(Vision obj);
         void getNewVersionFail(Integer code, String toastMessage);

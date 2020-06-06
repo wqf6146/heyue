@@ -1,5 +1,6 @@
 package com.spark.szhb_master.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class BaseInfo {
@@ -211,7 +212,7 @@ public class BaseInfo {
         }
     }
 
-    public static class AboutBean {
+    public static class AboutBean implements Serializable {
         /**
          * created_at : 2020-05-22 16:45:59 +0800 CST
          * id : 1
